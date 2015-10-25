@@ -1,0 +1,101 @@
+print:
+loadg 10000h
+storev k
+setmax j
+
+p1:
+loadv j
+addc 1
+storev j
+xors 1
+jmpz 4
+loadf 1, j
+storev s
+loadv s
+cmp 32
+jge 2
+loadf 1, j
+xorc 10
+jne 1
+loadv k
+modc 160
+storev x
+loadv k
+cmp 3840
+jge 11
+loadv k
+addc 160
+subv x
+storev k
+jmp 5
+
+p11:
+loadv k
+addc 1
+storev k
+loadv x
+addc 1
+storev x
+xorc 160
+jmpz 5
+loadv k
+addc 0xb8000
+storev i
+loadc 0
+storeg i
+jmp 11
+
+p2:
+loadv k
+addc 0xb8000
+storev i
+loadf 1, j
+storeg i
+loadv i
+addc 1
+storev i
+loadv k
+addc 1
+storev k
+loadc 7
+storeg i
+loadv i
+addc 1
+storev i
+loadv k
+addc 1
+storev k
+
+p5:
+loadv k
+cmp 4000
+jl 1
+loadc 0xb8000
+storev p
+loadv p
+addc 160
+storev r
+setmax q
+loadc 3840
+storev k
+p3:
+loadv q
+addc 1
+storev q
+xorc 3840
+jmpz 1
+loadg r
+storeg p
+loadv p
+addc 1
+storev p
+loadv r
+addc 1
+storev r
+jmp 3
+
+p4:
+loadv k
+storeg 10000h
+eop
+

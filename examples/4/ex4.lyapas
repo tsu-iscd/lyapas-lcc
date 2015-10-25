@@ -1,0 +1,8 @@
+handle_scancode(/)
+    {xor eax, eax} {in al, 0x60} ⇒k⊕0xe0 ↪1 k⊕0xf0 ↪2 →3
+    §1 {xor eax, eax} {in al, 0x60} ⊕0xf0 ↦3
+    §2 {xor eax, eax} {in al, 0x60}
+    §3  ↑(k<2)4 ↑(k>4)4 K[10004h]+6⇒a+k⇒s ∇k  Ks⇒c & 1 ↪31 ∇Ka  c & 0xfe⇒Ks →4
+    §31 ∆Ka  c ∨ 1⇒Ks
+    §4
+**

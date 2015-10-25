@@ -1,0 +1,102 @@
+{
+  "proc": {
+    "name": "task",
+    "args": {
+      "in": {
+        "arg": [
+          {
+            "sym_comp": "1"
+          }
+        ]
+      },
+      "out": {
+        "arg": [
+          {
+            "sym_comp": "2"
+          }
+        ]
+      }
+    },
+    "paragraphs": [
+      {
+        "number": "0",
+        "expressions": [
+          {
+            "drarrow": {
+              "values": [
+                {
+                  "int": "1"
+                },
+                {
+                  "variable": "1"
+                }
+              ]
+            }
+          },
+          {
+            "drarrow": {
+              "values": [
+                {
+                  "size_comp": "1"
+                },
+                {
+                  "variable": "j"
+                }
+              ]
+            }
+          },
+          {
+            "zero": {
+              "values": [
+                {
+                  "variable": "k"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "number": "1",
+        "expressions": [
+          {
+            "drarrow": {
+              "values": [
+                {
+                  "sub": {
+                    "values": [
+                      {
+                        "variable": "i"
+                      },
+                      {
+                        "int": "1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "variable": "l"
+                }
+              ]
+            }
+          },
+          {
+            "drarrow": {
+              "values": [
+                {
+                  "sym_comp": "1"
+                },
+                {
+                  "sym_comp": "2"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+//По сути там уже ясно как продолжается дерево. Но доделать не успеваю.
+

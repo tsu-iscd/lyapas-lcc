@@ -1,0 +1,57 @@
+task:
+loadc 1
+storev i
+loads 1
+storev j
+loadc 0
+storev k
+paragraph1:
+loadv i
+subc 1
+storev l
+loadf 1, i
+storef 2, i
+loadf 2, i
+xorf 2, l
+xorv i
+storev t
+loadv t
+xorf 2, i
+storef 2, i
+loadv i
+addc 1
+storev i
+loadv i
+unequals 1
+jump_true 1
+paragraph2:
+loadv j
+subc 1
+storev j
+loadv j
+subc 1
+storev l
+loadv j
+greater_thansc 0
+jump_true 3
+loadc 0
+storev l
+paragraph3:
+loadf 2, j
+xorf 2, l
+storef 2, j
+loadv j
+unequalc 0
+jump_true 2
+paragraph4:
+loadf 2, k
+addc 48
+storef 2, k
+loadv k
+addc 1
+storev k
+loadv k
+unequals 1
+jump_true 4
+eop
+

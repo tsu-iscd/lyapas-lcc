@@ -1,0 +1,65 @@
+ischeduler:
+        loadg4 10004h
+        storev s
+        
+        loadg4 s
+        storev p
+        
+        loadv s
+        addc 4
+        storev n
+        addc 1
+        storev i
+        addc 1
+        storev a
+        addc 1
+        storev c
+        
+        loadg1 i
+        storev j
+        mulc 4
+        addv p
+        storev q
+        
+        loadg4 10058h
+        storeg4 q
+        
+    section_1:
+        loadv j
+        inc
+        storev j
+        xorg1 n
+        jumpnz 2
+    
+        zero
+        storev j
+    
+    section_2:
+        loadv c
+        addv j
+        storev s
+    
+        loadg1 a
+        jumpz 3
+    
+        loadv s
+        rshiftc 4
+        jumpnz 1
+        
+    section_3:
+        loadg1 s
+        andc 1
+        jumpz 1
+    
+        loadv j
+        mulc 4
+        addv p
+        storev p
+    
+        loadg4 p
+        storeg4 10058h
+    
+        loadv j
+        storeg1 i
+end
+
