@@ -23,5 +23,5 @@ $(TEST_EXAMPLES_IM0): test-ex%-im0: $(EXAMPLES_DIR)/ex%.im0 $(AUX_DIR)/im0.schem
 $(TEST_EXAMPLES_IM1): test-ex%-im1:
 	true
 
-$(TEST_EXAMPLES_IM2): test-ex%-im2:
-	true
+$(TEST_EXAMPLES_IM2): test-ex%-im2: $(EXAMPLES_DIR)/ex%.im2 $(AUX_DIR)/im2.schema.json
+	python -m jsonschema -i $< $(AUX_DIR)/im2.schema.json

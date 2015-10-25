@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cmd": "string",
+          "params": {
+            "type": "array",
+            "items": {
+              "type": ["string", "integer"]
+            }
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": "integer",
+          "pc": "integer"
+        }
+      }
+    }
+  }
+}
