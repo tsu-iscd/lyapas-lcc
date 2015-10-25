@@ -7,7 +7,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "cmd": "string",
+          "cmd": {"type": "string"},
           "params": {
             "type": "array",
             "items": {
@@ -22,8 +22,8 @@
       "items": {
         "type": "object",
         "properties": {
-          "number": "integer",
-          "pc": "integer"
+          "number": {"type": "integer"},
+          "pc": {"type": "integer"}
         }
       }
     }
