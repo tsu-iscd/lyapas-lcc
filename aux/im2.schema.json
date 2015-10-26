@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "type": "object",
-  "properties": {
-    "code": {
-      "type": "array",
-      "items": {
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
         "type": "object",
         "properties": {
+          "type": {"type": "string", "pattern": "^cmd$"},
           "cmd": {"type": "string"},
           "params": {
             "type": "array",
@@ -15,17 +15,14 @@
             }
           }
         }
-      }
-    },
-    "labels": {
-      "type": "array",
-      "items": {
+      },
+      {
         "type": "object",
         "properties": {
-          "number": {"type": "integer"},
-          "pc": {"type": "integer"}
+          "type": {"type": "string", "pattern": "^label$"},
+          "number": {"type": "integer"}
         }
       }
-    }
+    ]
   }
 }
