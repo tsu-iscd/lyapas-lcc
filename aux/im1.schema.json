@@ -56,56 +56,28 @@
         "type": "object",
         "properties": {
           "type": {"type": "string", "pattern": "^g1cx$"},
-          "addr": {"type": "integer"}
-        }
-      },
-      {
-        "type": "object",
-        "properties": {
-          "type": {"type": "string", "pattern": "^g1cx$"},
-          "var": {"type": "string"}
+          "idx": {"type": ["integer", "string"]}
         }
       },
       {
         "type": "object",
         "properties": {
           "type": {"type": "string", "pattern": "^g4cx$"},
-          "addr": {"type": "integer"}
-        }
-      },
-      {
-        "type": "object",
-        "properties": {
-          "type": {"type": "string", "pattern": "^g4cx$"},
-          "var": {"type": "string"}
+          "idx": {"type": ["integer", "string"]}
         }
       },
       {
         "type": "object",
         "properties": {
           "type": {"type": "string", "pattern": "^lcx$"},
-          "addr": {"type": "integer"}
-        }
-      },
-      {
-        "type": "object",
-        "properties": {
-          "type": {"type": "string", "pattern": "^lcx$"},
-          "var": {"type": "string"}
+          "idx": {"type": ["integer", "string"]}
         }
       },
       {
         "type": "object",
         "properties": {
           "type": {"type": "string", "pattern": "^scx$"},
-          "addr": {"type": "integer"}
-        }
-      },
-      {
-        "type": "object",
-        "properties": {
-          "type": {"type": "string", "pattern": "^scx$"},
-          "var": {"type": "string"}
+          "idx": {"type": ["integer", "string"]}
         }
       },
       {
