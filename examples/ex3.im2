@@ -1,65 +1,68 @@
-ischeduler:
-        loadg4 10004h
-        storev s
+[
+    {"type":"cmd", "cmd":"loadg4", "params":[65540]},
+    {"type":"cmd", "cmd":"storev", "params":["s"]},
+            
+    {"type":"cmd", "cmd":"loadg4", "params":["s"]},
+    {"type":"cmd", "cmd":"storev", "params":["p"]},
+            
+    {"type":"cmd", "cmd":"loadv", "params":["s"]},
+    {"type":"cmd", "cmd":"addc", "params":[4]},
+    {"type":"cmd", "cmd":"storev", "params":["n"]},
+    {"type":"cmd", "cmd":"addc", "params":[1]},
+    {"type":"cmd", "cmd":"storev", "params":["i"]},
+    {"type":"cmd", "cmd":"addc", "params":[1]},
+    {"type":"cmd", "cmd":"storev", "params":["a"]},
+    {"type":"cmd", "cmd":"addc", "params":[1]},
+    {"type":"cmd", "cmd":"storev", "params":["c"]},
+            
+    {"type":"cmd", "cmd":"loadg1", "params":["i"]},
+    {"type":"cmd", "cmd":"storev", "params":["j"]},
+    {"type":"cmd", "cmd":"mulc", "params":[4]},
+    {"type":"cmd", "cmd":"addv", "params":["p"]},
+    {"type":"cmd", "cmd":"storev", "params":["q"]},
+            
+    {"type":"cmd", "cmd":"loadg4", "params":[65624]},
+    {"type":"cmd", "cmd":"storeg4", "params":["q"]},
+    
+    {"type":"label", "number":1},
+    
+    {"type":"cmd", "cmd":"loadv", "params":["j"]},
+    {"type":"cmd", "cmd":"inc", "params":[]},
+    {"type":"cmd", "cmd":"storev", "params":["j"]},
+    {"type":"cmd", "cmd":"xorg1", "params":["n"]},
+    {"type":"cmd", "cmd":"jumpnz", "params":[2]},
         
-        loadg4 s
-        storev p
+    {"type":"cmd", "cmd":"zero", "params":[]},
+    {"type":"cmd", "cmd":"storev", "params":["j"]},
         
-        loadv s
-        addc 4
-        storev n
-        addc 1
-        storev i
-        addc 1
-        storev a
-        addc 1
-        storev c
+    {"type":"label", "number":2},
+    
+    {"type":"cmd", "cmd":"loadv", "params":["c"]},
+    {"type":"cmd", "cmd":"addv", "params":["j"]},
+    {"type":"cmd", "cmd":"storev", "params":["s"]},
         
-        loadg1 i
-        storev j
-        mulc 4
-        addv p
-        storev q
+    {"type":"cmd", "cmd":"loadg1", "params":["a"]},
+    {"type":"cmd", "cmd":"jumpz", "params":[3]},
         
-        loadg4 10058h
-        storeg4 q
+    {"type":"cmd", "cmd":"loadv", "params":["s"]},
+    {"type":"cmd", "cmd":"rshiftc", "params":[4]},
+    {"type":"cmd", "cmd":"jumpnz", "params":[1]},
+            
+    {"type":"label", "number":3},
+    
+    {"type":"cmd", "cmd":"loadg1", "params":["s"]},
+    {"type":"cmd", "cmd":"andc", "params":[1]},
+    {"type":"cmd", "cmd":"jumpz", "params":[1]},
         
-    section_1:
-        loadv j
-        inc
-        storev j
-        xorg1 n
-        jumpnz 2
-    
-        zero
-        storev j
-    
-    section_2:
-        loadv c
-        addv j
-        storev s
-    
-        loadg1 a
-        jumpz 3
-    
-        loadv s
-        rshiftc 4
-        jumpnz 1
+    {"type":"cmd", "cmd":"loadv", "params":["j"]},
+    {"type":"cmd", "cmd":"mulc", "params":[4]},
+    {"type":"cmd", "cmd":"addv", "params":["p"]},
+    {"type":"cmd", "cmd":"storev", "params":["p"]},
         
-    section_3:
-        loadg1 s
-        andc 1
-        jumpz 1
-    
-        loadv j
-        mulc 4
-        addv p
-        storev p
-    
-        loadg4 p
-        storeg4 10058h
-    
-        loadv j
-        storeg1 i
-end
-
+    {"type":"cmd", "cmd":"loadg4", "params":["p"]},
+    {"type":"cmd", "cmd":"storeg4", "params":[65624]},
+        
+    {"type":"cmd", "cmd":"loadv", "params":["j"]},
+    {"type":"cmd", "cmd":"storeg1", "params":["i"]},
+    {"type":"cmd", "cmd":"eop", "params":[]}
+]
