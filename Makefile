@@ -1,3 +1,15 @@
+BINARIES=lex_lyapas_im0
+TEMP_FILES=lex_lyapas_im0.c
+
+all: $(BINARIES)
+
+lex_lyapas_im0: lex_lyapas_im0.c
+	gcc -o $@ $< -lfl
+
+lex_lyapas_im0.c: lex_lyapas_im0.l
+	flex -o $@ $<
+
+
 EXAMPLES_DIR=examples
 AUX_DIR=aux
 
@@ -25,3 +37,7 @@ $(TEST_EXAMPLES_IM1): test-ex%-im1: $(EXAMPLES_DIR)/ex%.im1 $(AUX_DIR)/im1.schem
 
 $(TEST_EXAMPLES_IM2): test-ex%-im2: $(EXAMPLES_DIR)/ex%.im2 $(AUX_DIR)/im2.schema.json
 	python -m jsonschema -i $< $(AUX_DIR)/im2.schema.json
+
+
+clean:
+	rm -f $(BINARIES) $(TEMP_FILES)
