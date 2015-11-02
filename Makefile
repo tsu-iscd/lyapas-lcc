@@ -1,4 +1,4 @@
-BINARIES=lyapas_im0 im0_im1
+BINARIES=lyapas_im0 im0_im1 im1_im1_ast im1_im2
 TEMP_FILES=lyapas_im0.c im0_im1.c
 
 all: $(BINARIES)
@@ -14,6 +14,12 @@ im0_im1: im0_im1.c
 
 im0_im1.c: im0_im1.y
 	bison -o $@ $<
+
+im1_im1_ast: im1_im1_ast.cpp
+	g++ -o $@ $<
+
+im1_im2: im1_im2.cpp
+	g++ -o $@ $<
 
 
 EXAMPLES_DIR=examples
