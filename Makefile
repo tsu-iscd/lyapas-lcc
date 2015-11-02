@@ -1,5 +1,5 @@
-BINARIES=lex_lyapas_im0
-TEMP_FILES=lex_lyapas_im0.c
+BINARIES=lex_lyapas_im0 synt_im0_im1
+TEMP_FILES=lex_lyapas_im0.c synt_im0_im1.c
 
 all: $(BINARIES)
 
@@ -8,6 +8,12 @@ lex_lyapas_im0: lex_lyapas_im0.c
 
 lex_lyapas_im0.c: lex_lyapas_im0.l
 	flex -o $@ $<
+
+synt_im0_im1: synt_im0_im1.c
+	gcc -o $@ $<
+
+synt_im0_im1.c: synt_im0_im1.y
+	bison -o $@ $<
 
 
 EXAMPLES_DIR=examples
