@@ -1,18 +1,18 @@
-BINARIES=lex_lyapas_im0 synt_im0_im1
-TEMP_FILES=lex_lyapas_im0.c synt_im0_im1.c
+BINARIES=lyapas_im0 im0_im1
+TEMP_FILES=lyapas_im0.c im0_im1.c
 
 all: $(BINARIES)
 
-lex_lyapas_im0: lex_lyapas_im0.c
+lyapas_im0: lyapas_im0.c
 	gcc -o $@ $< -lfl
 
-lex_lyapas_im0.c: lex_lyapas_im0.l
+lyapas_im0.c: lyapas_im0.l
 	flex -o $@ $<
 
-synt_im0_im1: synt_im0_im1.c
+im0_im1: im0_im1.c
 	gcc -o $@ $<
 
-synt_im0_im1.c: synt_im0_im1.y
+im0_im1.c: im0_im1.y
 	bison -o $@ $<
 
 
