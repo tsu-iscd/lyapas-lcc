@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-    cout << "Hello World!" << endl;
+    cout << "Hello, World!" << endl;
     Json::Value value;
     return 0;
 }
