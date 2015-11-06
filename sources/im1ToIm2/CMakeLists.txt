@@ -5,5 +5,5 @@ include_directories(libraries/jsoncpp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp libraries/jsoncpp/jsoncpp.cpp source/CompositeCmd/ICmd.cpp source/CompositeCmd/ICmd.h source/TreeParser/IParser.cpp source/TreeParser/IParser.h)
+set(SOURCE_FILES main.cpp libraries/jsoncpp/jsoncpp.cpp source/CompositeCmd/ICmd.cpp source/CompositeCmd/ICmd.h source/TreeParser/IParser.cpp source/TreeParser/IParser.h source/CompositeCmd/LeafCmd.cpp source/CompositeCmd/LeafCmd.h source/CompositeCmd/CompositeCmd.cpp source/CompositeCmd/CompositeCmd.h source/CompositeCmd/Compisities/ProcessCmd.cpp source/CompositeCmd/Compisities/ProcessCmd.h source/CompositeCmd/Compisities/StabCompositeCmd.cpp source/CompositeCmd/Compisities/StabCompositeCmd.h source/CompositeCmd/Leafs/StabLeafCmd.cpp source/CompositeCmd/Leafs/StabLeafCmd.h)
 add_executable(im1ToIm2 ${SOURCE_FILES})

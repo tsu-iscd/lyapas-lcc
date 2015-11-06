@@ -3,3 +3,11 @@
 //
 
 #include "ICmd.h"
+
+ICmd::ICmd(Json::Value json) : _cmdJson(json) {}
+
+std::string ICmd::asString()
+{
+    return _cmdJson[0].asString();
+    //throw std::runtime_error("ICmd: can't use asString(), please override this function");
+}
