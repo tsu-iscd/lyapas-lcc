@@ -1,62 +1,17 @@
 [{"type":"proc","name":"scheduler", "args":{"in":[],"out":[]}},
     [{"type":"preface"},
-        [{"type":"op","name":"load"}, {"type":"g4cx","idx":65540}],
-        [{"type":"op","name":"store"}, {"type":"var","name":"s"}],
+        [{"type":"op","name":"load"}, 
+            [{"type":"g4cx","idx":65540}]
+        ],
+        [{"type":"op","name":"store"},
+            [{"type":"var","name":"s"}]
+        ],
 
-        [{"type":"op","name":"load"}, {"type":"g4cx","idx":"s"}],
-        [{"type":"op","name":"store"}, {"type":"var","name":"p"}],
-
-        [{"type":"op","name":"load"}],        [{"type":"var","name":"s"}],
-        [{"type":"op","name":"add"}],        [{"type":"const","value":4}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"n"}],
-        [{"type":"op","name":"add"}],        [{"type":"const","value":1}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"i"}],
-        [{"type":"op","name":"add"}],        [{"type":"const","value":1}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"a"}],
-        [{"type":"op","name":"add"}],        [{"type":"const","value":1}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"c"}],
-
-        [{"type":"op","name":"load"}],        [{"type":"g1cx","idx":"i"}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"j"}],
-        [{"type":"op","name":"mul"}],        [{"type":"const","value":4}],
-        [{"type":"op","name":"add"}],        [{"type":"var","name":"p"}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"q"}],
-
-        [{"type":"op","name":"load"}],        [{"type":"g4cx","idx":65624}],
-        [{"type":"op","name":"store"}],        [{"type":"g4cx","idx":"q"}]
-    ],
-    [{"type":"par","number":1},
-        [{"type":"op","name":"inc"}],        [{"type":"var","name":"j"}],
-        [{"type":"op","name":"xor"}],        [{"type":"g1cx","idx":"n"}],
-        [{"type":"op","name":"nonzero_jump"}],      [{"type":"const","value":2}],
-        [{"type":"op","name":"zero"}],        [{"type":"var","name":"j"}]
-    ],
-    [{"type":"par","number":2},
-        [{"type":"op","name":"load"}],        [{"type":"var","name":"c"}],
-        [{"type":"op","name":"add"}],        [{"type":"var","name":"j"}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"s"}],
-
-        [{"type":"op","name":"load"}],        [{"type":"g1cx","idx":"a"}],
-        [{"type":"op","name":"zero_jump"}],        [{"type":"const","value":3}],
-
-        [{"type":"op","name":"load"}],        [{"type":"g1cx","idx":"s"}],
-        [{"type":"op","name":"right_shift"}],        [{"type":"const","value":4}],
-        [{"type":"op","name":"nonzero_jump"}],        [{"type":"const","value":1}]
-    ],
-    [{"type":"par","number":3},
-        [{"type":"op","name":"load"}],        [{"type":"g1cx","idx":"s"}],
-        [{"type":"op","name":"and"}],        [{"type":"const","value":1}],
-        [{"type":"op","name":"zero_jump"}],        [{"type":"const","value":1}],
-
-        [{"type":"op","name":"load"}],        [{"type":"var","name":"j"}],
-        [{"type":"op","name":"mul"}],        [{"type":"const","value":4}],
-        [{"type":"op","name":"add"}],        [{"type":"var","name":"p"}],
-        [{"type":"op","name":"store"}],        [{"type":"var","name":"p"}],
-
-        [{"type":"op","name":"load"}],        [{"type":"g4cx","idx":"p"}],
-        [{"type":"op","name":"store"}],        [{"type":"g4cx","idx":65624}],
-
-        [{"type":"op","name":"load"}],        [{"type":"var","name":"j"}],
-        [{"type":"op","name":"store"}],        [{"type":"g1cx","idx":"i"}]
+        [{"type":"op","name":"load"},
+            [{"type":"g4cx","idx":"s"}]
+        ],
+        [{"type":"op","name":"store"},
+            [{"type":"var","name":"p"}]
+        ]
     ]
 ]

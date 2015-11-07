@@ -2,6 +2,8 @@
 #include <fstream>
 #include "json/json.h"
 #include "source/CompositeCmd/Compisities/ProcessCmd.h"
+#include "source/TreeParser/IParser.h"
+#include "source/TreeParser/TreeParser.h"
 
 using namespace std;
 
@@ -69,7 +71,15 @@ int main(int argc, char* argv[])
         ifstream jsonFile;
         readFile(pathToFile, jsonFile);
         Json::Value json = tryParseJson(jsonFile);
-        tryPrintCmds(json);
+
+        CmdFactory factory;
+        TreeParser treeParser(factory);
+
+        auto res = treeParser.parseTree(json);
+        cout << res->asString() << endl;
+
+        //Старый способ вывода
+        //tryPrintCmds(json);
     }
 
     return 0;

@@ -6,8 +6,11 @@
 #define IM1TOIM2_IPARSER_H
 
 
-class IParser {
+#include "CmdFactory.h"
+#include "../CompositeCmd/CompositeCmd.h"
 
+class IParser {
+    virtual CompositeCmd::SPtrComposite parseTree(Json::Value& jsonTree, CmdFactory cmdFactory) = 0;
 };
 
 
