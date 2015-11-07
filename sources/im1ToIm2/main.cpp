@@ -5,27 +5,72 @@
 
 using namespace std;
 
-int readAndBuildTest()
+//***TEST PARSE: Рекрсивный парсер дерева. которое затем выводится в консоль
+// В филнальной версии парсер будет реализован в отдельном классе и для каждого узла дерева
+// будет создавать нужную реализацию ICmd.
+// ***/
+void parse(CompositeCmd::SPtrComposite cmd, Json::Value root)
 {
-    Json::Value root;
-    Json::Reader reader;
-
-    std::ifstream file("/Users/karmiclabs/work/gits/lcc/sources/im1ToIm2/ex3.im1o", std::ifstream::binary);
-    bool parsingSuccessful = reader.parse(file, root);
-
-    if(!parsingSuccessful)
+    for(int i = 1; i < root.size(); i++)
     {
-        cout << reader.getFormattedErrorMessages();
-        return 1;
+        CompositeCmd::SPtrComposite newCmd(new CompositeCmd(root[i]));
+        cmd->add(newCmd);
+        parse(newCmd, root[i]);
     }
-
-    ProcessCmd processCmd(root);
-    cout << "Result: " << processCmd.asString();
-
-    return 0;
 }
 
-int main() {
-    readAndBuildTest();
+void readFile(string pathToFile, ifstream& file)
+{
+    file.open(pathToFile, std::ifstream::binary);
+}
+
+Json::Value tryParseJson(ifstream &file)
+{
+    Json::Value json;
+    Json::Reader reader;
+
+    bool parsingSuccessful = reader.parse(file, json);
+    if(!parsingSuccessful)
+    {
+        cout << "Json Parse Error: " << endl;
+        cout << reader.getFormattedErrorMessages() << endl;
+    }
+
+    return json;
+}
+
+void printCmds(Json::Value root)
+{
+    CompositeCmd::SPtrComposite rootCmd(new ProcessCmd(root));
+    parse(rootCmd, root);
+    cout << "Result: " << rootCmd->asString();
+}
+
+void tryPrintCmds(Json::Value json)
+{
+    if(!json.isNull())
+    {
+        printCmds(json);
+    }
+}
+//*** END TEST PARSE ***/
+
+int main(int argc, char* argv[])
+{
+    if(argc < 2)
+    {
+        cout << "Usage: \"./programm path-to-file\" " << endl;
+        return 1;
+    }
+    else
+    {
+        string pathToFile(argv[1]);
+
+        ifstream jsonFile;
+        readFile(pathToFile, jsonFile);
+        Json::Value json = tryParseJson(jsonFile);
+        tryPrintCmds(json);
+    }
+
     return 0;
 }

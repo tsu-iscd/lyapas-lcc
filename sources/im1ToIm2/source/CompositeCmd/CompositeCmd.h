@@ -10,6 +10,8 @@
 class CompositeCmd : public ICmd {
 
 public:
+    typedef std::shared_ptr<CompositeCmd> SPtrComposite;
+
     CompositeCmd(Json::Value json);
     virtual void add(const SPtr&);
     virtual void remove(const SPtr&);

@@ -20,6 +20,7 @@ public:
     typedef std::shared_ptr<ICmd> SPtr;
 
     ICmd(Json::Value json);
+
     virtual std::string asString();
 };
 
