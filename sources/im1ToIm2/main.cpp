@@ -9,13 +9,13 @@ using namespace std;
 // В филнальной версии парсер будет реализован в отдельном классе и для каждого узла дерева
 // будет создавать нужную реализацию ICmd.
 // ***/
-void parse(CompositeCmd::SPtrComposite cmd, Json::Value root)
+void parseTree(CompositeCmd::SPtrComposite cmd, Json::Value root)
 {
     for(int i = 1; i < root.size(); i++)
     {
         CompositeCmd::SPtrComposite newCmd(new CompositeCmd(root[i]));
         cmd->add(newCmd);
-        parse(newCmd, root[i]);
+        parseTree(newCmd, root[i]);
     }
 }
 
@@ -42,7 +42,7 @@ Json::Value tryParseJson(ifstream &file)
 void printCmds(Json::Value root)
 {
     CompositeCmd::SPtrComposite rootCmd(new ProcessCmd(root));
-    parse(rootCmd, root);
+    parseTree(rootCmd, root);
     cout << "Result: " << rootCmd->asString();
 }
 
