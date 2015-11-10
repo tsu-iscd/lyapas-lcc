@@ -10,7 +10,8 @@
 #include "../CompositeCmd/CompositeCmd.h"
 
 class IParser {
-    virtual CompositeCmd::SPtrComposite parseTree(Json::Value& jsonTree, CmdFactory cmdFactory) = 0;
+public:
+    virtual CompositeCmd::SPtrComposite parseTree(Json::Value& jsonTree) = 0;
 };
 
 

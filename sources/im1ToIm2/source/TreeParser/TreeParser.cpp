@@ -15,12 +15,12 @@ CompositeCmd::SPtrComposite TreeParser::parseTree(Json::Value& jsonTree)
     std::string type = jsonObject["type"].asString();
 
     CompositeCmd::SPtrComposite rootCompositeCmd = _cmdFactory.createCompositeCmd(type, jsonTree);
-    parseTree(jsonTree, rootCompositeCmd);
+    parseTreeAndAddToCmd(jsonTree, rootCompositeCmd);
 
     return  rootCompositeCmd;
 }
 
-void TreeParser::parseTree(Json::Value& jsonTree, CompositeCmd::SPtrComposite cmd)
+void TreeParser::parseTreeAndAddToCmd(Json::Value &jsonTree, CompositeCmd::SPtrComposite cmd)
 {
     for(int i = 1; i < jsonTree.size(); i++)
     {
@@ -31,7 +31,7 @@ void TreeParser::parseTree(Json::Value& jsonTree, CompositeCmd::SPtrComposite cm
         if(childCompositionCmd != NULL)
         {
             cmd->add(childCompositionCmd);
-            parseTree(jsonObject, childCompositionCmd);
+            parseTreeAndAddToCmd(jsonObject, childCompositionCmd);
             continue;
         }
 
