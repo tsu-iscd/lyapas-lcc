@@ -125,55 +125,31 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 
 %%
     /*переменная*/
-{VAR}               { PrintJsonWithValueString(ID, yytext); }
+{VAR}           { PrintJsonWithValueString(ID, yytext); }
     /*символьный комплекс*/
-{SYM_COMPLEX}       {
-                    PrintJsonWithValueNull("sym_comp");
-                    PrintJsonWithValueInt(INT, atoi(yytext + 1));
-                }
+"F"             { PrintJsonWithValueNull("sym_comp"); }
     /*логический комплекс*/
-{LOG_COMPLEX}       {
-                    PrintJsonWithValueNull("log_comp");
-                    PrintJsonWithValueInt(INT, atoi(yytext + 1));
-                }
+"L"             { PrintJsonWithValueNull("log_comp"); }
+    /*глобальный комплекс*/
+"K"             { PrintJsonWithValueNull("glob_comp"); }
     /*ёмкость комплекса*/
-"S"{DCONST}       {
-                    PrintJsonWithValueNull("cap");
-                    PrintJsonWithValueInt(INT, atoi(yytext + 1));
-                }
+"S"             { PrintJsonWithValueNull("cap"); }
     /*мощность комплекса*/
-"Q"{DCONST}       {
-                    PrintJsonWithValueNull("card");
-                    PrintJsonWithValueInt(INT, atoi(yytext + 1));
-                }
+"Q"             { PrintJsonWithValueNull("card"); }
     /*десятичная константа*/
 {DCONST}        { PrintJsonWithValueInt(INT, atoi(yytext)); }
     /*шестнадцатиричная константа*/
 {HCONST}        { PrintJsonWithValueHex(INT, yytext); }
 
     /*символьная константа*/
-{SCONST}   { PrintJsonWithValueString("sconst", yytext); }
+{SCONST}        { PrintJsonWithValueString("sconst", yytext); }
     /*Установить 1 в i-ую позицию*/
-"I"{DCONST}       {   
-                     PrintJsonWithValueNull("setBit");
-                     PrintJsonWithValueInt(INT, atoi(yytext + 1));
-                }
-"I"{VAR}          {
-                    PrintJsonWithValueNull("setBit");
-                    PrintJsonWithValueString(ID, yytext + 1);
-                }
+"I"             { PrintJsonWithValueNull("setBit");}
     /*особая переменная*/
-"Z"              { PrintJsonWithValueNull("spec_var"); }
+"Z"             { PrintJsonWithValueNull("spec_var"); }
 
     /*Конец функции*/
 "**"            { PrintJsonWithValueNull("fret"); }
-    /*Вызов функции*/
-\*[a-zA-Z_][a-zA-Z0-9_]*\(      {
-                                    PrintJsonWithValueNull("fcall");
-                                    char *str = strndup((yytext + 1),strlen(yytext) - 1);
-                                    PrintJsonWithValueString(ID, str);
-                                    PrintJsonWithValueNull("lpar");                        
-                                }
     /*Имя функции*/
 [a-zA-Z_][a-zA-Z0-9_]*\(        {
                                     char *str = strndup(yytext,strlen(yytext) - 1);
@@ -191,8 +167,6 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 "-"              { PrintJsonWithValueNull("sub"); }
     /*вес булевого вектора*/
 "%"              { PrintJsonWithValueNull("weight"); }
-    /*умножение по mod 2^32(в Z переполнение)*/
-"*"              { PrintJsonWithValueNull("mul"); }
     /*остаток от деления(в Z частное)*/
 ";"              { PrintJsonWithValueNull("mod"); }
     /*дизъюнкция*/
@@ -220,6 +194,8 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
     /*присвоить тао значение с выхода псевдослучайного генератора
       или  спец. символ в операции перечисления единиц */
 "X"              { PrintJsonWithValueNull("get_rand"); }
+    /*вызов функции или умножение по mod 2^32(в Z переполнение)*/
+"*"              { PrintJsonWithValueNull("star"); }
 
     /*********************************/
 
