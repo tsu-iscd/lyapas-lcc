@@ -31,3 +31,18 @@ std::string CompositeCmd::asString()
 
     return result;
 }
+
+Json::Value CompositeCmd::toJson()
+{
+    Json::Value result;
+    result.clear();
+
+    result.append(ICmd::toJson());
+
+    for(SPtr& child : _clidren)
+    {
+        result.append(child->toJson());
+    }
+
+    return result;
+}

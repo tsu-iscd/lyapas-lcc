@@ -1,12 +1,12 @@
 //
-// Created by Safonov Vadim on 11/6/15.
+// Created by Safonov Vadim on 11/20/15.
 //
 
-#include "ProcessCmd.h"
+#include "ParagraphCmd.h"
 
-ProcessCmd::ProcessCmd(Json::Value processJson) : CompositeCmd(processJson) {}
+ParagraphCmd::ParagraphCmd(Json::Value processJson) : CompositeCmd(processJson) {}
 
-Json::Value ProcessCmd::toJson()
+Json::Value ParagraphCmd::toJson()
 {
     Json::Value result;
     result.clear();

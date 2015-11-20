@@ -6,6 +6,8 @@
 #include "../CompositeCmd/Compisities/ProcessCmd.h"
 #include "../CompositeCmd/Compisities/StabCompositeCmd.h"
 #include "../CompositeCmd/Leafs/StabLeafCmd.h"
+#include "../CompositeCmd/Compisities/ParagraphCmd.h"
+#include "../CompositeCmd/Compisities/OperationCmd.h"
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json) {
 
@@ -14,6 +16,18 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
         return CompositeCmd::SPtrComposite(new ProcessCmd(json));
     }
     else if("preface" == type)
+    {
+        return CompositeCmd::SPtrComposite(new ParagraphCmd(json));
+    }
+    else if("par" == type)
+    {
+        return CompositeCmd::SPtrComposite(new ParagraphCmd(json));
+    }
+    else if("op" == type)
+    {
+        return CompositeCmd::SPtrComposite(new OperationCmd(json));
+    }
+    else if("complex" == type)
     {
         return CompositeCmd::SPtrComposite(new StabCompositeCmd(json));
     }

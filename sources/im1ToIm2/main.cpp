@@ -76,7 +76,16 @@ int main(int argc, char* argv[])
         TreeParser treeParser(factory);
 
         auto res = treeParser.parseTree(json);
-        cout << res->asString() << endl;
+
+        bool printAsString = false;
+        if(printAsString)
+        {
+            cout << res->asString() << endl;
+        }
+        else
+        {
+            cout << res->toJson().toStyledString() << endl;
+        }
 
         //Старый способ вывода
         //tryPrintCmds(json);

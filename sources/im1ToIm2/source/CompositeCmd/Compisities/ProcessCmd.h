@@ -11,6 +11,8 @@
 class ProcessCmd : public CompositeCmd{
 public:
     ProcessCmd(Json::Value processJson);
+
+    virtual Json::Value toJson() override;
 };
 
 

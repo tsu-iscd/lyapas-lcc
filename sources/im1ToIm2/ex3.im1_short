@@ -1,0 +1,17 @@
+[{"type":"proc","name":"scheduler", "args":{"in":[],"out":[]}},
+    [{"type":"preface"},
+        [{"type":"op","name":"load"}, 
+            [{"type":"g4cx","idx":65540}]
+        ],
+        [{"type":"op","name":"store"},
+            [{"type":"var","name":"s"}]
+        ],
+
+        [{"type":"op","name":"load"},
+            [{"type":"g4cx","idx":"s"}]
+        ],
+        [{"type":"op","name":"store"},
+            [{"type":"var","name":"p"}]
+        ]
+    ]
+]

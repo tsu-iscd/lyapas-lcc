@@ -15,7 +15,8 @@ public:
     CompositeCmd(Json::Value json);
     virtual void add(const SPtr&);
     virtual void remove(const SPtr&);
-    std::string asString();
+    virtual std::string asString();
+    virtual Json::Value toJson();
 
 protected:
     std::list<SPtr> _clidren;

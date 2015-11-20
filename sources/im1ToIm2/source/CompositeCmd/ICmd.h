@@ -22,6 +22,7 @@ public:
     ICmd(Json::Value json);
 
     virtual std::string asString();
+    virtual Json::Value toJson();
 
 };
 
