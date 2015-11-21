@@ -2,6 +2,7 @@
 // Created by Safonov Vadim on 11/20/15.
 //
 
+#include <iostream>
 #include "ParagraphCmd.h"
 
 ParagraphCmd::ParagraphCmd(Json::Value processJson) : CompositeCmd(processJson) {}
@@ -13,11 +14,8 @@ Json::Value ParagraphCmd::toJson()
 
     for(SPtr& child : _clidren)
     {
-        auto paragraph = child->toJson();
-        for(auto cmd : paragraph)
-        {
-            result.append(cmd);
-        }
+        auto operation = child->toJson();
+        result.append(operation);
     }
 
     return result;

@@ -5,3 +5,14 @@
 #include "StabLeafCmd.h"
 
 StabLeafCmd::StabLeafCmd(Json::Value json) : LeafCmd(json) { }
+
+Json::Value StabLeafCmd::toJson()
+{
+    Json::Value result;
+    result.clear();
+
+    result["type"] = "!!stab!!";
+    result["args"] = "!!stab!!";
+
+    return result;
+}

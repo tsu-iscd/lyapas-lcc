@@ -8,9 +8,11 @@
 #include "../CompositeCmd/Leafs/StabLeafCmd.h"
 #include "../CompositeCmd/Compisities/ParagraphCmd.h"
 #include "../CompositeCmd/Compisities/OperationCmd.h"
+#include "../CompositeCmd/Leafs/VariableCmd.h"
+#include "../CompositeCmd/Leafs/ConstantCmd.h"
 
-CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json) {
-
+CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
+{
     if("proc" == type)
     {
         return CompositeCmd::SPtrComposite(new ProcessCmd(json));
@@ -29,7 +31,7 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
     }
     else if("complex" == type)
     {
-        return CompositeCmd::SPtrComposite(new StabCompositeCmd(json));
+        throw std::runtime_error("CmdFactory: CompositeCmd with name \"complex\" isn't implemented");
     }
     else
     {
@@ -37,7 +39,19 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
     }
 }
 
-ICmd::SPtr CmdFactory::createCmd(std::string type, Json::Value json) {
-    return ICmd::SPtr(new StabLeafCmd(json));
+ICmd::SPtr CmdFactory::createCmd(std::string type, Json::Value json)
+{
+    if("var" == type)
+    {
+        return VariableCmd::SPtr(new VariableCmd(json));
+    }
+    else if("const" == type)
+    {
+        return ConstantCmd::SPtr(new ConstantCmd(json));
+    }
+    else
+    {
+        return ICmd::SPtr(new StabLeafCmd(json));
+    }
 }
 

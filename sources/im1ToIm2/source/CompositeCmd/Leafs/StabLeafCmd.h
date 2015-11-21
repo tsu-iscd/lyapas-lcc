@@ -11,6 +11,8 @@
 class StabLeafCmd : public LeafCmd {
 public:
     StabLeafCmd(Json::Value json);
+
+    virtual Json::Value toJson();
 };
 
 

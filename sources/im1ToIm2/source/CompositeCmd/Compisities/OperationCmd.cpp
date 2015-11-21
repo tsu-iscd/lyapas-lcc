@@ -15,13 +15,11 @@ Json::Value OperationCmd::toJson()
 
     result["type"] = "cmd";
 
-    /*
     auto operationName = _cmdJson["name"];
     auto child = _clidren.back()->toJson();
     result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
 
     result["args"] = child["args"];
-    */
 
     return result;
 }
