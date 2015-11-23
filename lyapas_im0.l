@@ -11,7 +11,7 @@
 
 # define INT "int"
 # define ID "id"
-
+# define COMPLEX "complex"
 int first_time = 1;
 
 void PutComma() 
@@ -92,10 +92,10 @@ void PrintJsonWithValueNull(const char * typeName)
     PutComma();
     printf("\n  {\"type\": \"%s\", \"value\": null}", typeName);
 }
-void PrintJsonWithValueString(const char *typeName, const char* yytext)
+void PrintJsonWithValueString(const char *typeName, const char* value)
 {
     PutComma();
-    printf("\n  {\"type\": \"%s\", \"value\": \"%s\"}", typeName, yytext);
+    printf("\n  {\"type\": \"%s\", \"value\": \"%s\"}", typeName, value);
 }
 void PrintJsonWithValueInt(const char *typeName, int yytext)
 {
@@ -127,11 +127,11 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
     /*переменная*/
 {VAR}           { PrintJsonWithValueString(ID, yytext); }
     /*символьный комплекс*/
-"F"             { PrintJsonWithValueNull("sym_comp"); }
+"F"             { PrintJsonWithValueString(COMPLEX, "symbol"); }
     /*логический комплекс*/
-"L"             { PrintJsonWithValueNull("log_comp"); }
+"L"             { PrintJsonWithValueString(COMPLEX, "logic"); }
     /*глобальный комплекс*/
-"K"             { PrintJsonWithValueNull("glob_comp"); }
+"K"             { PrintJsonWithValueString(COMPLEX, "global"); }
     /*ёмкость комплекса*/
 "S"             { PrintJsonWithValueNull("cap"); }
     /*мощность комплекса*/
