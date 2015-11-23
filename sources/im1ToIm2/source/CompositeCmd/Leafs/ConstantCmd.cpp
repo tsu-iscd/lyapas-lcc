@@ -12,7 +12,7 @@ Json::Value ConstantCmd::toJson()
     result.clear();
 
     result["type"] = "c";
-    result["args"] = _cmdJson["name"];
+    result["args"] = _cmdJson["value"];
 
     return result;
 }

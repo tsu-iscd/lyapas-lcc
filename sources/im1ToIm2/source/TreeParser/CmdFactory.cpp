@@ -10,6 +10,7 @@
 #include "../CompositeCmd/Compisities/OperationCmd.h"
 #include "../CompositeCmd/Leafs/VariableCmd.h"
 #include "../CompositeCmd/Leafs/ConstantCmd.h"
+#include "../CompositeCmd/Compisities/ComplexCmd.h"
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
 {
@@ -31,7 +32,7 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
     }
     else if("complex" == type)
     {
-        throw std::runtime_error("CmdFactory: CompositeCmd with name \"complex\" isn't implemented");
+        return CompositeCmd::SPtrComposite(new ComplexCmd(json));
     }
     else
     {
