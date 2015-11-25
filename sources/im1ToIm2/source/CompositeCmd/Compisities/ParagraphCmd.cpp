@@ -12,6 +12,12 @@ Json::Value ParagraphCmd::toJson()
     Json::Value result;
     result.clear();
 
+    Json::Value paragraphJson;
+    paragraphJson["type"] = "label";
+    paragraphJson["number"] = _cmdJson["number"];
+
+    result.append(paragraphJson);
+
     for(SPtr& child : _clidren)
     {
         auto operation = child->toJson();

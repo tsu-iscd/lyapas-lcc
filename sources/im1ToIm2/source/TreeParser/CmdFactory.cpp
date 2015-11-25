@@ -11,6 +11,7 @@
 #include "../CompositeCmd/Leafs/VariableCmd.h"
 #include "../CompositeCmd/Leafs/ConstantCmd.h"
 #include "../CompositeCmd/Compisities/ComplexCmd.h"
+#include "../CompositeCmd/Compisities/PrefaceCmd.h"
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
 {
@@ -20,7 +21,7 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
     }
     else if("preface" == type)
     {
-        return CompositeCmd::SPtrComposite(new ParagraphCmd(json));
+        return CompositeCmd::SPtrComposite(new PrefaceCmd(json));
     }
     else if("par" == type)
     {
