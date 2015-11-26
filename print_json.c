@@ -5,6 +5,7 @@
 
 void print_json(json_t *root) {
     print_json_aux(root, 0);
+    printf("\n");
 }
 
 void print_json_aux(json_t *element, int indent) {
@@ -51,7 +52,6 @@ void print_json_object(json_t *element, int indent) {
     const char *key;
     json_t *value;
 
-    printf("\n");
     print_json_indent(indent);
     printf("{");
     int first = 1;
@@ -61,6 +61,8 @@ void print_json_object(json_t *element, int indent) {
         else
             printf(", ");
         printf("\"%s\": ", key);
+        if (json_typeof(value) == JSON_OBJECT || json_typeof(value) == JSON_ARRAY)
+            printf("\n");
         print_json_aux(value, indent + 2);
         //if (json_typeof(value) == JSON_OBJECT || json_typeof(value) == JSON_ARRAY)
             //print_json_indent(indent);
@@ -74,12 +76,11 @@ void print_json_object(json_t *element, int indent) {
 void print_json_array(json_t *element, int indent) {
     size_t i;
     size_t size = json_array_size(element);
-    printf("\n");
     print_json_indent(indent);
-    printf("[");
+    printf("[\n");
     for (i = 0; i < size; i++) {
         if (i)
-            printf(",");
+            printf(",\n");
         print_json_aux(json_array_get(element, i), indent + 2);
     }
     printf("\n");

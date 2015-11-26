@@ -28,26 +28,17 @@ void yyerror(const char *);
 
 
 %define api.value.type {char *}
-%token ID
-%token LPAR
-%token RPAR
-%token LSBKT
-%token RSBKT
-%token SLASH
-%token CONST
-%token OP
-%token ZJUMP
-%token NZJUMP
-%token JUMP
-%token GCX
-%token PAR
-%token EOP
+%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID STRING SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC ADD SUB WEIGHT MOD DDIV OR AND XOR NUM LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM
 
 %%
 
 proc:
-    head code EOP {
+    head body FRET {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("proc"));
+
         $$ = json_array();
+        json_array_append($$, root);
         json_array_append($$, $1);
         json_array_append($$, $2);
         result = $$;
@@ -55,132 +46,487 @@ proc:
 ;
 
 head:
-    ID LPAR SLASH RPAR {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("proc"));
-        json_object_set($$, "name", $1);
-        json_t *j = json_object();
-        json_object_set(j, "in", json_array());
-        json_object_set(j, "out", json_array());
-        json_object_set($$, "args", j);
+    ID head_string {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("head"));
+        json_object_set(root, "name", $1);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
     }
 ;
 
-code:
-    preface paragraph {
-        $$ = $2;
-        json_array_insert($$, 0, $1);
-    }
-  | preface {
+head_string:
+    LPAR proc_args SLASH proc_args RPAR {
+        json_t *in_args = json_array();
+        json_t *in_args_root = json_object();
+        json_object_set(in_args_root, "type", json_string("in_args"));
+        json_array_append(in_args, in_args_root);
+        json_array_extend(in_args, $2);
+
+        json_t *out_args = json_array();
+        json_t *out_args_root = json_object();
+        json_object_set(out_args_root, "type", json_string("out_args"));
+        json_array_append(out_args, out_args_root);
+        json_array_extend(out_args, $4);
+
         $$ = json_array();
+        json_array_append($$, in_args);
+        json_array_append($$, out_args);
+    }
+    | LPAR proc_args SLASH RPAR {
+        json_t *in_args = json_array();
+        json_t *in_args_root = json_object();
+        json_object_set(in_args_root, "type", json_string("in_args"));
+        json_array_append(in_args, in_args_root);
+        json_array_extend(in_args, $2);
+
+        json_t *out_args = json_array();
+        json_t *out_args_root = json_object();
+        json_object_set(out_args_root, "type", json_string("out_args"));
+        json_array_append(out_args, out_args_root);
+
+        $$ = json_array();
+        json_array_append($$, in_args);
+        json_array_append($$, out_args);
+    }
+    | LPAR SLASH proc_args RPAR {
+        json_t *in_args = json_array();
+        json_t *in_args_root = json_object();
+        json_object_set(in_args_root, "type", json_string("in_args"));
+        json_array_append(in_args, in_args_root);
+
+        json_t *out_args = json_array();
+        json_t *out_args_root = json_object();
+        json_object_set(out_args_root, "type", json_string("out_args"));
+        json_array_append(out_args, out_args_root);
+        json_array_extend(out_args, $3);
+
+        $$ = json_array();
+        json_array_append($$, in_args);
+        json_array_append($$, out_args);
+    }
+    | LPAR SLASH RPAR {
+        json_t *in_args = json_array();
+        json_t *in_args_root = json_object();
+        json_object_set(in_args_root, "type", json_string("in_args"));
+        json_array_append(in_args, in_args_root);
+
+        json_t *out_args = json_array();
+        json_t *out_args_root = json_object();
+        json_object_set(out_args_root, "type", json_string("out_args"));
+        json_array_append(out_args, out_args_root);
+
+        $$ = json_array();
+        json_array_append($$, in_args);
+        json_array_append($$, out_args);
+    }
+;
+
+proc_args:
+    proc_arg COMMA proc_args {
+        $$ = json_array();   
         json_array_append($$, $1);
-  }
+        json_array_extend($$, $3);
+    }
+    | proc_arg {
+        $$ = json_array();   
+        json_array_append($$, $1);
+    }
+;
+
+proc_arg:
+    arg {
+        $$ = $1;
+    }
+    | comp {
+        $$ = $1;
+    }
+;
+
+body:
+    preface paragraphs {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("body"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $1);
+        json_array_append($$, $2);
+    }
+    | preface {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("body"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $1);
+    }
 ;
 
 preface:
     expressions {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("preface"));
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("preface"));
+
         $$ = json_array();
-        json_array_append($$, j);
+        json_array_append($$, root);
         json_array_append($$, $1);
     }
 ;
 
-paragraph:
-    PAR CONST expressions paragraph {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("par"));
-        json_object_set(j, "number", $2);
-        json_t *a = json_array();
-        json_array_append(a, j);
-        json_array_append(a, $3);
-        $$ = $4;
-        json_array_insert($$, 0, a);
-    }
-  | PAR CONST expressions {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("par"));
-        json_object_set(j, "number", $2);
-        json_t *a = json_array();
-        json_array_append(a, j);
-        json_array_append(a, $3);
+paragraphs:
+    paragraph paragraphs {
         $$ = json_array();
-        json_array_append($$, a);
-        result = $$;
+        json_array_append($$, $1);
+        json_array_extend($$, $2);
+    }
+    | paragraph {
+        $$ = json_array();
+        json_array_append($$, $1);
+    }
+
+paragraph:
+    PAR INT expressions {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("par"));
+        json_object_set(root, "number", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
     }
 ;
 
 expressions:
-    operation expressions {
-        $$ = $2;
-        json_array_insert($$, 0, $1);
-    }
-  | operation {
+    expression expressions {
         $$ = json_array();
         json_array_append($$, $1);
-  }
+        json_array_extend($$, $2);
+    }
+    | expression {
+        $$ = json_array();
+        json_array_append($$, $1);
+    }
 ;
 
-operation:  
-    OP arg {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("op"));
-        json_object_set(j, "name", $1);
+expression:  
+    ADD arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("add"));
+
         $$ = json_array();
-        json_array_append($$, j);
+        json_array_append($$, root);
         json_array_append($$, $2);
     }
-  | arg {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("op"));
-        json_object_set(j, "name", json_string("load"));
+    | SUB arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("sub"));
+
         $$ = json_array();
-        json_array_append($$, j);
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | INC arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("inc"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | DEC arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("dec"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | STAR arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("mul"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | SLASH arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("div"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | DDIV arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("ddiv"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | MOD arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("mod"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | AND arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("and"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | OR arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("or"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | XOR arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("xor"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | SET_MIN arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("set_min"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | SET_MAX arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("set_max"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | ASSIGN arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("store"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | WEIGHT arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("weight"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | TIME arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_time"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | L_ANG_BRACK arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("left_shift"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | R_ANG_BRACK arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("right_shift"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | JUMP INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("jump"));
+
+        json_t *arg_root = json_object();
+        json_object_set(arg_root, "type", json_string("const"));
+        json_object_set(arg_root, "value", $2);
+
+        json_t *arg = json_array();
+        json_array_append(arg, arg_root);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, arg);
+    }
+    | JUMPZ INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("jump_z"));
+
+        json_t *arg_root = json_object();
+        json_object_set(arg_root, "type", json_string("const"));
+        json_object_set(arg_root, "value", $2);
+
+        json_t *arg = json_array();
+        json_array_append(arg, arg_root);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, arg);
+    }
+    | JUMPNZ INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("jump_nz"));
+
+        json_t *arg_root = json_object();
+        json_object_set(arg_root, "type", json_string("const"));
+        json_object_set(arg_root, "value", $2);
+
+        json_t *arg = json_array();
+        json_array_append(arg, arg_root);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, arg);
+    }
+    | arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("load"));
+
+        $$ = json_array();
+        json_array_append($$, root);
         json_array_append($$, $1);
-  }
+    }
+    | STAR ID head_string {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("call"));
+        json_object_set(root, "name", $1);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
 ;
 
 arg:
-    CONST {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("const"));
-        json_object_set(j, "value", $1);
+    INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("const"));
+        json_object_set(root, "value", $1);
+
         $$ = json_array();
-        json_array_append($$, j);
+        json_array_append($$, root);
     }
-  | ID {
-        json_t *j = json_object();
-        json_object_set(j, "type", json_string("var"));
-        json_object_set(j, "name", $1);
+    | ID {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("var"));
+        json_object_set(root, "name", $1);
+
         $$ = json_array();
-        json_array_append($$, j);
+        json_array_append($$, root);
     }
-  | comp_el {
+    | comp_el {
         $$ = json_array();
         json_array_append($$, $1);
-  }
+    }
+;
+
+comp:
+    L_COMP INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("logic_complex"));
+        json_object_set(root, "number", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | S_COMP INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("symbol_complex"));
+        json_object_set(root, "number", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
 ;
 
 comp_el:
-    GCX ID                { 
+    G_COMP ID { 
         $$ = json_object();
-        json_object_set($$, "type", json_string("g1cx"));
+        json_object_set($$, "type", json_string("global_complex_1"));
         json_object_set($$, "idx", $2);
     }
-  | GCX CONST             {
+    | G_COMP INT {
         $$ = json_object();
-        json_object_set($$, "type", json_string("g1cx"));
+        json_object_set($$, "type", json_string("global_complex_1"));
         json_object_set($$, "idx", $2);
     }
-  | GCX LSBKT ID RSBKT    {
+    | G_COMP LBRACK ID RBRACK {
         $$ = json_object();
-        json_object_set($$, "type", json_string("g4cx"));
+        json_object_set($$, "type", json_string("global_complex_4"));
         json_object_set($$, "idx", $3);
     }
-  | GCX LSBKT CONST RSBKT {
+    | G_COMP LBRACK INT RBRACK {
         $$ = json_object();
-        json_object_set($$, "type", json_string("g4cx"));
+        json_object_set($$, "type", json_string("global_complex_4"));
+        json_object_set($$, "idx", $3);
+    }
+    | L_COMP INT DOT INT {
+        $$ = json_object();
+        json_object_set($$, "type", json_string("logic_complex"));
+        json_object_set($$, "number", $2);
+        json_object_set($$, "idx", $4);
+    }
+    | L_COMP INT ID {
+        $$ = json_object();
+        json_object_set($$, "type", json_string("logic_complex"));
+        json_object_set($$, "number", $2);
+        json_object_set($$, "idx", $3);
+    }
+    | S_COMP INT DOT INT {
+        $$ = json_object();
+        json_object_set($$, "type", json_string("symbol_complex"));
+        json_object_set($$, "number", $2);
+        json_object_set($$, "idx", $4);
+    }
+    | S_COMP INT ID {
+        $$ = json_object();
+        json_object_set($$, "type", json_string("symbol_complex"));
+        json_object_set($$, "number", $2);
         json_object_set($$, "idx", $3);
     }
 ;
@@ -213,33 +559,101 @@ int yylex() {
                 } else if (!strcmp(json_string_value(element_type), "rpar")) {
                     if (json_typeof(element_value) == JSON_NULL)
                         return RPAR;
-                } else if (!strcmp(json_string_value(element_type), "lsbkt")) {
+                } else if (!strcmp(json_string_value(element_type), "lbrack")) {
                     if (json_typeof(element_value) == JSON_NULL)
-                        return LSBKT;
-                } else if (!strcmp(json_string_value(element_type), "rsbkt")) {
+                        return LBRACK;
+                } else if (!strcmp(json_string_value(element_type), "rbrack")) {
                     if (json_typeof(element_value) == JSON_NULL)
-                        return RSBKT;
+                        return RBRACK;
                 } else if (!strcmp(json_string_value(element_type), "slash")) {
                     if (json_typeof(element_value) == JSON_NULL)
                         return SLASH;
-                } else if (!strcmp(json_string_value(element_type), "const")) {
+                } else if (!strcmp(json_string_value(element_type), "comma")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return COMMA;
+                } else if (!strcmp(json_string_value(element_type), "int")) {
                     if (json_typeof(element_value) == JSON_INTEGER)
-                        return CONST;
-                } else if (!strcmp(json_string_value(element_type), "operation")) {
-                    if (json_typeof(element_value) == JSON_STRING)
-                        return OP;
-                } else if (!strcmp(json_string_value(element_type), "jump")) {
-                    if (json_typeof(element_value) == JSON_STRING) 
-                        return JUMP;
-                } else if (!strcmp(json_string_value(element_type), "complex")) {
-                    if (json_typeof(element_value) == JSON_STRING) 
-                        return GCX;
-                } else if (!strcmp(json_string_value(element_type), "par")) {
+                        return INT;
+
+                } else if (!strcmp(json_string_value(element_type), "add")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return ADD;
+                } else if (!strcmp(json_string_value(element_type), "and")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return AND;
+                } else if (!strcmp(json_string_value(element_type), "assign")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return ASSIGN;
+                } else if (!strcmp(json_string_value(element_type), "asm")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return ASM;
+                } else if (!strcmp(json_string_value(element_type), "dec")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return DEC;
+                } else if (!strcmp(json_string_value(element_type), "dot")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return DOT;
+                } else if (!strcmp(json_string_value(element_type), "inc")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return INC;
+                } else if (!strcmp(json_string_value(element_type), "l_ang_brack")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return L_ANG_BRACK;
+                } else if (!strcmp(json_string_value(element_type), "r_ang_brack")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return R_ANG_BRACK;
+                } else if (!strcmp(json_string_value(element_type), "mod")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return MOD;
+                } else if (!strcmp(json_string_value(element_type), "or")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return OR;
+                } else if (!strcmp(json_string_value(element_type), "paragraph")) {
                     if (json_typeof(element_value) == JSON_NULL)
                         return PAR;
-                } else if (!strcmp(json_string_value(element_type), "eop")) {
+                } else if (!strcmp(json_string_value(element_type), "slash")) {
                     if (json_typeof(element_value) == JSON_NULL)
-                        return EOP;
+                        return SLASH;
+                } else if (!strcmp(json_string_value(element_type), "star")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return STAR;
+                } else if (!strcmp(json_string_value(element_type), "sub")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return SUB;
+                } else if (!strcmp(json_string_value(element_type), "weight")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return WEIGHT;
+                } else if (!strcmp(json_string_value(element_type), "xor")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return XOR;
+                } else if (!strcmp(json_string_value(element_type), "set_min")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return SET_MIN;
+                } else if (!strcmp(json_string_value(element_type), "set_max")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return SET_MAX;
+
+                } else if (!strcmp(json_string_value(element_type), "jmp")) {
+                    if (json_typeof(element_value) == JSON_NULL) 
+                        return JUMP;
+                } else if (!strcmp(json_string_value(element_type), "jz")) {
+                    if (json_typeof(element_value) == JSON_NULL) 
+                        return JUMPZ;
+                } else if (!strcmp(json_string_value(element_type), "jnz")) {
+                    if (json_typeof(element_value) == JSON_NULL) 
+                        return JUMPNZ;
+                } else if (!strcmp(json_string_value(element_type), "complex")) {
+                    if (json_typeof(element_value) == JSON_STRING) {
+                        if (!strcmp(json_string_value(element_value), "global"))
+                            return G_COMP;
+                        else if (!strcmp(json_string_value(element_value), "logic"))
+                            return L_COMP;
+                        else if (!strcmp(json_string_value(element_value), "symbol"))
+                            return S_COMP;
+                    }
+                } else if (!strcmp(json_string_value(element_type), "fret")) {
+                    if (json_typeof(element_value) == JSON_NULL)
+                        return FRET;
                 }
             }
         }
@@ -250,6 +664,9 @@ int yylex() {
 
 void yyerror(const char *msg) {
     fprintf(stderr, "err: %s\n", msg);
+    printf("program index: %d\n", program_index);
+    json_t *program_element = json_array_get(program, program_index);
+    print_json(program_element);
 }
 
 int main(int argc, char *argv[]) {
@@ -268,5 +685,6 @@ int main(int argc, char *argv[]) {
     int retcode;
     retcode = yyparse();
     print_json(result);
+    
     return retcode;
 }
