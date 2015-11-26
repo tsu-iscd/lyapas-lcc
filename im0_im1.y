@@ -434,11 +434,11 @@ expression:
     | STAR ID head_string {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("call"));
-        json_object_set(root, "name", $1);
+        json_object_set(root, "name", $2);
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $2);
+        json_array_append($$, $3);
     }
 ;
 
