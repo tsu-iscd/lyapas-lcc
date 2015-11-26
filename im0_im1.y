@@ -307,6 +307,8 @@ expression:
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("xor"));
 
+<<<<<<< HEAD
+=======
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $2);
@@ -316,10 +318,28 @@ expression:
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("set_min"));
 
+>>>>>>> 0e7c27094e0703f2e9b30a8541b45b10790b36f5
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $2);
     }
+<<<<<<< HEAD
+    | SET_MIN arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("set_min"));
+=======
+    | SET_MAX arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("set_max"));
+>>>>>>> 0e7c27094e0703f2e9b30a8541b45b10790b36f5
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+<<<<<<< HEAD
     | SET_MAX arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
@@ -329,6 +349,8 @@ expression:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
+=======
+>>>>>>> 0e7c27094e0703f2e9b30a8541b45b10790b36f5
     | ASSIGN arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
@@ -434,11 +456,19 @@ expression:
     | STAR ID head_string {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("call"));
+<<<<<<< HEAD
+        json_object_set(root, "name", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+=======
         json_object_set(root, "name", $1);
 
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $2);
+>>>>>>> 0e7c27094e0703f2e9b30a8541b45b10790b36f5
     }
 ;
 
