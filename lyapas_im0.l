@@ -234,12 +234,6 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 "∆"              { PrintJsonWithValueNull("inc"); }
     /*dec*/
 "∇"              { PrintJsonWithValueNull("dec"); }
-    /*сумма по mod 2^32(в Z переполнение)*/
-"+"              { PrintJsonWithValueNull("add"); }
-    /*вычитаение по mod 2^32*/
-"-"              { PrintJsonWithValueNull("sub"); }
-    /*вес булевого вектора*/
-"%"              { PrintJsonWithValueNull("weight"); }
     /*остаток от деления(в Z частное)*/
 ";"              { PrintJsonWithValueNull("mod"); }
     /*деление двойного числа*/
@@ -259,7 +253,7 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 
     /***** Многозначные символы  *****/
     /*угловые скобки: для разделения входных и выходные параметров;
-      для сдвигов, для консоли*/
+      для сдвигов, для консоли, для вставки и удаления элемента в комплексах*/
 "<"              { PrintJsonWithValueNull("l_ang_brack"); }   
 ">"              { PrintJsonWithValueNull("r_ang_brack"); }
     /*частное от деления(В Z остаток) или для консоли*/
@@ -270,6 +264,17 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
     /*вызов функции или умножение по mod 2^32(в Z переполнение)*/
 "*"              { PrintJsonWithValueNull("star"); }
 "↑"              { PrintJsonWithValueNull("up_arrow"); }
+    /*операции над комплексами*/
+    /*используется для копирования элементов комплекса*/
+"#"              { PrintJsonWithValueNull("copy"); }
+    /*используется для операций над комплексами*/
+"@"              {PrintJsonWithValueNull("at_sign"); }
+    /*сумма по mod 2^32(в Z переполнение) и создание комплекса*/
+"+"              { PrintJsonWithValueNull("plus"); }
+    /*вычитаение по mod 2^32 и уничтожение компекса*/
+"-"              { PrintJsonWithValueNull("minus"); }
+    /*вес булевого вектора и сокращение ёмкости комплекса*/
+"%"              { PrintJsonWithValueNull("percent"); }
 
     /*********************************/
 
