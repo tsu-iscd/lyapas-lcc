@@ -7,7 +7,7 @@
 # define INT "int"
 # define ID "id"
 # define COMPLEX "complex"
-typedef unsigned long long int uint64_t;
+typedef unsigned long long int uint64;
 int first_time = 1;
 
 void PutComma() 
@@ -21,12 +21,12 @@ void PutComma()
         first_time = 0;
     }
 }
-uint64_t BinToInt(const char *bin)
+uint64 BinToInt(const char *bin)
 {   
     int i = 0;
-    uint64_t answ = 0;
+    uint64 answ = 0;
     int digit = 0;
-    uint64_t pow2 = 0;
+    uint64 pow2 = 0;
     int len = strlen(bin);
     if(len > 1 && len <= 32 && bin[len - 1] == 'b')
     {
@@ -53,18 +53,18 @@ uint64_t BinToInt(const char *bin)
             return 0;
         }
         
-        pow2 = ((uint64_t)1 << (2 * (len - 1 - i)));
+        pow2 = ((uint64)1 << (2 * (len - 1 - i)));
         answ += (digit * pow2);
         i++;
     }
     return answ;
 }
-uint64_t OctToInt(const char *oct)
+uint64 OctToInt(const char *oct)
 {   
     int i = 0;
-    uint64_t answ = 0;
+    uint64 answ = 0;
     int digit = 0;
-    uint64_t pow8 = 0;
+    uint64 pow8 = 0;
     int len = strlen(oct);
     if(len > 1 && len <= 22 && oct[len - 1] == 'o')
     {
@@ -91,18 +91,18 @@ uint64_t OctToInt(const char *oct)
             return 0;
         }
         
-        pow8 = ((uint64_t)1 << (3 * (len - 1 - i)));
+        pow8 = ((uint64)1 << (3 * (len - 1 - i)));
         answ += (digit * pow8);
         i++;
     }
     return answ;
 }
-uint64_t HexToInt(const char *hex)
+uint64 HexToInt(const char *hex)
 {   
     int i = 0;
-    uint64_t answ = 0;
+    uint64 answ = 0;
     int digit = 0;
-    uint64_t pow16 = 0;
+    uint64 pow16 = 0;
     int len = strlen(hex);
 
     if(len > 1 && len <= 16 && hex[len - 1] == 'h')
@@ -134,7 +134,7 @@ uint64_t HexToInt(const char *hex)
             return 0;
         }
         
-        pow16 = ((uint64_t)1 << (4 * (len - 1 - i)));
+        pow16 = ((uint64)1 << (4 * (len - 1 - i)));
         answ += (digit * pow16);
         i++;
     }
