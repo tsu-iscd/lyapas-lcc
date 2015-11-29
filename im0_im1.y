@@ -28,7 +28,7 @@ void yyerror(const char *);
 
 
 %define api.value.type {char *}
-%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID STRING SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC PLUS MINUS WEIGHT MOD DDIV OR AND XOR NUM LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM
+%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID STRING SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC PLUS MINUS WEIGHT MOD DDIV OR AND XOR NUM LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM NOT
 
 %%
 
@@ -191,17 +191,25 @@ paragraph:
 
 expressions:
     expression expressions {
-        $$ = json_array();
-        json_array_append($$, $1);
+        $$ = $1;
         json_array_extend($$, $2);
     }
     | expression {
-        $$ = json_array();
-        json_array_append($$, $1);
+        $$ = $1;
     }
 ;
 
-expression:  
+expression:
+    operation {
+        $$ = json_array();
+        json_array_append($$, $1);
+    }
+    | jump_cond {
+        $$ = $1;
+    }
+;
+
+operation:  
     PLUS arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
@@ -414,9 +422,6 @@ expression:
         json_array_append($$, root);
         json_array_append($$, arg);
     }
-    | jump_cond {
-        $$ = $1;
-    }
 
     | arg {
         json_t *root = json_object();
@@ -449,154 +454,226 @@ expression:
 
 jump_cond:
     UP_ARROW LPAR arg EQ arg RPAR INT {
+        json_t *load_root = json_object();
+        json_object_set(load_root, "type", json_string("operation"));
+        json_object_set(load_root, "name", json_string("load"));
+
+        json_t *load = json_array();
+        json_array_append(load, load_root);
+        json_array_append(load, $3);
+
         json_t *cmp_root = json_object();
-        json_object_set(cmp_root, "type", json_string("eq"));
+        json_object_set(cmp_root, "type", json_string("operation"));
+        json_object_set(cmp_root, "name", json_string("compare"));
 
         json_t *cmp = json_array();
         json_array_append(cmp, cmp_root);
-        json_array_append(cmp, $3);
         json_array_append(cmp, $5);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("jump_cond"));
 
         json_t *dst_root = json_object();
         json_object_set(dst_root, "type", json_string("const"));
-        json_object_set(dst_root, "value", $6);
+        json_object_set(dst_root, "value", $7);
 
         json_t *dst = json_array();
         json_array_append(dst, dst_root);
 
+        json_t *jmp_root = json_object();
+        json_object_set(jmp_root, "type", json_string("operation"));
+        json_object_set(jmp_root, "name", json_string("jump_eq"));
+
+        json_t *jmp = json_array();
+        json_array_append(jmp, jmp_root);
+        json_array_append(jmp, dst);
+
         $$ = json_array();
-        json_array_append($$, root);
+        json_array_append($$, load);
         json_array_append($$, cmp);
-        json_array_append($$, dst);
+        json_array_append($$, jmp);
     }
     | UP_ARROW LPAR arg NEQ arg RPAR INT {
+        json_t *load_root = json_object();
+        json_object_set(load_root, "type", json_string("operation"));
+        json_object_set(load_root, "name", json_string("load"));
+
+        json_t *load = json_array();
+        json_array_append(load, load_root);
+        json_array_append(load, $3);
+
         json_t *cmp_root = json_object();
-        json_object_set(cmp_root, "type", json_string("neq"));
+        json_object_set(cmp_root, "type", json_string("operation"));
+        json_object_set(cmp_root, "name", json_string("compare"));
 
         json_t *cmp = json_array();
         json_array_append(cmp, cmp_root);
-        json_array_append(cmp, $3);
         json_array_append(cmp, $5);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("jump_cond"));
 
         json_t *dst_root = json_object();
         json_object_set(dst_root, "type", json_string("const"));
-        json_object_set(dst_root, "value", $6);
+        json_object_set(dst_root, "value", $7);
 
         json_t *dst = json_array();
         json_array_append(dst, dst_root);
 
+        json_t *jmp_root = json_object();
+        json_object_set(jmp_root, "type", json_string("operation"));
+        json_object_set(jmp_root, "name", json_string("jump_neq"));
+
+        json_t *jmp = json_array();
+        json_array_append(jmp, jmp_root);
+        json_array_append(jmp, dst);
+
         $$ = json_array();
-        json_array_append($$, root);
+        json_array_append($$, load);
         json_array_append($$, cmp);
-        json_array_append($$, dst);
+        json_array_append($$, jmp);
     }
     | UP_ARROW LPAR arg LEQ arg RPAR INT {
+        json_t *load_root = json_object();
+        json_object_set(load_root, "type", json_string("operation"));
+        json_object_set(load_root, "name", json_string("load"));
+
+        json_t *load = json_array();
+        json_array_append(load, load_root);
+        json_array_append(load, $3);
+
         json_t *cmp_root = json_object();
-        json_object_set(cmp_root, "type", json_string("leq"));
+        json_object_set(cmp_root, "type", json_string("operation"));
+        json_object_set(cmp_root, "name", json_string("compare"));
 
         json_t *cmp = json_array();
         json_array_append(cmp, cmp_root);
-        json_array_append(cmp, $3);
         json_array_append(cmp, $5);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("jump_cond"));
 
         json_t *dst_root = json_object();
         json_object_set(dst_root, "type", json_string("const"));
-        json_object_set(dst_root, "value", $6);
+        json_object_set(dst_root, "value", $7);
 
         json_t *dst = json_array();
         json_array_append(dst, dst_root);
 
+        json_t *jmp_root = json_object();
+        json_object_set(jmp_root, "type", json_string("operation"));
+        json_object_set(jmp_root, "name", json_string("jump_leq"));
+
+        json_t *jmp = json_array();
+        json_array_append(jmp, jmp_root);
+        json_array_append(jmp, dst);
+
         $$ = json_array();
-        json_array_append($$, root);
+        json_array_append($$, load);
         json_array_append($$, cmp);
-        json_array_append($$, dst);
+        json_array_append($$, jmp);
     }
     | UP_ARROW LPAR arg GEQ arg RPAR INT {
+        json_t *load_root = json_object();
+        json_object_set(load_root, "type", json_string("operation"));
+        json_object_set(load_root, "name", json_string("load"));
+
+        json_t *load = json_array();
+        json_array_append(load, load_root);
+        json_array_append(load, $3);
+
         json_t *cmp_root = json_object();
-        json_object_set(cmp_root, "type", json_string("geq"));
+        json_object_set(cmp_root, "type", json_string("operation"));
+        json_object_set(cmp_root, "name", json_string("compare"));
 
         json_t *cmp = json_array();
         json_array_append(cmp, cmp_root);
-        json_array_append(cmp, $3);
         json_array_append(cmp, $5);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("jump_cond"));
 
         json_t *dst_root = json_object();
         json_object_set(dst_root, "type", json_string("const"));
-        json_object_set(dst_root, "value", $6);
+        json_object_set(dst_root, "value", $7);
 
         json_t *dst = json_array();
         json_array_append(dst, dst_root);
 
+        json_t *jmp_root = json_object();
+        json_object_set(jmp_root, "type", json_string("operation"));
+        json_object_set(jmp_root, "name", json_string("jump_geq"));
+
+        json_t *jmp = json_array();
+        json_array_append(jmp, jmp_root);
+        json_array_append(jmp, dst);
+
         $$ = json_array();
-        json_array_append($$, root);
+        json_array_append($$, load);
         json_array_append($$, cmp);
-        json_array_append($$, dst);
+        json_array_append($$, jmp);
     }
     | UP_ARROW LPAR arg L_ANG_BRACK arg RPAR INT {
+        json_t *load_root = json_object();
+        json_object_set(load_root, "type", json_string("operation"));
+        json_object_set(load_root, "name", json_string("load"));
+
+        json_t *load = json_array();
+        json_array_append(load, load_root);
+        json_array_append(load, $3);
+
         json_t *cmp_root = json_object();
-        json_object_set(cmp_root, "type", json_string("lt"));
+        json_object_set(cmp_root, "type", json_string("operation"));
+        json_object_set(cmp_root, "name", json_string("compare"));
 
         json_t *cmp = json_array();
         json_array_append(cmp, cmp_root);
-        json_array_append(cmp, $3);
         json_array_append(cmp, $5);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("jump_cond"));
 
         json_t *dst_root = json_object();
         json_object_set(dst_root, "type", json_string("const"));
-        json_object_set(dst_root, "value", $6);
+        json_object_set(dst_root, "value", $7);
 
         json_t *dst = json_array();
         json_array_append(dst, dst_root);
 
+        json_t *jmp_root = json_object();
+        json_object_set(jmp_root, "type", json_string("operation"));
+        json_object_set(jmp_root, "name", json_string("jump_lt"));
+
+        json_t *jmp = json_array();
+        json_array_append(jmp, jmp_root);
+        json_array_append(jmp, dst);
+
         $$ = json_array();
-        json_array_append($$, root);
+        json_array_append($$, load);
         json_array_append($$, cmp);
-        json_array_append($$, dst);
+        json_array_append($$, jmp);
     }
     | UP_ARROW LPAR arg R_ANG_BRACK arg RPAR INT {
+        json_t *load_root = json_object();
+        json_object_set(load_root, "type", json_string("operation"));
+        json_object_set(load_root, "name", json_string("load"));
+
+        json_t *load = json_array();
+        json_array_append(load, load_root);
+        json_array_append(load, $3);
+
         json_t *cmp_root = json_object();
-        json_object_set(cmp_root, "type", json_string("gt"));
+        json_object_set(cmp_root, "type", json_string("operation"));
+        json_object_set(cmp_root, "name", json_string("compare"));
 
         json_t *cmp = json_array();
         json_array_append(cmp, cmp_root);
-        json_array_append(cmp, $3);
         json_array_append(cmp, $5);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("jump_cond"));
 
         json_t *dst_root = json_object();
         json_object_set(dst_root, "type", json_string("const"));
-        json_object_set(dst_root, "value", $6);
+        json_object_set(dst_root, "value", $7);
 
         json_t *dst = json_array();
         json_array_append(dst, dst_root);
 
+        json_t *jmp_root = json_object();
+        json_object_set(jmp_root, "type", json_string("operation"));
+        json_object_set(jmp_root, "name", json_string("jump_gt"));
+
+        json_t *jmp = json_array();
+        json_array_append(jmp, jmp_root);
+        json_array_append(jmp, dst);
+
         $$ = json_array();
-        json_array_append($$, root);
+        json_array_append($$, load);
         json_array_append($$, cmp);
-        json_array_append($$, dst);
+        json_array_append($$, jmp);
     }
 ;
 
@@ -619,6 +696,22 @@ arg:
     }
     | comp_el {
         $$ = $1;
+    }
+    | COMP_CAP INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("complex_capacity"));
+        json_object_set(root, "number", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | COMP_CARD INT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("complex_cardinality"));
+        json_object_set(root, "number", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
     }
 ;
 
@@ -745,131 +838,149 @@ int yylex() {
         if (element_type && element_value) {
             if (json_typeof(element_type) == JSON_STRING) {
                 yylval = element_value;
-                if (!strcmp(json_string_value(element_type), "id")) {
-                    if (json_typeof(element_value) == JSON_STRING)
-                        return ID;
-                } else if (!strcmp(json_string_value(element_type), "lpar")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return LPAR;
-                } else if (!strcmp(json_string_value(element_type), "rpar")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return RPAR;
-                } else if (!strcmp(json_string_value(element_type), "lbrack")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return LBRACK;
-                } else if (!strcmp(json_string_value(element_type), "rbrack")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return RBRACK;
-                } else if (!strcmp(json_string_value(element_type), "lbrace")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return LBRACE;
-                } else if (!strcmp(json_string_value(element_type), "rbrace")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return RBRACE;
-                } else if (!strcmp(json_string_value(element_type), "slash")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return SLASH;
-                } else if (!strcmp(json_string_value(element_type), "comma")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return COMMA;
-                } else if (!strcmp(json_string_value(element_type), "int")) {
-                    if (json_typeof(element_value) == JSON_INTEGER)
-                        return INT;
+                //
+                    if (!strcmp(json_string_value(element_type), "id")) {
+                        if (json_typeof(element_value) == JSON_STRING)
+                            return ID;
+                    } else if (!strcmp(json_string_value(element_type), "int")) {
+                        if (json_typeof(element_value) == JSON_INTEGER)
+                            return INT;
+                    } else if (!strcmp(json_string_value(element_type), "paragraph")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return PAR;
+                // ( ) [ ] { } < >
+                    } else if (!strcmp(json_string_value(element_type), "lpar")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return LPAR;
+                    } else if (!strcmp(json_string_value(element_type), "rpar")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return RPAR;
+                    } else if (!strcmp(json_string_value(element_type), "lbrack")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return LBRACK;
+                    } else if (!strcmp(json_string_value(element_type), "rbrack")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return RBRACK;
+                    } else if (!strcmp(json_string_value(element_type), "lbrace")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return LBRACE;
+                    } else if (!strcmp(json_string_value(element_type), "rbrace")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return RBRACE;
+                    } else if (!strcmp(json_string_value(element_type), "l_ang_brack")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return L_ANG_BRACK;
+                    } else if (!strcmp(json_string_value(element_type), "r_ang_brack")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return R_ANG_BRACK;
+                // = + - * /
+                    } else if (!strcmp(json_string_value(element_type), "assign")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return ASSIGN;
 
-                } else if (!strcmp(json_string_value(element_type), "plus")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return PLUS;
-                } else if (!strcmp(json_string_value(element_type), "and")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return AND;
-                } else if (!strcmp(json_string_value(element_type), "assign")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return ASSIGN;
-                } else if (!strcmp(json_string_value(element_type), "asm")) {
-                    if (json_typeof(element_value) == JSON_STRING)
-                        return ASM;
-                } else if (!strcmp(json_string_value(element_type), "dec")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return DEC;
-                } else if (!strcmp(json_string_value(element_type), "dot")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return DOT;
-                } else if (!strcmp(json_string_value(element_type), "inc")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return INC;
-                } else if (!strcmp(json_string_value(element_type), "l_ang_brack")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return L_ANG_BRACK;
-                } else if (!strcmp(json_string_value(element_type), "r_ang_brack")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return R_ANG_BRACK;
-                } else if (!strcmp(json_string_value(element_type), "mod")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return MOD;
-                } else if (!strcmp(json_string_value(element_type), "or")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return OR;
-                } else if (!strcmp(json_string_value(element_type), "paragraph")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return PAR;
-                } else if (!strcmp(json_string_value(element_type), "slash")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return SLASH;
-                } else if (!strcmp(json_string_value(element_type), "star")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return STAR;
-                } else if (!strcmp(json_string_value(element_type), "minus")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return MINUS;
-                } else if (!strcmp(json_string_value(element_type), "weight")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return WEIGHT;
-                } else if (!strcmp(json_string_value(element_type), "xor")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return XOR;
-                } else if (!strcmp(json_string_value(element_type), "set_min")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return SET_MIN;
-                } else if (!strcmp(json_string_value(element_type), "set_max")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return SET_MAX;
-                } else if (!strcmp(json_string_value(element_type), "je")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return EQ;
-                } else if (!strcmp(json_string_value(element_type), "jne")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return NEQ;
-                } else if (!strcmp(json_string_value(element_type), "jle")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return LEQ;
-                } else if (!strcmp(json_string_value(element_type), "jge")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return GEQ;
-                } else if (!strcmp(json_string_value(element_type), "up_arrow")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return UP_ARROW;
+                    } else if (!strcmp(json_string_value(element_type), "plus")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return PLUS;
+                    } else if (!strcmp(json_string_value(element_type), "minus")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return MINUS;
+                    } else if (!strcmp(json_string_value(element_type), "inc")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return INC;
+                    } else if (!strcmp(json_string_value(element_type), "dec")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return DEC;
 
-                } else if (!strcmp(json_string_value(element_type), "jmp")) {
-                    if (json_typeof(element_value) == JSON_NULL) 
-                        return JUMP;
-                } else if (!strcmp(json_string_value(element_type), "jz")) {
-                    if (json_typeof(element_value) == JSON_NULL) 
-                        return JUMPZ;
-                } else if (!strcmp(json_string_value(element_type), "jnz")) {
-                    if (json_typeof(element_value) == JSON_NULL) 
-                        return JUMPNZ;
-                } else if (!strcmp(json_string_value(element_type), "complex")) {
-                    if (json_typeof(element_value) == JSON_STRING) {
-                        if (!strcmp(json_string_value(element_value), "global"))
-                            return G_COMP;
-                        else if (!strcmp(json_string_value(element_value), "logic"))
-                            return L_COMP;
-                        else if (!strcmp(json_string_value(element_value), "symbol"))
-                            return S_COMP;
-                    }
-                } else if (!strcmp(json_string_value(element_type), "fret")) {
-                    if (json_typeof(element_value) == JSON_NULL)
-                        return FRET;
+                    } else if (!strcmp(json_string_value(element_type), "star")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return STAR;
+                    } else if (!strcmp(json_string_value(element_type), "slash")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SLASH;
+                    } else if (!strcmp(json_string_value(element_type), "mod")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return MOD;
+                    } else if (!strcmp(json_string_value(element_type), "div")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return DDIV;
+
+                    } else if (!strcmp(json_string_value(element_type), "and")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return AND;
+                    } else if (!strcmp(json_string_value(element_type), "or")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return OR;
+                    } else if (!strcmp(json_string_value(element_type), "xor")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return XOR;
+                    } else if (!strcmp(json_string_value(element_type), "not")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return NOT;
+                // jump
+                    } else if (!strcmp(json_string_value(element_type), "jmp")) {
+                        if (json_typeof(element_value) == JSON_NULL) 
+                            return JUMP;
+                    } else if (!strcmp(json_string_value(element_type), "jz")) {
+                        if (json_typeof(element_value) == JSON_NULL) 
+                            return JUMPZ;
+                    } else if (!strcmp(json_string_value(element_type), "jnz")) {
+                        if (json_typeof(element_value) == JSON_NULL) 
+                            return JUMPNZ;
+                    } else if (!strcmp(json_string_value(element_type), "je")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return EQ;
+                    } else if (!strcmp(json_string_value(element_type), "jne")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return NEQ;
+                    } else if (!strcmp(json_string_value(element_type), "jle")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return LEQ;
+                    } else if (!strcmp(json_string_value(element_type), "jge")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return GEQ;
+                // . ,
+                    } else if (!strcmp(json_string_value(element_type), "dot")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return DOT;
+                    } else if (!strcmp(json_string_value(element_type), "comma")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return COMMA;
+                    } else if (!strcmp(json_string_value(element_type), "weight")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return WEIGHT;
+                //
+                //
+                    } else if (!strcmp(json_string_value(element_type), "asm")) {
+                        if (json_typeof(element_value) == JSON_STRING)
+                            return ASM;
+                    } else if (!strcmp(json_string_value(element_type), "set_min")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SET_MIN;
+                    } else if (!strcmp(json_string_value(element_type), "set_max")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SET_MAX;
+                    } else if (!strcmp(json_string_value(element_type), "up_arrow")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return UP_ARROW;
+                    } else if (!strcmp(json_string_value(element_type), "fret")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return FRET;
+                // complex
+                    } else if (!strcmp(json_string_value(element_type), "complex")) {
+                        if (json_typeof(element_value) == JSON_STRING) {
+                            if (!strcmp(json_string_value(element_value), "global"))
+                                return G_COMP;
+                            else if (!strcmp(json_string_value(element_value), "logic"))
+                                return L_COMP;
+                            else if (!strcmp(json_string_value(element_value), "symbol"))
+                                return S_COMP;
+                        }
+                    } else if (!strcmp(json_string_value(element_type), "capacity")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return COMP_CAP;
+                    } else if (!strcmp(json_string_value(element_type), "cardinality")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return COMP_CARD;
                 }
             }
         }
