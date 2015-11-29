@@ -28,7 +28,7 @@ void yyerror(const char *);
 
 
 %define api.value.type {char *}
-%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID STRING SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC ADD SUB WEIGHT MOD DDIV OR AND XOR NUM LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM
+%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID STRING SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC PLUS MINUS WEIGHT MOD DDIV OR AND XOR NUM LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM
 
 %%
 
@@ -221,7 +221,7 @@ expressions:
 ;
 
 expression:  
-    ADD arg {
+    PLUS arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("add"));
@@ -230,7 +230,7 @@ expression:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
-    | SUB arg {
+    | MINUS arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("sub"));
@@ -758,9 +758,9 @@ int yylex() {
                     if (json_typeof(element_value) == JSON_INTEGER)
                         return INT;
 
-                } else if (!strcmp(json_string_value(element_type), "add")) {
+                } else if (!strcmp(json_string_value(element_type), "plus")) {
                     if (json_typeof(element_value) == JSON_NULL)
-                        return ADD;
+                        return PLUS;
                 } else if (!strcmp(json_string_value(element_type), "and")) {
                     if (json_typeof(element_value) == JSON_NULL)
                         return AND;
@@ -800,9 +800,9 @@ int yylex() {
                 } else if (!strcmp(json_string_value(element_type), "star")) {
                     if (json_typeof(element_value) == JSON_NULL)
                         return STAR;
-                } else if (!strcmp(json_string_value(element_type), "sub")) {
+                } else if (!strcmp(json_string_value(element_type), "minus")) {
                     if (json_typeof(element_value) == JSON_NULL)
-                        return SUB;
+                        return MINUS;
                 } else if (!strcmp(json_string_value(element_type), "weight")) {
                     if (json_typeof(element_value) == JSON_NULL)
                         return WEIGHT;
