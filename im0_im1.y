@@ -33,31 +33,20 @@ void yyerror(const char *);
 %%
 
 proc:
-    head body FRET {
+    ID header body FRET {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("proc"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $1);
-        json_array_append($$, $2);
-        result = $$;
-    }
-;
-
-head:
-    ID head_string {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("head"));
         json_object_set(root, "name", $1);
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $2);
+        json_array_extend($$, $2);
+        json_array_extend($$, $3);
+        result = $$;
     }
 ;
 
-head_string:
+header:
     LPAR proc_args SLASH proc_args RPAR {
         json_t *in_args = json_array();
         json_t *in_args_root = json_object();
@@ -147,20 +136,12 @@ proc_arg:
 
 body:
     preface paragraphs {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("body"));
-
         $$ = json_array();
-        json_array_append($$, root);
         json_array_append($$, $1);
         json_array_extend($$, $2);
     }
     | preface {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("body"));
-
         $$ = json_array();
-        json_array_append($$, root);
         json_array_append($$, $1);
     }
 ;
@@ -172,7 +153,7 @@ preface:
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $1);
+        json_array_extend($$, $1);
     }
 ;
 
@@ -196,7 +177,7 @@ paragraph:
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $3);
+        json_array_extend($$, $3);
     }
     | PAR INT {
         json_t *root = json_object();
@@ -455,7 +436,7 @@ expression:
         $$ = json_array();
         json_array_append($$, root);
     }
-    | STAR ID head_string {
+    | STAR ID header {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("call"));
         json_object_set(root, "name", $2);
