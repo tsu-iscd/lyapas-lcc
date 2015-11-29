@@ -618,8 +618,7 @@ arg:
         json_array_append($$, root);
     }
     | comp_el {
-        $$ = json_array();
-        json_array_append($$, $1);
+        $$ = $1;
     }
 ;
 
@@ -644,48 +643,86 @@ comp:
 
 comp_el:
     G_COMP ID { 
-        $$ = json_object();
-        json_object_set($$, "type", json_string("global_complex_1"));
-        json_object_set($$, "idx", $2);
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("var"));
+        json_object_set(index_root, "name", $2);
+
+        json_t *index = json_array();
+        json_array_append(index, index_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("global_complex_1"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, index);
     }
     | G_COMP INT {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("global_complex_1"));
-        json_object_set($$, "idx", $2);
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("const"));
+        json_object_set(index_root, "value", $2);
+
+        json_t *index = json_array();
+        json_array_append(index, index_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("global_complex_1"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, index);
     }
     | G_COMP LBRACK ID RBRACK {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("global_complex_4"));
-        json_object_set($$, "idx", $3);
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("var"));
+        json_object_set(index_root, "name", $3);
+
+        json_t *index = json_array();
+        json_array_append(index, index_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("global_complex_4"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, index);
     }
     | G_COMP LBRACK INT RBRACK {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("global_complex_4"));
-        json_object_set($$, "idx", $3);
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("const"));
+        json_object_set(index_root, "value", $3);
+
+        json_t *index = json_array();
+        json_array_append(index, index_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("global_complex_4"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, index);
     }
-    | L_COMP INT DOT INT {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("logic_complex"));
-        json_object_set($$, "number", $2);
-        json_object_set($$, "idx", $4);
+    | comp DOT INT {
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("const"));
+        json_object_set(index_root, "value", $3);
+
+        json_t *index = json_array();
+        json_array_append(index, index_root);
+
+        $$ = $1;
+        json_array_append($$, index);
     }
-    | L_COMP INT ID {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("logic_complex"));
-        json_object_set($$, "number", $2);
-        json_object_set($$, "idx", $3);
-    }
-    | S_COMP INT DOT INT {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("symbol_complex"));
-        json_object_set($$, "number", $2);
-        json_object_set($$, "idx", $4);
-    }
-    | S_COMP INT ID {
-        $$ = json_object();
-        json_object_set($$, "type", json_string("symbol_complex"));
-        json_object_set($$, "number", $2);
-        json_object_set($$, "idx", $3);
+    | comp ID {
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("var"));
+        json_object_set(index_root, "name", $2);
+
+        json_t *index = json_array();
+        json_array_append(index, index_root);
+
+        $$ = $1;
+        json_array_append($$, index);
     }
 ;
     
