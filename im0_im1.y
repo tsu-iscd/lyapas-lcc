@@ -28,7 +28,7 @@ void yyerror(const char *);
 
 
 %define api.value.type {char *}
-%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID STRING SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC PLUS MINUS WEIGHT MOD DDIV OR AND XOR NUM LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM NOT
+%token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID SCONST SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC PLUS MINUS PERCENT MOD DDIV OR AND XOR LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM NOT AT_SIGN SHARP 
 
 %%
 
@@ -336,7 +336,7 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
-    | WEIGHT arg {
+    | PERCENT arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("weight"));
@@ -848,6 +848,15 @@ int yylex() {
                     } else if (!strcmp(json_string_value(element_type), "paragraph")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return PAR;
+                    } else if (!strcmp(json_string_value(element_type), "sconst")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SCONST;
+                    } else if (!strcmp(json_string_value(element_type), "spec_var")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SPEC_VAR;
+                    } else if (!strcmp(json_string_value(element_type), "asm")) {
+                        if (json_typeof(element_value) == JSON_STRING)
+                            return ASM;
                 // ( ) [ ] { } < >
                     } else if (!strcmp(json_string_value(element_type), "lpar")) {
                         if (json_typeof(element_value) == JSON_NULL)
@@ -938,27 +947,50 @@ int yylex() {
                     } else if (!strcmp(json_string_value(element_type), "jge")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return GEQ;
-                // . ,
+                // . , % @ # '
                     } else if (!strcmp(json_string_value(element_type), "dot")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return DOT;
                     } else if (!strcmp(json_string_value(element_type), "comma")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return COMMA;
-                    } else if (!strcmp(json_string_value(element_type), "weight")) {
+                    } else if (!strcmp(json_string_value(element_type), "percent")) {
                         if (json_typeof(element_value) == JSON_NULL)
-                            return WEIGHT;
+                            return PERCENT;
+                    } else if (!strcmp(json_string_value(element_type), "at_sign")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return AT_SIGN;
+                    } else if (!strcmp(json_string_value(element_type), "copy")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SHARP;
+                    } else if (!strcmp(json_string_value(element_type), "quote")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return QUOTE;
                 //
-                //
-                    } else if (!strcmp(json_string_value(element_type), "asm")) {
-                        if (json_typeof(element_value) == JSON_STRING)
-                            return ASM;
                     } else if (!strcmp(json_string_value(element_type), "set_min")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return SET_MIN;
                     } else if (!strcmp(json_string_value(element_type), "set_max")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return SET_MAX;
+                    } else if (!strcmp(json_string_value(element_type), "set_bit")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SET_BIT;
+                    } else if (!strcmp(json_string_value(element_type), "num_right_one")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return LEAST_BIT;
+                    } else if (!strcmp(json_string_value(element_type), "console")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return CONSOLE;
+                    } else if (!strcmp(json_string_value(element_type), "letter_x")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return LETTER_X;
+                    } else if (!strcmp(json_string_value(element_type), "swap")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return SWAP;
+                    } else if (!strcmp(json_string_value(element_type), "get_time")) {
+                        if (json_typeof(element_value) == JSON_NULL)
+                            return TIME;
                     } else if (!strcmp(json_string_value(element_type), "up_arrow")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return UP_ARROW;
