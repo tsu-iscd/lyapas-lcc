@@ -1,7 +1,7 @@
 [{"type":"proc","name":"scheduler", "args":{"in":[],"out":[]}},
     [{"type":"preface"},
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G4"},
+            [{"type":"complex_global_4"},
                 [{"type":"const","value":65540}]
             ]
         ],
@@ -10,7 +10,7 @@
         ],
 
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G4"},
+            [{"type":"complex_global_4"},
                 [{"type":"var","name":"s"}]
             ]
         ],
@@ -47,7 +47,7 @@
         ],
 
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G1"},
+            [{"type":"complex_global_1"},
                 [{"type":"var","name":"i"}]
             ]
         ],
@@ -65,12 +65,12 @@
         ],
 
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G4"},
+            [{"type":"complex_global_4"},
                 [{"type":"const","value":"65624"}]
             ]
         ],
         [{"type":"op","name":"store"},
-            [{"type":"complex","name":"G4"},
+            [{"type":"complex_global_4"},
                 [{"type":"var","name":"q"}]
             ]
         ]
@@ -80,7 +80,7 @@
             [{"type":"var","name":"j"}]
         ],
         [{"type":"op","name":"xor"},
-            [{"type":"complex","name":"G1"},
+            [{"type":"complex_global_1"},
                 [{"type":"var","name":"n"}]
             ]
         ],
@@ -103,7 +103,7 @@
         ],
 
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G1"},
+            [{"type":"complex_global_1"},
                 [{"type":"var","name":"a"}]
             ]
         ],
@@ -112,7 +112,7 @@
         ],
 
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G1"},
+            [{"type":"complex_global_1"},
                 [{"type":"var","name":"s"}]
             ]
         ],
@@ -125,7 +125,7 @@
     ],
     [{"type":"par","number":3},
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G1"},
+            [{"type":"complex_global_1"},
                 [{"type":"var","name":"s"}]
             ]
         ],
@@ -150,12 +150,12 @@
         ],
 
         [{"type":"op","name":"load"},
-            [{"type":"complex","name":"G4"},
+            [{"type":"complex_global_4"},
                 [{"type":"var","name":"p"}]
             ]
         ],
         [{"type":"op","name":"store"},
-            [{"type":"complex","name":"G4"},
+            [{"type":"complex_global_4"},
                 [{"type":"const","value":"65624"}]
             ]
         ],
@@ -164,7 +164,7 @@
             [{"type":"var","name":"j"}]
         ],
         [{"type":"op","name":"store"},
-            [{"type":"complex","name":"G1"},
+            [{"type":"complex_global_1"},
                 [{"type":"var","name":"i"}]
             ]
         ]

@@ -17,12 +17,31 @@ Json::Value ComplexCmd::toJson()
     {
         auto child = _clidren.back()->toJson();
 
-        result["type"] = _cmdJson["type"].asString() + "_" + _cmdJson["name"].asString() + "_" + child["type"].asString();
-        result["args"] = child["args"];
+        std::string complexType = _cmdJson["type"].asString();
+        std::string complexName = _cmdJson["name"].asString();
+        std::string childType = child["type"].asString();
+
+        std::string type;
+        type = complexType;
+        type += complexName.empty() ? "" : ("_" + complexName);
+        type += "_" + childType;
+
+        std::string childArgs;
+        childArgs = child["args"].asString();
+
+        result["type"] = type;
+        result["args"] = childArgs;
     }
     else
     {
-        result["type"] = _cmdJson["type"].asString() + "_" + _cmdJson["name"].asString();
+        std::string complexType = _cmdJson["type"].asString();
+        std::string complexName = _cmdJson["name"].asString();
+
+        std::string type;
+        type = complexType;
+        type += complexName.empty() ? "" : ("_" + complexName);
+
+        result["type"] = type;
         result["args"] = "";
     }
 

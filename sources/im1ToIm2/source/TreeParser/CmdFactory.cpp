@@ -31,7 +31,8 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
     {
         return CompositeCmd::SPtrComposite(new OperationCmd(json));
     }
-    else if("complex" == type)
+    else if(type.find("complex") != std::string::npos)
+    //else if("complex" == type)
     {
         return CompositeCmd::SPtrComposite(new ComplexCmd(json));
     }
