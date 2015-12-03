@@ -239,6 +239,10 @@ expression:
     | jump_cond {
         $$ = $1;
     }
+    | comp_op {
+        $$ = json_array();
+        json_array_append($$, $1);
+    }
 ;
 
 operation:  
@@ -580,6 +584,112 @@ operation:
         $$ = json_array();
         json_array_append($$, root);
         json_array_extend($$, $3);
+    }
+;
+
+comp_op:
+    AT_SIGN PLUS comp LPAR arg RPAR {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("create_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, $5);
+    }
+    | AT_SIGN MINUS comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("remove_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN PERCENT comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("reduce_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN SET_MIN comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("clear_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN QUOTE SCONST QUOTE R_ANG_BRACK comp {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $3);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("insert_string_in_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $6);
+        json_array_append($$, str);
+    }
+    | AT_SIGN R_ANG_BRACK comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("insert_element_in_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN R_ANG_BRACK comp_el {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("insert_element_in_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN L_ANG_BRACK comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("remove_element_from_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN L_ANG_BRACK comp_el {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("remove_element_from_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN SHARP comp comp LPAR arg COMMA arg COMMA arg RPAR {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("copy_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, $4);
+        json_array_append($$, $6);
+        json_array_append($$, $8);
+        json_array_append($$, $10);
     }
 ;
 
@@ -980,7 +1090,7 @@ int yylex() {
                         if (json_typeof(element_value) == JSON_NULL)
                             return PAR;
                     } else if (!strcmp(json_string_value(element_type), "sconst")) {
-                        if (json_typeof(element_value) == JSON_NULL)
+                        if (json_typeof(element_value) == JSON_STRING)
                             return SCONST;
                     } else if (!strcmp(json_string_value(element_type), "spec_var")) {
                         if (json_typeof(element_value) == JSON_NULL)
