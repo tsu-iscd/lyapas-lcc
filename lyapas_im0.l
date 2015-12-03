@@ -223,8 +223,8 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 
     /*Конец функции*/
 "**"            { PrintJsonWithValueNull("fret"); }
-    /*Имя функции*/
-[a-zA-Z_][a-zA-Z0-9_]*\(        {
+    /*Имя функции. Нельзя использовать имена состоящие из одного символа и совпадающие с комплексами.*/
+([a-zA-Z][a-zA-Z_][a-zA-Z0-9_]*\()|([a-zA-Z_]{-}[FLK][a-zA-Z0-9_]*\()  {
                                     char *str = strndup(yytext,strlen(yytext) - 1);
                                     PrintJsonWithValueString(ID, str);
                                     PrintJsonWithValueNull("lpar");                        
@@ -249,7 +249,7 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
     /*вычисление номера правой еденицы*/
 "!"              { PrintJsonWithValueNull("num_right_one"); }   
     /*консоль*/
-"С"              { PrintJsonWithValueNull("console"); }
+"C"              { PrintJsonWithValueNull("console"); }
 
     /***** Многозначные символы  *****/
     /*угловые скобки: для разделения входных и выходные параметров;
