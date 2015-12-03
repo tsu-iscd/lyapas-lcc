@@ -67,6 +67,15 @@ proc:
         json_array_extend($$, $2);
         json_array_extend($$, $3);
     }
+    | ID header FRET {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("procedure"));
+        json_object_set(root, "name", $1);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_extend($$, $2);
+    }
 ;
 
 header:
@@ -395,6 +404,105 @@ operation:
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $2);
+    }
+    | SWAP LPAR ID ID RPAR {
+        json_t *arg1_root = json_object();
+        json_object_set(arg1_root, "type", json_string("var"));
+        json_object_set(arg1_root, "name", $3);
+
+        json_t *arg1 = json_array();
+        json_array_append(arg1, arg1_root);
+
+        json_t *arg2_root = json_object();
+        json_object_set(arg2_root, "type", json_string("var"));
+        json_object_set(arg2_root, "name", $4);
+
+        json_t *arg2 = json_array();
+        json_array_append(arg2, arg2_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("swap"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, arg1);
+        json_array_append($$, arg2);
+    }
+    | SWAP LPAR comp ID ID RPAR {
+        json_t *arg1_root = json_object();
+        json_object_set(arg1_root, "type", json_string("var"));
+        json_object_set(arg1_root, "name", $4);
+
+        json_t *arg1 = json_array();
+        json_array_append(arg1, arg1_root);
+
+        json_t *arg2_root = json_object();
+        json_object_set(arg2_root, "type", json_string("var"));
+        json_object_set(arg2_root, "name", $5);
+
+        json_t *arg2 = json_array();
+        json_array_append(arg2, arg2_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("swap_comp_el"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, arg1);
+        json_array_append($$, arg2);
+    }
+    | SWAP LPAR comp ID INT RPAR {
+        json_t *arg1_root = json_object();
+        json_object_set(arg1_root, "type", json_string("var"));
+        json_object_set(arg1_root, "name", $4);
+
+        json_t *arg1 = json_array();
+        json_array_append(arg1, arg1_root);
+
+        json_t *arg2_root = json_object();
+        json_object_set(arg2_root, "type", json_string("const"));
+        json_object_set(arg2_root, "value", $5);
+
+        json_t *arg2 = json_array();
+        json_array_append(arg2, arg2_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("swap_comp_el"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, arg1);
+        json_array_append($$, arg2);
+    }
+    | SWAP LPAR comp DOT INT ID RPAR {
+        json_t *arg1_root = json_object();
+        json_object_set(arg1_root, "type", json_string("const"));
+        json_object_set(arg1_root, "value", $5);
+
+        json_t *arg1 = json_array();
+        json_array_append(arg1, arg1_root);
+
+        json_t *arg2_root = json_object();
+        json_object_set(arg2_root, "type", json_string("var"));
+        json_object_set(arg2_root, "name", $6);
+
+        json_t *arg2 = json_array();
+        json_array_append(arg2, arg2_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("swap_comp_el"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, arg1);
+        json_array_append($$, arg2);
     }
 
     | JUMP INT {
