@@ -32,17 +32,40 @@ void yyerror(const char *);
 
 %%
 
+prog:
+    procs {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("program"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_extend($$, $1);
+        result = $$;
+    }
+;
+
+procs:
+    proc procs {
+        $$ = json_array();
+        json_array_append($$, $1);
+        json_array_extend($$, $2);
+    }
+    | proc {
+        $$ = json_array();
+        json_array_append($$, $1);
+    }
+;
+
 proc:
     ID header body FRET {
         json_t *root = json_object();
-        json_object_set(root, "type", json_string("proc"));
+        json_object_set(root, "type", json_string("procedure"));
         json_object_set(root, "name", $1);
 
         $$ = json_array();
         json_array_append($$, root);
         json_array_extend($$, $2);
         json_array_extend($$, $3);
-        result = $$;
     }
 ;
 
@@ -448,7 +471,7 @@ operation:
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $3);
+        json_array_extend($$, $3);
     }
 ;
 
