@@ -325,6 +325,15 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
+    | NOT arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("not"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
     | AND arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
@@ -555,6 +564,14 @@ operation:
         json_array_append($$, root);
         json_array_append($$, arg);
     }
+    | UP_ARROW R_ANG_BRACK {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("jump_by_deny"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
 
     | arg {
         json_t *root = json_object();
@@ -589,13 +606,14 @@ operation:
         $$ = json_array();
         json_array_append($$, root);
     }
-    | LEAST_BIT {
+    | LEAST_BIT arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("get_number_least_1"));
 
         $$ = json_array();
         json_array_append($$, root);
+        json_array_append($$, $2);
     }
     | UP_ARROW LETTER_X {
         json_t *root = json_object();
@@ -1383,7 +1401,7 @@ int yylex() {
                     } else if (!strcmp(json_string_value(element_type), "console")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return CONSOLE;
-                    } else if (!strcmp(json_string_value(element_type), "letter_x")) {
+                    } else if (!strcmp(json_string_value(element_type), "letter_X")) {
                         if (json_typeof(element_value) == JSON_NULL)
                             return LETTER_X;
                     } else if (!strcmp(json_string_value(element_type), "swap")) {
