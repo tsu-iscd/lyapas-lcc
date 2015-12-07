@@ -388,15 +388,6 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
-    | TIME arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("get_time"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
     | L_ANG_BRACK arg {
         puts(" <");
         json_t *root = json_object();
@@ -574,7 +565,46 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $1);
     }
+    | LETTER_X {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_random"));
 
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | ASSIGN LETTER_X {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("set_random"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | TIME {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_time"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | LEAST_BIT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_number_least_1"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | UP_ARROW LETTER_X {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("enumeration_1"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
     | LBRACE ASM RBRACE {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("asm"));
