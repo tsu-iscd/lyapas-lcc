@@ -246,7 +246,7 @@ expression:
         $$ = json_array();
         json_array_append($$, $1);
     }
-    | in_out_op {
+    | console_op {
         $$ = json_array();
         json_array_append($$, $1);
     }
@@ -730,7 +730,7 @@ comp_op:
     }
 ;
 
-in_out_op:
+console_op:
     SLASH comp R_ANG_BRACK CONSOLE {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
@@ -764,6 +764,92 @@ in_out_op:
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, str);
+    }
+    | SLASH comp R_ANG_BRACK CONSOLE INT LBRACK QUOTE SCONST QUOTE RBRACK {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $8);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("write_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, str);
+    }
+    | SLASH comp R_ANG_BRACK CONSOLE INT LBRACK comp RBRACK {
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("write_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, $7);
+    }
+    | SLASH comp L_ANG_BRACK CONSOLE INT LBRACK QUOTE SCONST QUOTE RBRACK {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $8);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("read_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, str);
+    }
+    | SLASH comp L_ANG_BRACK CONSOLE INT LBRACK comp RBRACK {
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("read_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, $7);
     }
 ;
 
