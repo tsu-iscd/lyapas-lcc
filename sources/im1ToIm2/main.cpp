@@ -26,12 +26,12 @@ void readFile(string pathToFile, ifstream& file)
     file.open(pathToFile, std::ifstream::binary);
 }
 
-Json::Value tryParseJson(ifstream &file)
+Json::Value tryParseJson(istream &stream)
 {
     Json::Value json;
     Json::Reader reader;
 
-    bool parsingSuccessful = reader.parse(file, json);
+    bool parsingSuccessful = reader.parse(stream, json);
     if(!parsingSuccessful)
     {
         cout << "Json Parse Error: " << endl;
@@ -59,10 +59,10 @@ void tryPrintCmds(Json::Value json)
 
 int main(int argc, char* argv[])
 {
+    Json::Value json;
     if(argc < 2)
     {
-        cout << "Usage: \"./programm path-to-file\" " << endl;
-        return 1;
+        cin >> json;
     }
     else
     {
@@ -70,26 +70,26 @@ int main(int argc, char* argv[])
 
         ifstream jsonFile;
         readFile(pathToFile, jsonFile);
-        Json::Value json = tryParseJson(jsonFile);
-
-        CmdFactory factory;
-        TreeParser treeParser(factory);
-
-        auto res = treeParser.parseTree(json);
-
-        bool printAsString = false;
-        if(printAsString)
-        {
-            cout << res->asString() << endl;
-        }
-        else
-        {
-            cout << res->toJson().toStyledString() << endl;
-        }
-
-        //Старый способ вывода
-        //tryPrintCmds(json);
+        json = tryParseJson(jsonFile);
     }
+
+    CmdFactory factory;
+    TreeParser treeParser(factory);
+
+    auto res = treeParser.parseTree(json);
+
+    bool printAsString = false;
+    if(printAsString)
+    {
+        cout << res->asString() << endl;
+    }
+    else
+    {
+        cout << res->toJson().toStyledString() << endl;
+    }
+
+    //Старый способ вывода
+    //tryPrintCmds(json);
 
     return 0;
 }
