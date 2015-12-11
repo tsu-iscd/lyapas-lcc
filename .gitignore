@@ -5,3 +5,9 @@ tags
 tags.*
 *.swp
 .idea
+
+sources/*/CMakeCache.txt
+sources/*MakeFiles/
+sources/*Makefile
+sources/*cmake_install.cmake
+sources/*im1ToIm2
