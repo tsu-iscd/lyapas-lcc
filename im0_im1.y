@@ -325,14 +325,13 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
-    | NOT arg {
+    | NOT {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("not"));
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $2);
     }
     | AND arg {
         json_t *root = json_object();
@@ -388,14 +387,13 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
-    | PERCENT arg {
+    | PERCENT {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("weight"));
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $2);
     }
     | L_ANG_BRACK arg {
         puts(" <");
@@ -606,14 +604,13 @@ operation:
         $$ = json_array();
         json_array_append($$, root);
     }
-    | LEAST_BIT arg {
+    | LEAST_BIT {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("get_number_least_1"));
 
         $$ = json_array();
         json_array_append($$, root);
-        json_array_append($$, $2);
     }
     | UP_ARROW LETTER_X {
         json_t *root = json_object();
