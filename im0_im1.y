@@ -29,6 +29,7 @@ void yyerror(const char *);
 
 %define api.value.type {char *}
 %token S_COMP L_COMP G_COMP COMP_CAP COMP_CARD INT ID SCONST SET_BIT SPEC_VAR FRET LPAR RPAR INC DEC PLUS MINUS PERCENT MOD DDIV OR AND XOR LEAST_BIT CONSOLE L_ANG_BRACK R_ANG_BRACK SLASH LETTER_X STAR UP_ARROW SET_MIN SET_MAX ASSIGN SWAP TIME PAR EQ NEQ GEQ LEQ JUMP JUMPZ JUMPNZ LBRACK RBRACK QUOTE COMMA DOT LBRACE RBRACE ASM NOT AT_SIGN SHARP 
+%expect 5
 
 %%
 
@@ -252,115 +253,8 @@ expression:
     }
 ;
 
-operation:  
-    PLUS arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("add"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | MINUS arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("sub"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | INC arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("inc"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | DEC arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("dec"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | STAR arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("mul"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | SLASH arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("div"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | DDIV arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("ddiv"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | MOD arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("mod"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | NOT {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("not"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-    }
-    | AND arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("and"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | OR arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("or"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | XOR arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("xor"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | SET_MIN arg {
+value_transfer_op:
+    SET_MIN arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("set_min"));
@@ -387,32 +281,14 @@ operation:
         json_array_append($$, root);
         json_array_append($$, $2);
     }
-    | PERCENT {
+    | arg {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("weight"));
+        json_object_set(root, "name", json_string("load"));
 
         $$ = json_array();
         json_array_append($$, root);
-    }
-    | L_ANG_BRACK arg {
-        puts(" <");
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("left_shift"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | R_ANG_BRACK arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("right_shift"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
+        json_array_append($$, $1);
     }
     | SWAP LPAR ID ID RPAR {
         json_t *arg1_root = json_object();
@@ -513,8 +389,203 @@ operation:
         json_array_append($$, arg1);
         json_array_append($$, arg2);
     }
+    | SWAP LPAR comp DOT INT DOT INT RPAR {
+        json_t *arg1_root = json_object();
+        json_object_set(arg1_root, "type", json_string("const"));
+        json_object_set(arg1_root, "value", $5);
 
-    | JUMP INT {
+        json_t *arg1 = json_array();
+        json_array_append(arg1, arg1_root);
+
+        json_t *arg2_root = json_object();
+        json_object_set(arg2_root, "type", json_string("const"));
+        json_object_set(arg2_root, "value", $7);
+
+        json_t *arg2 = json_array();
+        json_array_append(arg2, arg2_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("swap_comp_el"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, arg1);
+        json_array_append($$, arg2);
+    }
+    | LETTER_X {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_random"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | ASSIGN LETTER_X {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("set_random"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | TIME {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_time"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+;
+
+logic_arithm_op:
+    LEAST_BIT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("get_number_least_1"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | NOT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("not"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | PERCENT {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("weight"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+    }
+    | OR arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("or"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | AND arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("and"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | XOR arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("xor"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | L_ANG_BRACK arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("left_shift"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | R_ANG_BRACK arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("right_shift"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | PLUS arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("add"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | MINUS arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("sub"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | STAR arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("mul"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | DDIV arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("ddiv"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | SLASH arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("div"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | MOD arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("mod"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | INC arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("inc"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | DEC arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("dec"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+;
+
+jump_op:
+    JUMP INT {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("jump"));
@@ -562,60 +633,37 @@ operation:
         json_array_append($$, root);
         json_array_append($$, arg);
     }
+    | UP_ARROW LPAR arg RPAR {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("jump_by_time"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | UP_ARROW LETTER_X INT arg arg {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("enumeration_1"));
+
+        json_t *target_root = json_object();
+        json_object_set(target_root, "type", json_string("const"));
+        json_object_set(target_root, "value", $3);
+
+        json_t *target = json_array();
+        json_array_append(target, target_root);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, target);
+        json_array_append($$, $4);
+        json_array_append($$, $5);
+    }
     | UP_ARROW R_ANG_BRACK {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("jump_by_deny"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-    }
-
-    | arg {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("load"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $1);
-    }
-    | LETTER_X {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("get_random"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-    }
-    | ASSIGN LETTER_X {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("set_random"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-    }
-    | TIME {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("get_time"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-    }
-    | LEAST_BIT {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("get_number_least_1"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-    }
-    | UP_ARROW LETTER_X {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("enumeration_1"));
 
         $$ = json_array();
         json_array_append($$, root);
@@ -627,244 +675,6 @@ operation:
 
         $$ = json_array();
         json_array_append($$, root);
-    }
-    | STAR ID header {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("call"));
-        json_object_set(root, "name", $2);
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_extend($$, $3);
-    }
-;
-
-comp_op:
-    AT_SIGN PLUS comp LPAR arg RPAR {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("create_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-        json_array_append($$, $5);
-    }
-    | AT_SIGN MINUS comp {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("remove_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN PERCENT comp {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("reduce_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN SET_MIN comp {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("clear_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN QUOTE SCONST QUOTE R_ANG_BRACK comp {
-        json_t *str_root = json_object();
-        json_object_set(str_root, "type", json_string("string"));
-        json_object_set(str_root, "value", $3);
-
-        json_t *str = json_array();
-        json_array_append(str, str_root);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("insert_string_in_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $6);
-        json_array_append($$, str);
-    }
-    | AT_SIGN R_ANG_BRACK comp {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("insert_element_in_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN R_ANG_BRACK comp_el {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("insert_element_in_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN L_ANG_BRACK comp {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("remove_element_from_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN L_ANG_BRACK comp_el {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("remove_element_from_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-    }
-    | AT_SIGN SHARP comp comp LPAR arg COMMA arg COMMA arg RPAR {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("copy_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $3);
-        json_array_append($$, $4);
-        json_array_append($$, $6);
-        json_array_append($$, $8);
-        json_array_append($$, $10);
-    }
-;
-
-console_op:
-    SLASH comp R_ANG_BRACK CONSOLE {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("write_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | SLASH comp L_ANG_BRACK CONSOLE {
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("read_complex"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-    }
-    | SLASH QUOTE SCONST QUOTE R_ANG_BRACK CONSOLE {
-        json_t *str_root = json_object();
-        json_object_set(str_root, "type", json_string("string"));
-        json_object_set(str_root, "value", $3);
-
-        json_t *str = json_array();
-        json_array_append(str, str_root);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("write_string"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, str);
-    }
-    | SLASH comp R_ANG_BRACK CONSOLE INT LBRACK QUOTE SCONST QUOTE RBRACK {
-        json_t *str_root = json_object();
-        json_object_set(str_root, "type", json_string("string"));
-        json_object_set(str_root, "value", $8);
-
-        json_t *str = json_array();
-        json_array_append(str, str_root);
-
-        json_t *num_root = json_object();
-        json_object_set(num_root, "type", json_string("const"));
-        json_object_set(num_root, "value", $5);
-
-        json_t *num = json_array();
-        json_array_append(num, num_root);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("write_archive"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-        json_array_append($$, num);
-        json_array_append($$, str);
-    }
-    | SLASH comp R_ANG_BRACK CONSOLE INT LBRACK comp RBRACK {
-        json_t *num_root = json_object();
-        json_object_set(num_root, "type", json_string("const"));
-        json_object_set(num_root, "value", $5);
-
-        json_t *num = json_array();
-        json_array_append(num, num_root);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("write_archive"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-        json_array_append($$, num);
-        json_array_append($$, $7);
-    }
-    | SLASH comp L_ANG_BRACK CONSOLE INT LBRACK QUOTE SCONST QUOTE RBRACK {
-        json_t *str_root = json_object();
-        json_object_set(str_root, "type", json_string("string"));
-        json_object_set(str_root, "value", $8);
-
-        json_t *str = json_array();
-        json_array_append(str, str_root);
-
-        json_t *num_root = json_object();
-        json_object_set(num_root, "type", json_string("const"));
-        json_object_set(num_root, "value", $5);
-
-        json_t *num = json_array();
-        json_array_append(num, num_root);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("read_archive"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-        json_array_append($$, num);
-        json_array_append($$, str);
-    }
-    | SLASH comp L_ANG_BRACK CONSOLE INT LBRACK comp RBRACK {
-        json_t *num_root = json_object();
-        json_object_set(num_root, "type", json_string("const"));
-        json_object_set(num_root, "value", $5);
-
-        json_t *num = json_array();
-        json_array_append(num, num_root);
-
-        json_t *root = json_object();
-        json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("read_archive"));
-
-        $$ = json_array();
-        json_array_append($$, root);
-        json_array_append($$, $2);
-        json_array_append($$, num);
-        json_array_append($$, $7);
     }
 ;
 
@@ -1093,6 +903,262 @@ jump_cond:
     }
 ;
 
+call_op:
+    STAR ID header {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("call"));
+        json_object_set(root, "name", $2);
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_extend($$, $3);
+    }
+;
+
+operation:  
+    value_transfer_op {
+        $$ = $1;
+    }
+    | logic_arithm_op {
+        $$ = $1;
+    }
+    | jump_op {
+        $$ = $1;
+    }
+    | call_op {
+        $$ = $1;
+    }
+;
+
+comp_op:
+    AT_SIGN PLUS comp LPAR arg RPAR {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("create_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, $5);
+    }
+    | AT_SIGN MINUS comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("remove_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN PERCENT comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("reduce_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | SET_MIN comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("clear_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | AT_SIGN QUOTE SCONST QUOTE R_ANG_BRACK comp {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $3);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("insert_string_in_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $6);
+        json_array_append($$, str);
+    }
+    | AT_SIGN R_ANG_BRACK comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("insert_element_in_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN R_ANG_BRACK comp_el {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("insert_element_in_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN L_ANG_BRACK comp {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("remove_element_from_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN L_ANG_BRACK comp_el {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("remove_element_from_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+    }
+    | AT_SIGN SHARP comp comp LPAR arg COMMA arg COMMA arg RPAR {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("copy_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $3);
+        json_array_append($$, $4);
+        json_array_append($$, $6);
+        json_array_append($$, $8);
+        json_array_append($$, $10);
+    }
+;
+
+console_op:
+    SLASH comp R_ANG_BRACK CONSOLE {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("write_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | SLASH comp L_ANG_BRACK CONSOLE {
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("read_complex"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+    }
+    | SLASH QUOTE SCONST QUOTE R_ANG_BRACK CONSOLE {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $3);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("write_string"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, str);
+    }
+    | SLASH comp R_ANG_BRACK CONSOLE INT LBRACK QUOTE SCONST QUOTE RBRACK {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $8);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("write_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, str);
+    }
+    | SLASH comp R_ANG_BRACK CONSOLE INT LBRACK comp RBRACK {
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("write_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, $7);
+    }
+    | SLASH comp L_ANG_BRACK CONSOLE INT LBRACK QUOTE SCONST QUOTE RBRACK {
+        json_t *str_root = json_object();
+        json_object_set(str_root, "type", json_string("string"));
+        json_object_set(str_root, "value", $8);
+
+        json_t *str = json_array();
+        json_array_append(str, str_root);
+
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("read_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, str);
+    }
+    | SLASH comp L_ANG_BRACK CONSOLE INT LBRACK comp RBRACK {
+        json_t *num_root = json_object();
+        json_object_set(num_root, "type", json_string("const"));
+        json_object_set(num_root, "value", $5);
+
+        json_t *num = json_array();
+        json_array_append(num, num_root);
+
+        json_t *root = json_object();
+        json_object_set(root, "type", json_string("operation"));
+        json_object_set(root, "name", json_string("read_archive"));
+
+        $$ = json_array();
+        json_array_append($$, root);
+        json_array_append($$, $2);
+        json_array_append($$, num);
+        json_array_append($$, $7);
+    }
+;
+
 arg:
     INT {
         json_t *root = json_object();
@@ -1102,6 +1168,9 @@ arg:
         $$ = json_array();
         json_array_append($$, root);
     }
+    | comp_el {
+        $$ = $1;
+    }
     | ID {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("var"));
@@ -1109,9 +1178,6 @@ arg:
 
         $$ = json_array();
         json_array_append($$, root);
-    }
-    | comp_el {
-        $$ = $1;
     }
     | COMP_CAP INT {
         json_t *root = json_object();
