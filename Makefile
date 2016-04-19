@@ -1,4 +1,4 @@
-BINARIES=lyapas_im0 im0_im1 im1_im1_ast im1_im2
+BINARIES=lyapas_im0 im0_im1 im1_im1_ast im1_im2 print_json.o
 TEMP_FILES=lyapas_im0.c im0_im1.c
 
 all: $(BINARIES)
@@ -9,8 +9,11 @@ lyapas_im0: lyapas_im0.c
 lyapas_im0.c: lyapas_im0.l
 	flex -o $@ $<
 
-im0_im1: im0_im1.c
-	gcc -o $@ $<
+im0_im1: im0_im1.c print_json.o
+	gcc -o $@ $^ -ljansson 
+
+print_json.o: print_json.c
+	gcc -Wall -c $<
 
 im0_im1.c: im0_im1.y
 	bison -o $@ $<
