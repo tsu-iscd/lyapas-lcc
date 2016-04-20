@@ -1,0 +1,689 @@
+// lyapas_im0_syntax_tree
+digraph {
+	"args->{u'out': [], u'in': []}
+type->proc
+name->scheduler
+1"
+	"type->preface
+2"
+		"args->{u'out'":" [], u'in'": []}
+type->proc
+name->scheduler
+1 -> "type->preface
+2"
+	"type->op
+name->load
+3"
+		"type->preface
+2" -> "type->op
+name->load
+3"
+	"type->g4cx
+idx->65540
+4"
+		"type->preface
+2" -> "type->g4cx
+idx->65540
+4"
+	"type->op
+name->store
+5"
+		"type->preface
+2" -> "type->op
+name->store
+5"
+	"type->var
+name->s
+6"
+		"type->preface
+2" -> "type->var
+name->s
+6"
+	"type->op
+name->load
+7"
+		"type->preface
+2" -> "type->op
+name->load
+7"
+	"type->g4cx
+idx->s
+8"
+		"type->preface
+2" -> "type->g4cx
+idx->s
+8"
+	"type->op
+name->store
+9"
+		"type->preface
+2" -> "type->op
+name->store
+9"
+	"type->var
+name->p
+10"
+		"type->preface
+2" -> "type->var
+name->p
+10"
+	"type->op
+name->load
+11"
+		"type->preface
+2" -> "type->op
+name->load
+11"
+	"type->var
+name->s
+12"
+		"type->preface
+2" -> "type->var
+name->s
+12"
+	"type->op
+name->add
+13"
+		"type->preface
+2" -> "type->op
+name->add
+13"
+	"type->const
+value->4
+14"
+		"type->preface
+2" -> "type->const
+value->4
+14"
+	"type->op
+name->store
+15"
+		"type->preface
+2" -> "type->op
+name->store
+15"
+	"type->var
+name->n
+16"
+		"type->preface
+2" -> "type->var
+name->n
+16"
+	"type->op
+name->add
+17"
+		"type->preface
+2" -> "type->op
+name->add
+17"
+	"type->const
+value->1
+18"
+		"type->preface
+2" -> "type->const
+value->1
+18"
+	"type->op
+name->store
+19"
+		"type->preface
+2" -> "type->op
+name->store
+19"
+	"type->var
+name->i
+20"
+		"type->preface
+2" -> "type->var
+name->i
+20"
+	"type->op
+name->add
+21"
+		"type->preface
+2" -> "type->op
+name->add
+21"
+	"type->const
+value->1
+22"
+		"type->preface
+2" -> "type->const
+value->1
+22"
+	"type->op
+name->store
+23"
+		"type->preface
+2" -> "type->op
+name->store
+23"
+	"type->var
+name->a
+24"
+		"type->preface
+2" -> "type->var
+name->a
+24"
+	"type->op
+name->add
+25"
+		"type->preface
+2" -> "type->op
+name->add
+25"
+	"type->const
+value->1
+26"
+		"type->preface
+2" -> "type->const
+value->1
+26"
+	"type->op
+name->store
+27"
+		"type->preface
+2" -> "type->op
+name->store
+27"
+	"type->var
+name->c
+28"
+		"type->preface
+2" -> "type->var
+name->c
+28"
+	"type->op
+name->load
+29"
+		"type->preface
+2" -> "type->op
+name->load
+29"
+	"type->g1cx
+idx->i
+30"
+		"type->preface
+2" -> "type->g1cx
+idx->i
+30"
+	"type->op
+name->store
+31"
+		"type->preface
+2" -> "type->op
+name->store
+31"
+	"type->var
+name->j
+32"
+		"type->preface
+2" -> "type->var
+name->j
+32"
+	"type->op
+name->mul
+33"
+		"type->preface
+2" -> "type->op
+name->mul
+33"
+	"type->const
+value->4
+34"
+		"type->preface
+2" -> "type->const
+value->4
+34"
+	"type->op
+name->add
+35"
+		"type->preface
+2" -> "type->op
+name->add
+35"
+	"type->var
+name->p
+36"
+		"type->preface
+2" -> "type->var
+name->p
+36"
+	"type->op
+name->store
+37"
+		"type->preface
+2" -> "type->op
+name->store
+37"
+	"type->var
+name->q
+38"
+		"type->preface
+2" -> "type->var
+name->q
+38"
+	"type->op
+name->load
+39"
+		"type->preface
+2" -> "type->op
+name->load
+39"
+	"type->g4cx
+idx->65624
+40"
+		"type->preface
+2" -> "type->g4cx
+idx->65624
+40"
+	"type->op
+name->store
+41"
+		"type->preface
+2" -> "type->op
+name->store
+41"
+	"type->g4cx
+idx->q
+42"
+		"type->preface
+2" -> "type->g4cx
+idx->q
+42"
+	"type->par
+number->1
+43"
+		"args->{u'out'":" [], u'in'": []}
+type->proc
+name->scheduler
+1 -> "type->par
+number->1
+43"
+	"type->op
+name->inc
+44"
+		"type->par
+number->1
+43" -> "type->op
+name->inc
+44"
+	"type->var
+name->j
+45"
+		"type->par
+number->1
+43" -> "type->var
+name->j
+45"
+	"type->op
+name->xor
+46"
+		"type->par
+number->1
+43" -> "type->op
+name->xor
+46"
+	"type->g1cx
+idx->n
+47"
+		"type->par
+number->1
+43" -> "type->g1cx
+idx->n
+47"
+	"type->op
+name->nonzero_jump
+48"
+		"type->par
+number->1
+43" -> "type->op
+name->nonzero_jump
+48"
+	"type->const
+value->2
+49"
+		"type->par
+number->1
+43" -> "type->const
+value->2
+49"
+	"type->op
+name->zero
+50"
+		"type->par
+number->1
+43" -> "type->op
+name->zero
+50"
+	"type->var
+name->j
+51"
+		"type->par
+number->1
+43" -> "type->var
+name->j
+51"
+	"type->par
+number->2
+52"
+		"args->{u'out'":" [], u'in'": []}
+type->proc
+name->scheduler
+1 -> "type->par
+number->2
+52"
+	"type->op
+name->load
+53"
+		"type->par
+number->2
+52" -> "type->op
+name->load
+53"
+	"type->var
+name->c
+54"
+		"type->par
+number->2
+52" -> "type->var
+name->c
+54"
+	"type->op
+name->add
+55"
+		"type->par
+number->2
+52" -> "type->op
+name->add
+55"
+	"type->var
+name->j
+56"
+		"type->par
+number->2
+52" -> "type->var
+name->j
+56"
+	"type->op
+name->store
+57"
+		"type->par
+number->2
+52" -> "type->op
+name->store
+57"
+	"type->var
+name->s
+58"
+		"type->par
+number->2
+52" -> "type->var
+name->s
+58"
+	"type->op
+name->load
+59"
+		"type->par
+number->2
+52" -> "type->op
+name->load
+59"
+	"type->g1cx
+idx->a
+60"
+		"type->par
+number->2
+52" -> "type->g1cx
+idx->a
+60"
+	"type->op
+name->zero_jump
+61"
+		"type->par
+number->2
+52" -> "type->op
+name->zero_jump
+61"
+	"type->const
+value->3
+62"
+		"type->par
+number->2
+52" -> "type->const
+value->3
+62"
+	"type->op
+name->load
+63"
+		"type->par
+number->2
+52" -> "type->op
+name->load
+63"
+	"type->g1cx
+idx->s
+64"
+		"type->par
+number->2
+52" -> "type->g1cx
+idx->s
+64"
+	"type->op
+name->right_shift
+65"
+		"type->par
+number->2
+52" -> "type->op
+name->right_shift
+65"
+	"type->const
+value->4
+66"
+		"type->par
+number->2
+52" -> "type->const
+value->4
+66"
+	"type->op
+name->nonzero_jump
+67"
+		"type->par
+number->2
+52" -> "type->op
+name->nonzero_jump
+67"
+	"type->const
+value->1
+68"
+		"type->par
+number->2
+52" -> "type->const
+value->1
+68"
+	"type->par
+number->3
+69"
+		"args->{u'out'":" [], u'in'": []}
+type->proc
+name->scheduler
+1 -> "type->par
+number->3
+69"
+	"type->op
+name->load
+70"
+		"type->par
+number->3
+69" -> "type->op
+name->load
+70"
+	"type->g1cx
+idx->s
+71"
+		"type->par
+number->3
+69" -> "type->g1cx
+idx->s
+71"
+	"type->op
+name->and
+72"
+		"type->par
+number->3
+69" -> "type->op
+name->and
+72"
+	"type->const
+value->1
+73"
+		"type->par
+number->3
+69" -> "type->const
+value->1
+73"
+	"type->op
+name->zero_jump
+74"
+		"type->par
+number->3
+69" -> "type->op
+name->zero_jump
+74"
+	"type->const
+value->1
+75"
+		"type->par
+number->3
+69" -> "type->const
+value->1
+75"
+	"type->op
+name->load
+76"
+		"type->par
+number->3
+69" -> "type->op
+name->load
+76"
+	"type->var
+name->j
+77"
+		"type->par
+number->3
+69" -> "type->var
+name->j
+77"
+	"type->op
+name->mul
+78"
+		"type->par
+number->3
+69" -> "type->op
+name->mul
+78"
+	"type->const
+value->4
+79"
+		"type->par
+number->3
+69" -> "type->const
+value->4
+79"
+	"type->op
+name->add
+80"
+		"type->par
+number->3
+69" -> "type->op
+name->add
+80"
+	"type->var
+name->p
+81"
+		"type->par
+number->3
+69" -> "type->var
+name->p
+81"
+	"type->op
+name->store
+82"
+		"type->par
+number->3
+69" -> "type->op
+name->store
+82"
+	"type->var
+name->p
+83"
+		"type->par
+number->3
+69" -> "type->var
+name->p
+83"
+	"type->op
+name->load
+84"
+		"type->par
+number->3
+69" -> "type->op
+name->load
+84"
+	"type->g4cx
+idx->p
+85"
+		"type->par
+number->3
+69" -> "type->g4cx
+idx->p
+85"
+	"type->op
+name->store
+86"
+		"type->par
+number->3
+69" -> "type->op
+name->store
+86"
+	"type->g4cx
+idx->65624
+87"
+		"type->par
+number->3
+69" -> "type->g4cx
+idx->65624
+87"
+	"type->op
+name->load
+88"
+		"type->par
+number->3
+69" -> "type->op
+name->load
+88"
+	"type->var
+name->j
+89"
+		"type->par
+number->3
+69" -> "type->var
+name->j
+89"
+	"type->op
+name->store
+90"
+		"type->par
+number->3
+69" -> "type->op
+name->store
+90"
+	"type->g1cx
+idx->i
+91"
+		"type->par
+number->3
+69" -> "type->g1cx
+idx->i
+91"
+}
