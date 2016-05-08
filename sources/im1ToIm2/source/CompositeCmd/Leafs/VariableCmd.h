@@ -12,7 +12,7 @@ public:
     VariableCmd(Json::Value json);
 
     virtual Json::Value toJson() override;
-    virtual std::string toArgumentFormat() override;
+    virtual Json::Value toArgumentFormat() override;
 };
 
 

@@ -1,4 +1,4 @@
-#include "VariableCmd.h"//
+//
 // Created by s15-22 on 21.11.15.
 //
 
@@ -17,6 +17,8 @@ Json::Value VariableCmd::toJson()
     return result;
 }
 
-std::string VariableCmd::toArgumentFormat() {
-    return _cmdJson["name"].asString();
+Json::Value VariableCmd::toArgumentFormat() {
+    Json::Value value;
+    value.append(_cmdJson["name"]);
+    return value;
 }

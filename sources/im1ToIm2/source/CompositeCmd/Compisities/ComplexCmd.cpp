@@ -48,7 +48,10 @@ Json::Value ComplexCmd::toJson()
     return result;
 }
 
-std::string ComplexCmd::toArgumentFormat() {
+Json::Value ComplexCmd::toArgumentFormat() {
     if(_clidren.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
-    return _cmdJson["type"].asString() + "_" + _cmdJson["number"].asString();
+    Json::Value result;
+    result.append(_cmdJson["type"].asString());
+    result.append(_cmdJson["number"].asString());
+    return result;
 }

@@ -13,8 +13,10 @@ Json::Value ArgsCmd::toJson()
 
     for(SPtr& child : _clidren)
     {
-        auto args = child->toArgumentFormat();
-        result.append(args);
+        for(auto& arg : child->toArgumentFormat())
+        {
+            result.append(arg);
+        }
     }
 
     return result;

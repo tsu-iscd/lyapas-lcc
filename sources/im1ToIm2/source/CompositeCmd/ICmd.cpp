@@ -27,7 +27,7 @@ Json::Value ICmd::toJson()
     return result;
 }
 
-std::string ICmd::toArgumentFormat()
+Json::Value ICmd::toArgumentFormat()
 {
     throw std::runtime_error("ICmd: can't use toArgumentFormat(), please override this function");
 }

@@ -12,7 +12,16 @@
         ]
     ],
     [
-        {"type":"out_args"}
+        {"type":"out_args"},
+        [
+            {"number": "3", "type": "logic_complex"}
+        ],
+        [
+            {"name": "s", "type": "var"}
+        ],
+        [
+            {"name": "r", "type": "var"}
+        ]
     ],
     [
         {"type":"preface"},
