@@ -16,3 +16,7 @@ Json::Value VariableCmd::toJson()
 
     return result;
 }
+
+std::string VariableCmd::toArgumentFormat() {
+    return _cmdJson["name"].asString();
+}

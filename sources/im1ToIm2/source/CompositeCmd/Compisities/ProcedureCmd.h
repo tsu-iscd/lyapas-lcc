@@ -8,11 +8,17 @@
 
 #include "../CompositeCmd.h"
 
-class ProcessCmd : public CompositeCmd{
+class ProcedureCmd : public CompositeCmd{
 public:
-    ProcessCmd(Json::Value processJson);
+    enum class Type { definition, call};
+
+    ProcedureCmd(Json::Value processJson, Type type);
 
     virtual Json::Value toJson() override;
+private:
+    Json::Value buildSignature();
+
+    Type _type;
 };
 
 

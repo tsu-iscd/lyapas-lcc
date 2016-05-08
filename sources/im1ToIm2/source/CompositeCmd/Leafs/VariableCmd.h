@@ -11,7 +11,8 @@ class VariableCmd : public LeafCmd {
 public:
     VariableCmd(Json::Value json);
 
-    virtual Json::Value toJson();
+    virtual Json::Value toJson() override;
+    virtual std::string toArgumentFormat() override;
 };
 
 

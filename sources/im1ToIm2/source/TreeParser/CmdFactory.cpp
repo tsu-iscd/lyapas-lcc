@@ -3,7 +3,7 @@
 //
 
 #include "CmdFactory.h"
-#include "../CompositeCmd/Compisities/ProcessCmd.h"
+#include "../CompositeCmd/Compisities/ProcedureCmd.h"
 #include "../CompositeCmd/Compisities/StabCompositeCmd.h"
 #include "../CompositeCmd/Leafs/StabLeafCmd.h"
 #include "../CompositeCmd/Compisities/ParagraphCmd.h"
@@ -12,12 +12,26 @@
 #include "../CompositeCmd/Leafs/ConstantCmd.h"
 #include "../CompositeCmd/Compisities/ComplexCmd.h"
 #include "../CompositeCmd/Compisities/PrefaceCmd.h"
+#include "../CompositeCmd/Compisities/ProgramCmd.h"
+#include "../CompositeCmd/Compisities/ArgsCmd.h"
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
 {
-    if("proc" == type)
+    if("program" == type)
     {
-        return CompositeCmd::SPtrComposite(new ProcessCmd(json));
+        return CompositeCmd::SPtrComposite(new ProgramCmd(json));
+    }
+    else if("in_args" == type || "out_args" == type)
+    {
+        return CompositeCmd::SPtrComposite(new ArgsCmd(json));
+    }
+    else if("procedure" == type)
+    {
+        return CompositeCmd::SPtrComposite(new ProcedureCmd(json, ProcedureCmd::Type::definition));
+    }
+    else if("call" == type)
+    {
+        return CompositeCmd::SPtrComposite(new ProcedureCmd(json, ProcedureCmd::Type::call));
     }
     else if("preface" == type)
     {
@@ -27,7 +41,7 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
     {
         return CompositeCmd::SPtrComposite(new ParagraphCmd(json));
     }
-    else if("op" == type)
+    else if("operation" == type)
     {
         return CompositeCmd::SPtrComposite(new OperationCmd(json));
     }

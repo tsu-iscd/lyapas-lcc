@@ -9,7 +9,6 @@ ICmd::ICmd(Json::Value json) : _cmdJson(json[0]) {}
 std::string ICmd::asString()
 {
     return _cmdJson.toStyledString();
-    //throw std::runtime_error("ICmd: can't use asString(), please override this function");
 }
 
 Json::Value ICmd::toJson()
@@ -26,4 +25,9 @@ Json::Value ICmd::toJson()
     result.append(cmd);
 
     return result;
+}
+
+std::string ICmd::toArgumentFormat()
+{
+    throw std::runtime_error("ICmd: can't use toArgumentFormat(), please override this function");
 }

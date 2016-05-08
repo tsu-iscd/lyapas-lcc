@@ -12,6 +12,7 @@ public:
     ComplexCmd(Json::Value processJson);
 
     virtual Json::Value toJson() override;
+    virtual std::string toArgumentFormat() override;
 };
 
 

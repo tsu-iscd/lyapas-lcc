@@ -23,7 +23,7 @@ public:
 
     virtual std::string asString();
     virtual Json::Value toJson();
-
+    virtual std::string toArgumentFormat();
 };
 
 

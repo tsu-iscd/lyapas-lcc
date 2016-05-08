@@ -18,13 +18,13 @@ Json::Value ComplexCmd::toJson()
         auto child = _clidren.back()->toJson();
 
         std::string complexType = _cmdJson["type"].asString();
-        std::string complexName = _cmdJson["name"].asString();
+        std::string complexNumber = _cmdJson["number"].asString();
         std::string childType = child["type"].asString();
 
         std::string type;
-        type = complexType;
-        type += complexName.empty() ? "" : ("_" + complexName);
-        type += "_" + childType;
+        type = complexType
+            + (complexNumber.empty() ? "" : ("_" + complexNumber))
+            + "_" + childType;
 
         std::string childArgs;
         childArgs = child["args"].asString();
@@ -35,15 +35,20 @@ Json::Value ComplexCmd::toJson()
     else
     {
         std::string complexType = _cmdJson["type"].asString();
-        std::string complexName = _cmdJson["name"].asString();
+        std::string complexNumber = _cmdJson["number"].asString();
 
         std::string type;
         type = complexType;
-        type += complexName.empty() ? "" : ("_" + complexName);
+        type += complexNumber.empty() ? "" : ("_" + complexNumber);
 
         result["type"] = type;
         result["args"] = "";
     }
 
     return result;
+}
+
+std::string ComplexCmd::toArgumentFormat() {
+    if(_clidren.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
+    return _cmdJson["type"].asString() + "_" + _cmdJson["number"].asString();
 }
