@@ -4,15 +4,14 @@
 
 #include <iostream>
 #include "CmdFactory.h"
-#include "../CompositeCmd/Compisities/ProcedureCmd.h"
-#include "../CompositeCmd/Compisities/StabCompositeCmd.h"
-#include "../CompositeCmd/Compisities/ParagraphCmd.h"
-#include "../CompositeCmd/Compisities/OperationCmd.h"
-#include "../CompositeCmd/Compisities/ComplexCmd.h"
-#include "../CompositeCmd/Compisities/PrefaceCmd.h"
-#include "../CompositeCmd/Compisities/ProgramCmd.h"
-#include "../CompositeCmd/Compisities/ArgsCmd.h"
-#include "../CompositeCmd/ICmd.h"
+#include "../CompositeCmd/Composites/ProcedureCmd.h"
+#include "../CompositeCmd/Composites/ParagraphCmd.h"
+#include "../CompositeCmd/Composites/OperationCmd.h"
+#include "../CompositeCmd/Composites/ComplexCmd.h"
+#include "../CompositeCmd/Composites/PrefaceCmd.h"
+#include "../CompositeCmd/Composites/ProgramCmd.h"
+#include "../CompositeCmd/Composites/ArgsCmd.h"
+
 #include "../CompositeCmd/Leafs/StabLeafCmd.h"
 #include "../CompositeCmd/Leafs/VariableCmd.h"
 #include "../CompositeCmd/Leafs/ConstantCmd.h"
