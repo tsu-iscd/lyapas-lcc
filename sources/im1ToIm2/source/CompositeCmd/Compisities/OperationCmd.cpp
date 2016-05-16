@@ -29,7 +29,9 @@ Json::Value OperationCmd::toJson()
         auto child = _clidren.back()->toJson();
         result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
 
-        result["args"] = child["args"];
+        Json::Value args;
+        args.append(child["args"]);
+        result["args"] = args;
 
         return result;
     }

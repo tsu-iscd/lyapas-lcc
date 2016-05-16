@@ -13,7 +13,10 @@ Json::Value AsmCmd::toJson()
 
     result["type"] = "cmd";
     result["cmd"] = "asm";
-    result["args"] = _cmdJson["command"];
+
+    Json::Value args;
+    args.append(_cmdJson["command"]);
+    result["args"] = args;
 
     return result;
 }
