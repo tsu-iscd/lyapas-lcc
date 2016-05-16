@@ -2,18 +2,22 @@
 // Created by s15-22 on 07.11.15.
 //
 
+#include <iostream>
 #include "CmdFactory.h"
 #include "../CompositeCmd/Compisities/ProcedureCmd.h"
 #include "../CompositeCmd/Compisities/StabCompositeCmd.h"
-#include "../CompositeCmd/Leafs/StabLeafCmd.h"
 #include "../CompositeCmd/Compisities/ParagraphCmd.h"
 #include "../CompositeCmd/Compisities/OperationCmd.h"
-#include "../CompositeCmd/Leafs/VariableCmd.h"
-#include "../CompositeCmd/Leafs/ConstantCmd.h"
 #include "../CompositeCmd/Compisities/ComplexCmd.h"
 #include "../CompositeCmd/Compisities/PrefaceCmd.h"
 #include "../CompositeCmd/Compisities/ProgramCmd.h"
 #include "../CompositeCmd/Compisities/ArgsCmd.h"
+#include "../CompositeCmd/ICmd.h"
+#include "../CompositeCmd/Leafs/StabLeafCmd.h"
+#include "../CompositeCmd/Leafs/VariableCmd.h"
+#include "../CompositeCmd/Leafs/ConstantCmd.h"
+#include "../CompositeCmd/Leafs/StringCmd.h"
+#include "../CompositeCmd/Leafs/AsmCmd.h"
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
 {
@@ -65,6 +69,14 @@ ICmd::SPtr CmdFactory::createCmd(std::string type, Json::Value json)
     else if("const" == type)
     {
         return ConstantCmd::SPtr(new ConstantCmd(json));
+    }
+    else if("string" == type)
+    {
+        return StringCmd::SPtr(new StringCmd(json));
+    }
+    else if("asm" == type)
+    {
+        return AsmCmd::SPtr(new AsmCmd(json));
     }
     else
     {

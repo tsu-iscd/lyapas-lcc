@@ -8,19 +8,49 @@ OperationCmd::OperationCmd(Json::Value processJson) : CompositeCmd(processJson) 
 
 Json::Value OperationCmd::toJson()
 {
-    if(_clidren.size() != 1) throw std::runtime_error("operation don't have one child");
+    if(_clidren.size() == 0)
+    {
+        Json::Value result;
+        result.clear();
 
-    Json::Value result;
-    result.clear();
+        result["type"] = "cmd";
+        result["cmd"] = _cmdJson["name"];
 
-    result["type"] = "cmd";
+        return result;
+    }
+    else if(_clidren.size() == 1)
+    {
+        Json::Value result;
+        result.clear();
 
-    auto operationName = _cmdJson["name"];
-    auto child = _clidren.back()->toJson();
-    result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
+        result["type"] = "cmd";
 
-    result["args"] = child["args"];
+        auto operationName = _cmdJson["name"];
+        auto child = _clidren.back()->toJson();
+        result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
 
-    return result;
+        result["args"] = child["args"];
+
+        return result;
+    }
+    else
+    {
+        Json::Value result;
+        result.clear();
+
+        result["type"] = "cmd";
+        result["cmd"] = _cmdJson["name"];
+
+        Json::Value args;
+        for(SPtr& child : _clidren)
+        {
+            for(auto& arg : child->toArgumentFormat())
+            {
+                args.append(arg);
+            }
+        }
+        result["args"] = args;
+
+        return result;
+    }
 }
-
