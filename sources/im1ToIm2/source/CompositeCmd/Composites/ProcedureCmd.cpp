@@ -22,7 +22,7 @@ Json::Value ProcedureCmd::toJson()
         result.clear();
 
         result.append(signature);
-        for(SPtr& child : _clidren)
+        for(SPtr& child : _children)
         {
             auto paragraph = child->toJson();
             for(auto cmd : paragraph)
@@ -45,21 +45,21 @@ Json::Value ProcedureCmd::buildSignature()
 
     signatureArgs.append(_cmdJson["name"].asString());
 
-    auto inArgs = _clidren.front()->toJson();
+    auto inArgs = _children.front()->toJson();
     for(auto& arg : inArgs)
     {
         signatureArgs.append(arg);
     }
-    _clidren.pop_front();
+    _children.pop_front();
 
     signatureArgs.append("/");
 
-    auto outArgs = _clidren.front()->toJson();
+    auto outArgs = _children.front()->toJson();
     for(auto& arg : outArgs)
     {
         signatureArgs.append(arg);
     }
-    _clidren.pop_front();
+    _children.pop_front();
 
     return signature;
 }

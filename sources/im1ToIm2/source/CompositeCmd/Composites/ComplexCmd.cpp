@@ -8,14 +8,14 @@ ComplexCmd::ComplexCmd(Json::Value processJson) : CompositeCmd(processJson) { }
 
 Json::Value ComplexCmd::toJson()
 {
-    if(_clidren.size() > 1) throw std::runtime_error("Complex can't have more one child; correct children = 1 or 0");
+    if(_children.size() > 1) throw std::runtime_error("Complex can't have more one child; correct children = 1 or 0");
 
     Json::Value result;
     result.clear();
 
-    if(_clidren.size() == 1)
+    if(_children.size() == 1)
     {
-        auto child = _clidren.back()->toJson();
+        auto child = _children.back()->toJson();
 
         std::string complexType = _cmdJson["type"].asString();
         std::string complexNumber = _cmdJson["number"].asString();
@@ -49,7 +49,7 @@ Json::Value ComplexCmd::toJson()
 }
 
 Json::Value ComplexCmd::toArgumentFormat() {
-    if(_clidren.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
+    if(_children.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
     Json::Value result;
     result.append(_cmdJson["type"].asString());
     result.append(_cmdJson["number"].asString());

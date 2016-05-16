@@ -18,7 +18,7 @@ Json::Value ParagraphCmd::toJson()
 
     result.append(paragraphJson);
 
-    for(SPtr& child : _clidren)
+    for(SPtr& child : _children)
     {
         auto operation = child->toJson();
         result.append(operation);

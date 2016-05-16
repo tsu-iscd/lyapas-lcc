@@ -12,7 +12,7 @@ Json::Value PrefaceCmd::toJson()
     result.clear();
 
 
-    for(SPtr& child : _clidren)
+    for(SPtr& child : _children)
     {
         auto operation = child->toJson();
         result.append(operation);

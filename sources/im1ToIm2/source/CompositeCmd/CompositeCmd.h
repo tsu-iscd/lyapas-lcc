@@ -19,7 +19,7 @@ public:
     virtual Json::Value toJson();
 
 protected:
-    std::list<SPtr> _clidren;
+    std::list<SPtr> _children;
 };
 
 

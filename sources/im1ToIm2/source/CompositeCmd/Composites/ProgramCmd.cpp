@@ -11,7 +11,7 @@ Json::Value ProgramCmd::toJson()
     Json::Value result;
     result.clear();
 
-    for(SPtr& child : _clidren)
+    for(SPtr& child : _children)
     {
         auto paragraph = child->toJson();
         for(auto cmd : paragraph)

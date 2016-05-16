@@ -11,7 +11,7 @@ Json::Value ArgsCmd::toJson()
     Json::Value result;
     result.clear();
 
-    for(SPtr& child : _clidren)
+    for(SPtr& child : _children)
     {
         for(auto& arg : child->toArgumentFormat())
         {

@@ -8,7 +8,7 @@ OperationCmd::OperationCmd(Json::Value processJson) : CompositeCmd(processJson) 
 
 Json::Value OperationCmd::toJson()
 {
-    if(_clidren.size() == 0)
+    if(_children.size() == 0)
     {
         Json::Value result;
         result.clear();
@@ -18,7 +18,7 @@ Json::Value OperationCmd::toJson()
 
         return result;
     }
-    else if(_clidren.size() == 1)
+    else if(_children.size() == 1)
     {
         Json::Value result;
         result.clear();
@@ -26,7 +26,7 @@ Json::Value OperationCmd::toJson()
         result["type"] = "cmd";
 
         auto operationName = _cmdJson["name"];
-        auto child = _clidren.back()->toJson();
+        auto child = _children.back()->toJson();
         result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
 
         Json::Value args;
@@ -44,7 +44,7 @@ Json::Value OperationCmd::toJson()
         result["cmd"] = _cmdJson["name"];
 
         Json::Value args;
-        for(SPtr& child : _clidren)
+        for(SPtr& child : _children)
         {
             for(auto& arg : child->toArgumentFormat())
             {
