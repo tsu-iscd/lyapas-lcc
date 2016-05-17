@@ -11,7 +11,7 @@ Json::Value StringCmd::toJson()
     Json::Value result;
     result.clear();
 
-    result["type"] = "c";
+    result["type"] = "s";
     result["args"] = "\"" + _cmdJson["value"].asString() + "\"";
 
     return result;
@@ -21,6 +21,6 @@ Json::Value StringCmd::toJson()
 //we shoult think about it
 Json::Value StringCmd::toArgumentFormat() {
     Json::Value value;
-    value.append(_cmdJson["value"]);
+    value.append("\"" + _cmdJson["value"].asString() + "\"");
     return value;
 }

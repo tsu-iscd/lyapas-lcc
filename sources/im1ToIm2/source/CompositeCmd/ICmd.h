@@ -26,6 +26,12 @@ public:
     virtual Json::Value toArgumentFormat();
 };
 
-
+namespace fieldName
+{
+    const std::string cmd_postfix = "cmd_postfix";
+    const std::string args = "args";
+    const std::string name = "name";
+    const std::string type = "type";
+}
 
 #endif //IM1TOIM2_COMPOSITECMD_H

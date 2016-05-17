@@ -9,10 +9,9 @@ VariableCmd::VariableCmd(Json::Value json) : LeafCmd(json) { }
 Json::Value VariableCmd::toJson()
 {
     Json::Value result;
-    result.clear();
 
-    result["type"] = "v";
-    result["args"] = _cmdJson["name"];
+    result[fieldName::cmd_postfix] = "_v";
+    result[fieldName::args].append(_cmdJson[fieldName::name]);
 
     return result;
 }

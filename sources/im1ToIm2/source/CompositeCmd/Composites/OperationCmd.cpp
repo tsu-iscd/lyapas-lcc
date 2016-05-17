@@ -29,9 +29,17 @@ Json::Value OperationCmd::toJson()
         auto child = _children.back()->toJson();
         result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
 
-        Json::Value args;
-        args.append(child["args"]);
-        result["args"] = args;
+        Json::Value childArgs = child["args"];
+        if(childArgs.isArray())
+        {
+            result["args"] = childArgs;
+        }
+        else
+        {
+            Json::Value arrayWrapper;
+            arrayWrapper.append(childArgs);
+            result["args"] = arrayWrapper;
+        }
 
         return result;
     }
