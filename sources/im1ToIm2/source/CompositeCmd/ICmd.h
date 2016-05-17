@@ -28,10 +28,13 @@ public:
 
 namespace fieldName
 {
+    const std::string cmd = "cmd";
     const std::string cmd_postfix = "cmd_postfix";
     const std::string args = "args";
+    const std::string value = "value";
     const std::string name = "name";
     const std::string type = "type";
+    const std::string number = "number";
 }
 
 #endif //IM1TOIM2_COMPOSITECMD_H

@@ -11,35 +11,28 @@ Json::Value ComplexCmd::toJson()
     if(_children.size() > 1) throw std::runtime_error("Complex can't have more one child; correct children = 1 or 0");
 
     Json::Value result;
-    result.clear();
+
+    std::string complexType = _cmdJson[fieldName::type].asString();
+    result[fieldName::args].append(complexType);
+
+    if(_cmdJson.isMember(fieldName::number))
+    {
+        result[fieldName::args].append(_cmdJson[fieldName::number]);
+    }
 
     if(_children.size() == 1)
     {
         auto child = _children.back()->toJson();
+        for(auto arg : child[fieldName::args])
+        {
+            result[fieldName::args].append(arg);
+        }
 
-        result["type"] = child["type"];
-
-        std::string complexType = _cmdJson["type"].asString();
-        std::string complexNumber = _cmdJson["number"].asString();
-
-        Json::Value args;
-        args.append(complexType);
-        if(!complexNumber.empty()) args.append(complexNumber);
-        args.append(child["args"].asString());
-
-        result["args"] = args;
+        result[fieldName::cmd_postfix] = child[fieldName::cmd_postfix];
     }
     else
     {
-        std::string complexType = _cmdJson["type"].asString();
-        std::string complexNumber = _cmdJson["number"].asString();
-
-        std::string type;
-        type = complexType;
-        type += complexNumber.empty() ? "" : ("_" + complexNumber);
-
-        result["type"] = type;
-        result["args"] = "";
+        result[fieldName::cmd_postfix] = "";
     }
 
     return result;
@@ -48,7 +41,7 @@ Json::Value ComplexCmd::toJson()
 Json::Value ComplexCmd::toArgumentFormat() {
     if(_children.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
     Json::Value result;
-    result.append(_cmdJson["type"].asString());
-    result.append(_cmdJson["number"].asString());
+    result.append(_cmdJson[fieldName::type].asString());
+    result.append(_cmdJson[fieldName::number]);
     return result;
 }

@@ -8,59 +8,33 @@ OperationCmd::OperationCmd(Json::Value processJson) : CompositeCmd(processJson) 
 
 Json::Value OperationCmd::toJson()
 {
+    Json::Value result;
+    result["type"] = "cmd";
+    auto operationName = _cmdJson["name"];
+
     if(_children.size() == 0)
     {
-        Json::Value result;
-        result.clear();
-
-        result["type"] = "cmd";
-        result["cmd"] = _cmdJson["name"];
-
-        return result;
+        result["cmd"] = operationName;
     }
     else if(_children.size() == 1)
     {
-        Json::Value result;
-        result.clear();
-
-        result["type"] = "cmd";
-
-        auto operationName = _cmdJson["name"];
         auto child = _children.back()->toJson();
-        result["cmd"] = operationName.asString() + std::string("_") + child["type"].asString();
+        result[fieldName::args] = child[fieldName::args];
 
-        Json::Value childArgs = child["args"];
-        if(childArgs.isArray())
-        {
-            result["args"] = childArgs;
-        }
-        else
-        {
-            Json::Value arrayWrapper;
-            arrayWrapper.append(childArgs);
-            result["args"] = arrayWrapper;
-        }
-
-        return result;
+        result["cmd"] = operationName.asString() + child[fieldName::cmd_postfix].asString();
     }
     else
     {
-        Json::Value result;
-        result.clear();
+        result["cmd"] = operationName;
 
-        result["type"] = "cmd";
-        result["cmd"] = _cmdJson["name"];
-
-        Json::Value args;
         for(SPtr& child : _children)
         {
             for(auto& arg : child->toArgumentFormat())
             {
-                args.append(arg);
+                result[fieldName::args].append(arg);
             }
         }
-        result["args"] = args;
-
-        return result;
     }
+
+    return result;
 }

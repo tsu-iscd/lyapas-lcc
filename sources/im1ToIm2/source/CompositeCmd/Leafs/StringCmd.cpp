@@ -9,10 +9,9 @@ StringCmd::StringCmd(Json::Value json) : LeafCmd(json) { }
 Json::Value StringCmd::toJson()
 {
     Json::Value result;
-    result.clear();
 
-    result["type"] = "s";
-    result["args"] = "\"" + _cmdJson["value"].asString() + "\"";
+    result[fieldName::cmd_postfix] = "_s";
+    result[fieldName::args].append("\"" + _cmdJson[fieldName::value].asString() + "\"");
 
     return result;
 }
@@ -21,6 +20,6 @@ Json::Value StringCmd::toJson()
 //we shoult think about it
 Json::Value StringCmd::toArgumentFormat() {
     Json::Value value;
-    value.append("\"" + _cmdJson["value"].asString() + "\"");
+    value.append("\"" + _cmdJson[fieldName::value].asString() + "\"");
     return value;
 }

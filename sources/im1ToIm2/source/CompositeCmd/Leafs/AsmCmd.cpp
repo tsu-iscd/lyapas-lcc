@@ -9,14 +9,12 @@ AsmCmd::AsmCmd(Json::Value json) : LeafCmd(json) { }
 Json::Value AsmCmd::toJson()
 {
     Json::Value result;
-    result.clear();
 
-    result["type"] = "cmd";
-    result["cmd"] = "asm";
+    result[fieldName::type] = "cmd";
+    result[fieldName::cmd] = "asm";
 
-    Json::Value args;
-    args.append(_cmdJson["command"]);
-    result["args"] = args;
+    //TODO: command??
+    result[fieldName::args].append(_cmdJson["command"]);
 
     return result;
 }
