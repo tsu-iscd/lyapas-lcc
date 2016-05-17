@@ -9,24 +9,18 @@ OperationCmd::OperationCmd(Json::Value processJson) : CompositeCmd(processJson) 
 Json::Value OperationCmd::toJson()
 {
     Json::Value result;
-    result["type"] = "cmd";
-    auto operationName = _cmdJson["name"];
+    result[fieldName::type] = "cmd";
+    std::string operationName = _cmdJson[fieldName::name].asString();
 
-    if(_children.size() == 0)
-    {
-        result["cmd"] = operationName;
-    }
-    else if(_children.size() == 1)
+    if(_children.size() == 1)
     {
         auto child = _children.back()->toJson();
         result[fieldName::args] = child[fieldName::args];
 
-        result["cmd"] = operationName.asString() + child[fieldName::cmd_postfix].asString();
+        operationName +=  child[fieldName::cmd_postfix].asString();
     }
-    else
+    else if(_children.size() >= 2)
     {
-        result["cmd"] = operationName;
-
         for(SPtr& child : _children)
         {
             for(auto& arg : child->toArgumentFormat())
@@ -35,6 +29,8 @@ Json::Value OperationCmd::toJson()
             }
         }
     }
+
+    result[fieldName::cmd] = operationName;
 
     return result;
 }

@@ -12,7 +12,6 @@
 #include "../CompositeCmd/Composites/ProgramCmd.h"
 #include "../CompositeCmd/Composites/ArgsCmd.h"
 
-#include "../CompositeCmd/Leafs/StabLeafCmd.h"
 #include "../CompositeCmd/Leafs/VariableCmd.h"
 #include "../CompositeCmd/Leafs/ConstantCmd.h"
 #include "../CompositeCmd/Leafs/StringCmd.h"
@@ -49,13 +48,12 @@ CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Jso
         return CompositeCmd::SPtrComposite(new OperationCmd(json));
     }
     else if(type.find("complex") != std::string::npos)
-    //else if("complex" == type)
     {
         return CompositeCmd::SPtrComposite(new ComplexCmd(json));
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -79,7 +77,7 @@ ICmd::SPtr CmdFactory::createCmd(std::string type, Json::Value json)
     }
     else
     {
-        return ICmd::SPtr(new StabLeafCmd(json));
+        return nullptr;
     }
 }
 

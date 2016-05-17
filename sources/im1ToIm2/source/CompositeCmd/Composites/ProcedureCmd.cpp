@@ -2,7 +2,6 @@
 // Created by Safonov Vadim on 11/6/15.
 //
 
-#include <iostream>
 #include "ProcedureCmd.h"
 
 ProcedureCmd::ProcedureCmd(Json::Value processJson, ProcedureCmd::Type type)
@@ -19,7 +18,6 @@ Json::Value ProcedureCmd::toJson()
     else if(_type == ProcedureCmd::Type::definition)
     {
         Json::Value result;
-        result.clear();
 
         result.append(signature);
         for(SPtr& child : _children)
@@ -38,12 +36,10 @@ Json::Value ProcedureCmd::toJson()
 Json::Value ProcedureCmd::buildSignature()
 {
     Json::Value signature;
-    signature["type"] = _cmdJson["type"].asString();
-    signature["args"] = Json::Value();
-    auto& signatureArgs = signature["args"];
-    signatureArgs.clear();
+    signature[fieldName::type] = _cmdJson[fieldName::type].asString();
 
-    signatureArgs.append(_cmdJson["name"].asString());
+    auto& signatureArgs = signature[fieldName::args];
+    signatureArgs.append(_cmdJson[fieldName::name].asString());
 
     auto inArgs = _children.front()->toJson();
     for(auto& arg : inArgs)
@@ -63,5 +59,4 @@ Json::Value ProcedureCmd::buildSignature()
 
     return signature;
 }
-
 

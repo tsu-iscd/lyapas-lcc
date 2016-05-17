@@ -9,7 +9,6 @@ ArgsCmd::ArgsCmd(Json::Value processJson) : CompositeCmd(processJson) {}
 Json::Value ArgsCmd::toJson()
 {
     Json::Value result;
-    result.clear();
 
     for(SPtr& child : _children)
     {

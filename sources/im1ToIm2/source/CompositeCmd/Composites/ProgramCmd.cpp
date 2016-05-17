@@ -9,7 +9,6 @@ ProgramCmd::ProgramCmd(Json::Value processJson) : CompositeCmd(processJson) {}
 Json::Value ProgramCmd::toJson()
 {
     Json::Value result;
-    result.clear();
 
     for(SPtr& child : _children)
     {

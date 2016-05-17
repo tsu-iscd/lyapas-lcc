@@ -24,24 +24,14 @@ Json::Value tryParseJson(istream &stream)
 
     return json;
 }
-
-void parseTree(CompositeCmd::SPtrComposite cmd, Json::Value root)
-{
-    for(int i = 1; i < root.size(); i++)
-    {
-        CompositeCmd::SPtrComposite newCmd(new CompositeCmd(root[i]));
-        cmd->add(newCmd);
-        parseTree(newCmd, root[i]);
-    }
-}
 //*** END TEST PARSE ***/
 
 int main(int argc, char* argv[])
 {
-    Json::Value json;
+    Json::Value jsonTree;
     if(argc < 2)
     {
-        std::cin >> json;
+        std::cin >> jsonTree;
     }
     else
     {
@@ -49,23 +39,19 @@ int main(int argc, char* argv[])
 
         ifstream jsonFile;
         jsonFile.open(pathToFile, std::ifstream::binary);
-        json = tryParseJson(jsonFile); //TODO: exit if parse error
+        //TODO:
+        //This functions doesn't look realy good
+        //it tries to parse json, but if it can't parse json
+        //it will print message and nothing more
+        jsonTree = tryParseJson(jsonFile);
+        //Maybe there should be a reaction(for failed parsing)
     }
 
     CmdFactory factory;
     TreeParser treeParser(factory);
 
-    auto res = treeParser.parseTree(json);
-
-    bool printAsString = false;
-    if(printAsString)
-    {
-        cout << res->asString() << endl;
-    }
-    else
-    {
-        cout << res->toJson().toStyledString() << endl;
-    }
+    auto result = treeParser.parseTree(jsonTree);
+    cout << result->toJson().toStyledString() << endl;
 
     return 0;
 }

@@ -17,7 +17,7 @@ CompositeCmd::SPtrComposite TreeParser::parseTree(Json::Value& jsonTree)
     CompositeCmd::SPtrComposite rootCompositeCmd = _cmdFactory.createCompositeCmd(type, jsonTree);
     parseTreeAndAddToCmd(jsonTree, rootCompositeCmd);
 
-    return  rootCompositeCmd;
+    return rootCompositeCmd;
 }
 
 void TreeParser::parseTreeAndAddToCmd(Json::Value &jsonTree, CompositeCmd::SPtrComposite cmd)
@@ -25,10 +25,10 @@ void TreeParser::parseTreeAndAddToCmd(Json::Value &jsonTree, CompositeCmd::SPtrC
     for(int i = 1; i < jsonTree.size(); i++)
     {
         auto jsonObject = jsonTree[i];
-        std::string type = jsonObject[0]["type"].asString();
+        std::string type = jsonObject[0][fieldName::type].asString();
 
         CompositeCmd::SPtrComposite childCompositionCmd = _cmdFactory.createCompositeCmd(type, jsonObject);
-        if(childCompositionCmd != NULL)
+        if(childCompositionCmd != nullptr)
         {
             cmd->add(childCompositionCmd);
             parseTreeAndAddToCmd(jsonObject, childCompositionCmd);
@@ -36,10 +36,14 @@ void TreeParser::parseTreeAndAddToCmd(Json::Value &jsonTree, CompositeCmd::SPtrC
         }
 
         ICmd::SPtr childCmd = _cmdFactory.createCmd(type, jsonObject);
-        if(childCmd != NULL)
+        if(childCmd != nullptr)
         {
             cmd->add(childCmd);
             continue;
+        }
+        else
+        {
+            throw std::runtime_error("Factory couldn't create Cmd from type: " + type);
         }
     }
 }

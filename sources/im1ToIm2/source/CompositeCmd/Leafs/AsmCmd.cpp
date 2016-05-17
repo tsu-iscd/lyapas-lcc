@@ -12,9 +12,7 @@ Json::Value AsmCmd::toJson()
 
     result[fieldName::type] = "cmd";
     result[fieldName::cmd] = "asm";
-
-    //TODO: command??
-    result[fieldName::args].append(_cmdJson["command"]);
+    result[fieldName::args].append(_cmdJson[fieldName::command]);
 
     return result;
 }

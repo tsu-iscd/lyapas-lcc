@@ -9,13 +9,10 @@ PrefaceCmd::PrefaceCmd(Json::Value processJson) : CompositeCmd(processJson) {}
 Json::Value PrefaceCmd::toJson()
 {
     Json::Value result;
-    result.clear();
-
 
     for(SPtr& child : _children)
     {
-        auto operation = child->toJson();
-        result.append(operation);
+        result.append(child->toJson());
     }
 
     return result;

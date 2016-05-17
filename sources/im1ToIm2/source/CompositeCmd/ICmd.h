@@ -35,6 +35,7 @@ namespace fieldName
     const std::string name = "name";
     const std::string type = "type";
     const std::string number = "number";
+    const std::string command = "command";
 }
 
 #endif //IM1TOIM2_COMPOSITECMD_H

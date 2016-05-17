@@ -16,8 +16,6 @@ Json::Value StringCmd::toJson()
     return result;
 }
 
-//this function doesn't look good.
-//we shoult think about it
 Json::Value StringCmd::toArgumentFormat() {
     Json::Value value;
     value.append("\"" + _cmdJson[fieldName::value].asString() + "\"");

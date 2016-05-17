@@ -10,18 +10,15 @@ ParagraphCmd::ParagraphCmd(Json::Value processJson) : CompositeCmd(processJson) 
 Json::Value ParagraphCmd::toJson()
 {
     Json::Value result;
-    result.clear();
 
     Json::Value paragraphJson;
-    paragraphJson["type"] = "label";
-    paragraphJson["number"] = _cmdJson["number"];
-
+    paragraphJson[fieldName::type] = "label";
+    paragraphJson[fieldName::number] = _cmdJson[fieldName::number];
     result.append(paragraphJson);
 
     for(SPtr& child : _children)
     {
-        auto operation = child->toJson();
-        result.append(operation);
+        result.append(child->toJson());
     }
 
     return result;
