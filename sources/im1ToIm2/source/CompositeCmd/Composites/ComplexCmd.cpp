@@ -15,30 +15,26 @@ Json::Value ComplexCmd::toJson()
     std::string complexType = _cmdJson[fieldName::type].asString();
     result[fieldName::args].append(complexType);
 
-    if(_cmdJson.isMember(fieldName::number))
-    {
+    if(_cmdJson.isMember(fieldName::number)) {
         result[fieldName::args].append(_cmdJson[fieldName::number]);
     }
 
-    if(_children.size() == 1)
-    {
+    if(_children.size() == 1) {
         auto child = _children.back()->toJson();
-        for(auto arg : child[fieldName::args])
-        {
+        for(auto arg : child[fieldName::args]) {
             result[fieldName::args].append(arg);
         }
 
         result[fieldName::cmd_postfix] = child[fieldName::cmd_postfix];
-    }
-    else
-    {
+    } else {
         result[fieldName::cmd_postfix] = "";
     }
 
     return result;
 }
 
-Json::Value ComplexCmd::toArgumentFormat() {
+Json::Value ComplexCmd::toArgumentFormat()
+{
     if(_children.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
 
     Json::Value result;

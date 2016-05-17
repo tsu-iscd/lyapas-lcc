@@ -19,64 +19,38 @@
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
 {
-    if("program" == type)
-    {
+    if("program" == type) {
         return CompositeCmd::SPtrComposite(new ProgramCmd(json));
-    }
-    else if("in_args" == type || "out_args" == type)
-    {
+    } else if("in_args" == type || "out_args" == type) {
         return CompositeCmd::SPtrComposite(new ArgsCmd(json));
-    }
-    else if("procedure" == type)
-    {
+    } else if("procedure" == type) {
         return CompositeCmd::SPtrComposite(new ProcedureCmd(json, ProcedureCmd::Type::definition));
-    }
-    else if("call" == type)
-    {
+    } else if("call" == type) {
         return CompositeCmd::SPtrComposite(new ProcedureCmd(json, ProcedureCmd::Type::call));
-    }
-    else if("preface" == type)
-    {
+    } else if("preface" == type) {
         return CompositeCmd::SPtrComposite(new PrefaceCmd(json));
-    }
-    else if("par" == type)
-    {
+    } else if("par" == type) {
         return CompositeCmd::SPtrComposite(new ParagraphCmd(json));
-    }
-    else if("operation" == type)
-    {
+    } else if("operation" == type) {
         return CompositeCmd::SPtrComposite(new OperationCmd(json));
-    }
-    else if(type.find("complex") != std::string::npos)
-    {
+    } else if(type.find("complex") != std::string::npos) {
         return CompositeCmd::SPtrComposite(new ComplexCmd(json));
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 }
 
 ICmd::SPtr CmdFactory::createCmd(std::string type, Json::Value json)
 {
-    if("var" == type)
-    {
+    if("var" == type) {
         return VariableCmd::SPtr(new VariableCmd(json));
-    }
-    else if("const" == type)
-    {
+    } else if("const" == type) {
         return ConstantCmd::SPtr(new ConstantCmd(json));
-    }
-    else if("string" == type)
-    {
+    } else if("string" == type) {
         return StringCmd::SPtr(new StringCmd(json));
-    }
-    else if("asm" == type)
-    {
+    } else if("asm" == type) {
         return AsmCmd::SPtr(new AsmCmd(json));
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 }

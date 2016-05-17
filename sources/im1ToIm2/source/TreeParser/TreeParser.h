@@ -8,7 +8,7 @@
 
 #include "IParser.h"
 
-class TreeParser : public IParser{
+class TreeParser : public IParser {
 public:
     TreeParser(CmdFactory &cmdFactory);
     CompositeCmd::SPtrComposite parseTree(Json::Value& jsonTree) override;

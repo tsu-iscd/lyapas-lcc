@@ -7,7 +7,7 @@
 
 #include "../CompositeCmd.h"
 
-class ProgramCmd: public CompositeCmd{
+class ProgramCmd: public CompositeCmd {
 public:
     ProgramCmd(Json::Value processJson);
 

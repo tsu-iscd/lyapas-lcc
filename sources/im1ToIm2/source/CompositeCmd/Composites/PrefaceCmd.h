@@ -7,7 +7,7 @@
 
 #include "../CompositeCmd.h"
 
-class PrefaceCmd : public CompositeCmd{
+class PrefaceCmd : public CompositeCmd {
 public:
     PrefaceCmd(Json::Value processJson);
 

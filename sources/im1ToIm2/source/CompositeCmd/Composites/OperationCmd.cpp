@@ -12,19 +12,14 @@ Json::Value OperationCmd::toJson()
     result[fieldName::type] = "cmd";
     std::string operationName = _cmdJson[fieldName::name].asString();
 
-    if(_children.size() == 1)
-    {
+    if(_children.size() == 1) {
         auto child = _children.back()->toJson();
         result[fieldName::args] = child[fieldName::args];
 
         operationName +=  child[fieldName::cmd_postfix].asString();
-    }
-    else if(_children.size() >= 2)
-    {
-        for(SPtr& child : _children)
-        {
-            for(auto& arg : child->toArgumentFormat())
-            {
+    } else if(_children.size() >= 2) {
+        for(SPtr& child : _children) {
+            for(auto& arg : child->toArgumentFormat()) {
                 result[fieldName::args].append(arg);
             }
         }

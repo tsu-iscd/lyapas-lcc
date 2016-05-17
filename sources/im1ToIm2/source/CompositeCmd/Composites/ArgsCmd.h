@@ -7,7 +7,7 @@
 
 #include "../CompositeCmd.h"
 
-class ArgsCmd: public CompositeCmd{
+class ArgsCmd: public CompositeCmd {
 public:
     ArgsCmd(Json::Value processJson);
 

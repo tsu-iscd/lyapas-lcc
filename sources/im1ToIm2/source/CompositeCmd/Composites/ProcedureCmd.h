@@ -8,9 +8,11 @@
 
 #include "../CompositeCmd.h"
 
-class ProcedureCmd : public CompositeCmd{
+class ProcedureCmd : public CompositeCmd {
 public:
-    enum class Type { definition, call};
+    enum class Type {
+        definition, call
+    };
 
     ProcedureCmd(Json::Value processJson, Type type);
 

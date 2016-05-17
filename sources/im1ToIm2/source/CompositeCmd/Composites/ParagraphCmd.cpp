@@ -16,8 +16,7 @@ Json::Value ParagraphCmd::toJson()
     paragraphJson[fieldName::number] = _cmdJson[fieldName::number];
     result.append(paragraphJson);
 
-    for(SPtr& child : _children)
-    {
+    for(SPtr& child : _children) {
         result.append(child->toJson());
     }
 

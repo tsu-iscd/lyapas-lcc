@@ -16,7 +16,8 @@ Json::Value VariableCmd::toJson()
     return result;
 }
 
-Json::Value VariableCmd::toArgumentFormat() {
+Json::Value VariableCmd::toArgumentFormat()
+{
     Json::Value value;
     value.append(_cmdJson[fieldName::name]);
     return value;

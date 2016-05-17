@@ -7,7 +7,7 @@
 
 #include "../CompositeCmd.h"
 
-class ParagraphCmd : public CompositeCmd{
+class ParagraphCmd : public CompositeCmd {
 public:
     ParagraphCmd(Json::Value processJson);
 
