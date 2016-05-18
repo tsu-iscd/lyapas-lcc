@@ -1,5 +1,5 @@
 BINARIES=lyapas_im0 im0_im1 im1_im1_ast im1_im2
-TEMP_FILES=lyapas_im0.c im0_im1.c
+TEMP_FILES=lyapas_im0.c im0_im1.c syntree*
 
 all: $(BINARIES)
 

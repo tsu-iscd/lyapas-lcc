@@ -1,0 +1,456 @@
+[
+  {"type": "program"},
+  [
+    {"type": "procedure", "name": "print"},
+    [
+      {"type": "in_args"},
+      [
+        {"type": "symbol_complex", "number": 1}
+      ]
+    ],
+    [
+      {"type": "out_args"}
+    ],
+    [
+      {"type": "preface"},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "global_complex_4"},
+          [
+            {"value": 65536, "type": "const"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "set_max"},
+        [
+          {"type": "var", "name": "j"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 1},
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "j"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"type": "complex_cardinality", "number": 1}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_z"},
+        [
+          {"value": 4, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 1},
+          [
+            {"type": "var", "name": "j"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "s"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "s"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"value": 32, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_geq"},
+        [
+          {"value": 2, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 1},
+          [
+            {"type": "var", "name": "j"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"value": 10, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_nz"},
+        [
+          {"value": 1, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "mod"},
+        [
+          {"value": 160, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "x"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"value": 3840, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_geq"},
+        [
+          {"value": 11, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "add"},
+        [
+          {"value": 160, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "sub"},
+        [
+          {"type": "var", "name": "x"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump"},
+        [
+          {"value": 5, "type": "const"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 11},
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "x"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"value": 160, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_z"},
+        [
+          {"value": 5, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "add"},
+        [
+          {"value": 753664, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "set_min"},
+        [
+          {"type": "global_complex_1"},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump"},
+        [
+          {"value": 11, "type": "const"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 2},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "add"},
+        [
+          {"value": 753664, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 1},
+          [
+            {"type": "var", "name": "j"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "global_complex_1"},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"value": 7, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "global_complex_1"},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 5},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"value": 4000, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_lt"},
+        [
+          {"value": 1, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"value": 753664, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "p"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "add"},
+        [
+          {"value": 160, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "r"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "set_max"},
+        [
+          {"type": "var", "name": "q"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"value": 3840, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 3},
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "q"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"value": 3840, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_z"},
+        [
+          {"value": 1, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "global_complex_1"},
+          [
+            {"type": "var", "name": "r"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "global_complex_1"},
+          [
+            {"type": "var", "name": "p"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "p"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "r"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump"},
+        [
+          {"value": 3, "type": "const"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 4},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "global_complex_4"},
+          [
+            {"value": 65536, "type": "const"}
+          ]
+        ]
+      ]
+    ]
+  ]
+]
