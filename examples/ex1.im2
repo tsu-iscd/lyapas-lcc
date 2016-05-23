@@ -1,57 +1,233 @@
-task:
-loadc 1
-storev i
-loads 1
-storev j
-loadc 0
-storev k
-paragraph1:
-loadv i
-subc 1
-storev l
-loadf 1, i
-storef 2, i
-loadf 2, i
-xorf 2, l
-xorv i
-storev t
-loadv t
-xorf 2, i
-storef 2, i
-loadv i
-addc 1
-storev i
-loadv i
-unequals 1
-jump_true 1
-paragraph2:
-loadv j
-subc 1
-storev j
-loadv j
-subc 1
-storev l
-loadv j
-greater_thansc 0
-jump_true 3
-loadc 0
-storev l
-paragraph3:
-loadf 2, j
-xorf 2, l
-storef 2, j
-loadv j
-unequalc 0
-jump_true 2
-paragraph4:
-loadf 2, k
-addc 48
-storef 2, k
-loadv k
-addc 1
-storev k
-loadv k
-unequals 1
-jump_true 4
-eop
+[
+   {
+      "args" : [ "task", "symbol_complex", 1, "/", "symbol_complex", 2 ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "load",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "sub_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 1, "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "l" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_neq_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "dec_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "sub_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 0 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_gt_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 3,
+      "type" : "label"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "l" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "j" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 0 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_neq_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 4,
+      "type" : "label"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 48 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_neq_c",
+      "type" : "cmd"
+   }
+]
 

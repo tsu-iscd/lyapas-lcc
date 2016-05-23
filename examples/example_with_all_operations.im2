@@ -1,0 +1,1328 @@
+[
+   {
+      "args" : [ "arithm", "/" ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "b" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 456 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "c" ],
+      "cmd" : "div_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", 65540 ],
+      "cmd" : "store_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 99 ],
+      "cmd" : "mul_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", 34952 ],
+      "cmd" : "mod_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "d" ],
+      "cmd" : "ddiv_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "r" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [
+         "comp",
+         "a",
+         "logic_complex",
+         3,
+         "/",
+         "b",
+         "k",
+         "r",
+         "symbol_complex",
+         4
+      ],
+      "type" : "procedure"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "logic_complex", 1, "a" ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, 100 ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "\"test_string\"" ],
+      "cmd" : "insert_string_in_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 10 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "n" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2 ],
+      "cmd" : "insert_element_in_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "set_max_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "logic_complex", 1, "symbol_complex", 2, "a", 3, "d" ],
+      "cmd" : "copy_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "logic_complex", 1, 5 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "logic_complex", 3 ],
+      "cmd" : "reduce_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2 ],
+      "cmd" : "clear_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2 ],
+      "cmd" : "remove_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "logic_complex", 1 ],
+      "cmd" : "remove_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "empty", "/" ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [
+         "console",
+         "symbol_complex",
+         1,
+         "symbol_complex",
+         3,
+         "/",
+         "symbol_complex",
+         2,
+         "symbol_complex",
+         4
+      ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ "symbol_complex", 1 ],
+      "cmd" : "write_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "\"test_string_2\"" ],
+      "cmd" : "write_string_s",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2 ],
+      "cmd" : "read_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 3, 5, "\"archive_5\"" ],
+      "cmd" : "write_archive",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 4, 7, "symbol_complex", 2 ],
+      "cmd" : "read_archive",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "jump_by_deny",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "print", "symbol_complex", 2, "/" ],
+      "type" : "call"
+   },
+   {
+      "args" : [ "func", "/" ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ 3, "a", "b" ],
+      "cmd" : "enumeration_1",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "get_time",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "set_random",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "get_random",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "not",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "d" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "get_number_least_1",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "f" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 3,
+      "type" : "label"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "cmd" : "weight",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "g" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", "b" ],
+      "cmd" : "swap",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "logic_complex", 1, "a", "b" ],
+      "cmd" : "swap_comp_el",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "logic_complex", 2, 4, "b" ],
+      "cmd" : "swap_comp_el",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 3, "a", 5 ],
+      "cmd" : "swap_comp_el",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "task", "symbol_complex", 1, "/", "symbol_complex", 2 ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "load",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "sub_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 1, "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "l" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_neq_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "dec_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "sub_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 0 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_gt_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 3,
+      "type" : "label"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "l" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "j" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 0 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_neq_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 4,
+      "type" : "label"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 48 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 2, "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_neq_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "print", "symbol_complex", 1, "/" ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ "global_complex_4", 65536 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "set_max_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "complex_cardinality", 1 ],
+      "cmd" : "xor",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 1, "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "s" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "s" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 32 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_geq_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 1, "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 10 ],
+      "cmd" : "xor_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_nz_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 160 ],
+      "cmd" : "mod_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "x" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3840 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 11 ],
+      "cmd" : "jump_geq_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 160 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "x" ],
+      "cmd" : "sub_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 5 ],
+      "cmd" : "jump_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 11,
+      "type" : "label"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "x" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 160 ],
+      "cmd" : "xor_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 5 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 753664 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "i" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 11 ],
+      "cmd" : "jump_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 753664 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "symbol_complex", 1, "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 7 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 5,
+      "type" : "label"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4000 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_lt_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 753664 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "p" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 160 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "r" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "q" ],
+      "cmd" : "set_max_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3840 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 3,
+      "type" : "label"
+   },
+   {
+      "args" : [ "q" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3840 ],
+      "cmd" : "xor_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "r" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "p" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "p" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "r" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 4,
+      "type" : "label"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", 65536 ],
+      "cmd" : "store_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "scheduler", "/" ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ "global_complex_4", 65540 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "s" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", "s" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "p" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "s" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "n" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "c" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "i" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "mul_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "p" ],
+      "cmd" : "add_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "q" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", 65624 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", "q" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "n" ],
+      "cmd" : "xor_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_nz_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "set_min_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   },
+   {
+      "args" : [ "c" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "add_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "s" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "a" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "s" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "right_shift_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_nz_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 3,
+      "type" : "label"
+   },
+   {
+      "args" : [ "global_complex_1", "s" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "and_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "mul_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "p" ],
+      "cmd" : "add_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "p" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", "p" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", 65624 ],
+      "cmd" : "store_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "j" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "i" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "handle_scancode", "/" ],
+      "type" : "procedure"
+   },
+   {
+      "args" : [ "xor eax, eax" ],
+      "cmd" : "asm",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "in al, 0x60" ],
+      "cmd" : "asm",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 224 ],
+      "cmd" : "xor_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 240 ],
+      "cmd" : "xor_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "xor eax, eax" ],
+      "cmd" : "asm",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "in al, 0x60" ],
+      "cmd" : "asm",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 240 ],
+      "cmd" : "xor_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_nz_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   },
+   {
+      "args" : [ "xor eax, eax" ],
+      "cmd" : "asm",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "in al, 0x60" ],
+      "cmd" : "asm",
+      "type" : "cmd"
+   },
+   {
+      "number" : 3,
+      "type" : "label"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_lt_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "compare_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_gt_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_4", 65540 ],
+      "cmd" : "load_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 6 ],
+      "cmd" : "add_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "add_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "s" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "dec_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "s" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "c" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "and_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 31 ],
+      "cmd" : "jump_z_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "a" ],
+      "cmd" : "dec_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "c" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 254 ],
+      "cmd" : "and_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "s" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_c",
+      "type" : "cmd"
+   },
+   {
+      "number" : 31,
+      "type" : "label"
+   },
+   {
+      "args" : [ "global_complex_1", "a" ],
+      "cmd" : "inc_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "c" ],
+      "cmd" : "load_v",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "or_c",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "global_complex_1", "s" ],
+      "cmd" : "store_v",
+      "type" : "cmd"
+   },
+   {
+      "number" : 4,
+      "type" : "label"
+   }
+]
+

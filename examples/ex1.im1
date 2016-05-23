@@ -1,102 +1,318 @@
-{
-  "proc": {
-    "name": "task",
-    "args": {
-      "in": {
-        "arg": [
-          {
-            "sym_comp": "1"
-          }
+[
+  {"type": "program"},
+  [
+    {"type": "procedure", "name": "task"},
+    [
+      {"type": "in_args"},
+      [
+        {"type": "symbol_complex", "number": 1}
+      ]
+    ],
+    [
+      {"type": "out_args"},
+      [
+        {"type": "symbol_complex", "number": 2}
+      ]
+    ],
+    [
+      {"type": "preface"},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"value": 1, "type": "const"}
         ]
-      },
-      "out": {
-        "arg": [
-          {
-            "sym_comp": "2"
-          }
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "i"}
         ]
-      }
-    },
-    "paragraphs": [
-      {
-        "number": "0",
-        "expressions": [
-          {
-            "drarrow": {
-              "values": [
-                {
-                  "int": "1"
-                },
-                {
-                  "variable": "1"
-                }
-              ]
-            }
-          },
-          {
-            "drarrow": {
-              "values": [
-                {
-                  "size_comp": "1"
-                },
-                {
-                  "variable": "j"
-                }
-              ]
-            }
-          },
-          {
-            "zero": {
-              "values": [
-                {
-                  "variable": "k"
-                }
-              ]
-            }
-          }
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "complex_cardinality", "number": 1}
         ]
-      },
-      {
-        "number": "1",
-        "expressions": [
-          {
-            "drarrow": {
-              "values": [
-                {
-                  "sub": {
-                    "values": [
-                      {
-                        "variable": "i"
-                      },
-                      {
-                        "int": "1"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "variable": "l"
-                }
-              ]
-            }
-          },
-          {
-            "drarrow": {
-              "values": [
-                {
-                  "sym_comp": "1"
-                },
-                {
-                  "sym_comp": "2"
-                }
-              ]
-            }
-          }
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "j"}
         ]
-      }
+      ],
+      [
+        {"type": "operation", "name": "set_min"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 1},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "sub"},
+        [
+          {"value": 1, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "l"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 1},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "l"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "t"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "t"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "i"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"type": "complex_cardinality", "number": 1}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_neq"},
+        [
+          {"value": 1, "type": "const"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 2},
+      [
+        {"type": "operation", "name": "dec"},
+        [
+          {"type": "var", "name": "j"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "j"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "sub"},
+        [
+          {"value": 1, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "var", "name": "l"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "j"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"value": 0, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_gt"},
+        [
+          {"value": 3, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "set_min"},
+        [
+          {"type": "var", "name": "l"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 3},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "j"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "xor"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "l"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "j"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "j"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"value": 0, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_neq"},
+        [
+          {"value": 2, "type": "const"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 4},
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "k"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "add"},
+        [
+          {"value": 48, "type": "const"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "k"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "inc"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "var", "name": "k"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "compare"},
+        [
+          {"type": "complex_cardinality", "number": 1}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "jump_neq"},
+        [
+          {"value": 4, "type": "const"}
+        ]
+      ]
     ]
-  }
-}
-
-//По сути там уже ясно как продолжается дерево. Но доделать не успеваю.
-
+  ]
+]

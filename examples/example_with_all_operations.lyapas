@@ -1,0 +1,75 @@
+arithm(/)
+    a⇒b+456/c⇒K[10004h]*99;K8888h:d⇒r
+**
+
+comp(a,L3/b,k,r,F4)
+    §1  @+L1(a)
+        @+F2(100)
+        @'test_string'>F2
+        10⇒n@>F2
+        ⁻i Oj
+    @#L1F2(a,3,d)
+    L1.5⇒F2i
+    @%L3
+    OF2
+    @-F2
+    @-L1
+**
+
+empty(/)
+**
+
+console(F1,F3/F2,F4)
+    /F1>C
+    /'test_string_2'>C
+    /F2<C
+    /F3>C5['archive_5']
+    /F4<C7[F2]
+    ↑>
+    *print(F2/)
+**
+
+func(/)
+    ↑X3ab
+    T⇒X
+    X⇒k
+    a¬⇒d
+    k!⇒f
+§3
+    l%⇒g
+    ⇔(ab)
+    ⇔(L1ab)
+    ⇔(L2.4b)
+    ⇔(F3a5)
+**
+
+task(F1/F2)
+    1⇒i Q1⇒j Ok
+    §1 i-1⇒l F1i⇒F2i F2i⊕F2l⊕i⇒t t⊕F2i⇒F2i ∆i ↑(i≠Q1)1
+    §2 ∇j j-1⇒l ↑(j>0)3 Ol
+    §3 F2j⊕F2l⇒F2j ↑(j≠0)2
+    §4 F2k+48⇒F2k ∆k ↑(k≠Q1)4
+**
+print(F1/)
+    K[10000h]⇒k ⁻j
+    §1  ∆j⊕Q1 ↪4 F1j⇒s ↑(s≥32)2 F1j⊕10↦1 k;160⇒x ↑(k≥3840)11 k+160-x⇒k →5
+    §11 ∆k ∆x⊕160↪5 k+B8000h⇒i OKi  →11
+    §2  k+B8000h⇒i F1j⇒Ki ∆i ∆k 7⇒Ki ∆i ∆k
+    §5  ↑(k<4000)1 B8000h⇒p+160⇒r ⁻q 3840⇒k
+    §3  ∆q⊕3840↪1 Kr⇒Kp ∆p ∆r →3
+    §4  k⇒K[10000h]
+**
+scheduler(/)
+    K[10004h]⇒s K[s]⇒p s+4⇒n+1⇒i+1⇒a+1⇒c Ki⇒j*4+p⇒q K[10058h]⇒K[q]
+    §1  ∆j⊕Kn ↦2 Oj 
+    §2  c+j⇒s Ka↪3 Ks>4 ↦1
+    §3  Ks & 1 ↪1 j*4+p⇒p K[p]⇒K[10058h] j⇒Ki
+**
+handle_scancode(/)
+    {xor eax, eax} {in al, 0x60} ⇒k⊕E0h ↪1 k⊕F0h ↪2 →3
+    §1 {xor eax, eax} {in al, 0x60} ⊕F0h ↦3
+    §2 {xor eax, eax} {in al, 0x60}
+    §3  ↑(k<2)4 ↑(k>4)4 K[10004h]+6⇒a+k⇒s ∇k  Ks⇒c & 1 ↪31 ∇Ka  c & FEh⇒Ks →4
+    §31 ∆Ka  c ∨ 1⇒Ks
+    §4
+**
