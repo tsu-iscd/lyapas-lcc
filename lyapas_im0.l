@@ -9,7 +9,8 @@
 # define COMPLEX "complex"
 typedef unsigned long long int uint64;
 int first_time = 1;
-
+int err_line_ptr = 1;
+int err_column_ptr = 1;
 void PutComma() 
 {
     if (!first_time) 
@@ -141,38 +142,56 @@ uint64 HexToInt(const char *hex)
     return answ;
 }
 
-void PrintJsonWithValueNull(const char * typeName)
+void PrintJsonWithValueNull(const char * typeName, const char *yytext)
 {   
     PutComma();
     printf("\n  {\"type\": \"%s\", \"value\": null}", typeName);
+    err_column_ptr += strlen(yytext);
 }
-void PrintJsonWithValueString(const char *typeName, const char* value)
+void PrintJsonWithValueString(const char *typeName, const char* value, int num_char_in_str)
 {
     PutComma();
     printf("\n  {\"type\": \"%s\", \"value\": \"%s\"}", typeName, value);
+    err_column_ptr += num_char_in_str;
 }
-void PrintJsonWithValueInt(const char *typeName, int yytext)
+void PrintJsonWithValueInt(const char *typeName, const char *yytext)
 {
     PutComma();
-    printf("\n  {\"type\": \"%s\", \"value\": %d}", typeName, yytext);
+    printf("\n  {\"type\": \"%s\", \"value\": %d}", typeName, atoi(yytext));
+    err_column_ptr += strlen(yytext);
 }
 void PrintJsonWithValueHex(const char *typeName, const char* yytext)
 {
     PutComma();
     unsigned long long hex = HexToInt(yytext);
     printf("\n  {\"type\": \"%s\", \"value\": %llu}", typeName, hex);
+    err_column_ptr += strlen(yytext);
 }
 void PrintJsonWithValueOct(const char *typeName, const char* yytext)
 {
     PutComma();
     unsigned long long oct = OctToInt(yytext);
     printf("\n  {\"type\": \"%s\", \"value\": %llu}", typeName, oct);
+    err_column_ptr += strlen(yytext);
 }
 void PrintJsonWithValueBin(const char *typeName, const char* yytext)
 {
     PutComma();
     unsigned long long bin = BinToInt(yytext);
     printf("\n  {\"type\": \"%s\", \"value\": %llu}", typeName, bin);
+    err_column_ptr += strlen(yytext);
+}
+void PrintJsonWithLexicalError(const char *yytext, int err_line_ptr, int err_column_ptr)
+{
+    printf("\n  {\"type\": \"error\",\n\
+   \"kind\": \"lexical\",\n\
+   \"details\": \"Character \"%s\" are not valid.\",\n\
+   \"location\": {\n\
+     \"file\": \"main\",\n\
+     \"line\": %d,\n\
+     \"column\": %d\n\
+    }\n\
+  }", yytext, err_line_ptr, err_column_ptr);
 }
 %}
 VAR     [a-z]
@@ -190,19 +209,19 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 
 %%
     /*переменная*/
-{VAR}           { PrintJsonWithValueString(ID, yytext); }
+{VAR}           { PrintJsonWithValueString(ID, yytext, 1); }
     /*символьный комплекс*/
-"F"             { PrintJsonWithValueString(COMPLEX, "symbol"); }
+"F"             { PrintJsonWithValueString(COMPLEX, "symbol", 1); }
     /*логический комплекс*/
-"L"             { PrintJsonWithValueString(COMPLEX, "logic"); }
+"L"             { PrintJsonWithValueString(COMPLEX, "logic", 1); }
     /*глобальный комплекс*/
-"K"             { PrintJsonWithValueString(COMPLEX, "global"); }
+"K"             { PrintJsonWithValueString(COMPLEX, "global", 1); }
     /*ёмкость комплекса*/
-"S"             { PrintJsonWithValueNull("capacity"); }
+"S"             { PrintJsonWithValueNull("capacity", yytext); }
     /*мощность комплекса*/
-"Q"             { PrintJsonWithValueNull("cardinality"); }
+"Q"             { PrintJsonWithValueNull("cardinality", yytext); }
     /*десятичная константа*/
-{DCONST}        { PrintJsonWithValueInt(INT, atoi(yytext)); }
+{DCONST}        { PrintJsonWithValueInt(INT, yytext); }
     /*шестнадцатиричная константа*/
 {HCONST}        { PrintJsonWithValueHex(INT, yytext); }
     /*восьмеричная константа*/
@@ -210,116 +229,129 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
     /*двоичная константа*/
 {BCONST}        { PrintJsonWithValueBin(INT, yytext); }
     /*символьная константа*/
-{SCONST}        { 
-                    PrintJsonWithValueNull("quote");
-                    char *str = strndup(yytext + 1, strlen(yytext) - 2);
-                    PrintJsonWithValueString("sconst", str);
-                    PrintJsonWithValueNull("quote");
+{SCONST}        {
+                    char *str = strndup(yytext, 1);
+                    PrintJsonWithValueNull("quote", str);
+                    int str_len = strlen(yytext) - 2;
+                    str = strndup(yytext + 1, str_len);
+                    PrintJsonWithValueString("sconst", str, str_len);
+                    PrintJsonWithValueNull("quote", yytext + str_len);
                 }
     /*Установить 1 в i-ую позицию*/
-"I"             { PrintJsonWithValueNull("set_bit");}
+"I"             { PrintJsonWithValueNull("set_bit", yytext);}
     /*особая переменная*/
-"Z"             { PrintJsonWithValueNull("spec_var"); }
+"Z"             { PrintJsonWithValueNull("spec_var", yytext); }
 
     /*Конец функции*/
-"**"            { PrintJsonWithValueNull("fret"); }
+"**"            { PrintJsonWithValueNull("fret", yytext); }
     /*Имя функции. Нельзя использовать имена состоящие из одного символа и совпадающие с комплексами.*/
 ([a-zA-Z][a-zA-Z_][a-zA-Z0-9_]*\()|([a-zA-Z_]{-}[FLK][a-zA-Z0-9_]*\()  {
-                                    char *str = strndup(yytext,strlen(yytext) - 1);
-                                    PrintJsonWithValueString(ID, str);
-                                    PrintJsonWithValueNull("lpar");                        
+                                    int str_len = strlen(yytext) - 1;
+                                    char *str = strndup(yytext, str_len);
+                                    PrintJsonWithValueString(ID, str, str_len);
+                                    PrintJsonWithValueNull("lpar", yytext + str_len);
                                 }
     /***** логические и арифметические операции *****/
     /*inc*/
-"∆"              { PrintJsonWithValueNull("inc"); }
+"∆"              { PrintJsonWithValueNull("inc", yytext); }
     /*dec*/
-"∇"              { PrintJsonWithValueNull("dec"); }
+"∇"              { PrintJsonWithValueNull("dec", yytext); }
     /*остаток от деления(в Z частное)*/
-";"              { PrintJsonWithValueNull("mod"); }
+";"              { PrintJsonWithValueNull("mod", yytext); }
     /*деление двойного числа*/
-":"              { PrintJsonWithValueNull("div"); }
+":"              { PrintJsonWithValueNull("div", yytext); }
     /*дизъюнкция*/
-"∨"              { PrintJsonWithValueNull("or"); }
+"∨"              { PrintJsonWithValueNull("or", yytext); }
     /*конъюнкция*/
-"&"              { PrintJsonWithValueNull("and"); }
+"&"              { PrintJsonWithValueNull("and", yytext); }
     /*сложение mod 2*/
-"⊕"              { PrintJsonWithValueNull("xor"); }
+"⊕"              { PrintJsonWithValueNull("xor", yytext); }
     /*отрицание*/
-"¬"              { PrintJsonWithValueNull("not"); }
+"¬"              { PrintJsonWithValueNull("not", yytext); }
     /*вычисление номера правой еденицы*/
-"!"              { PrintJsonWithValueNull("num_right_one"); }   
+"!"              { PrintJsonWithValueNull("num_right_one", yytext); }
     /*консоль*/
-"C"              { PrintJsonWithValueNull("console"); }
+"C"              { PrintJsonWithValueNull("console", yytext); }
 
     /***** Многозначные символы  *****/
     /*угловые скобки: для разделения входных и выходные параметров;
       для сдвигов, для консоли, для вставки и удаления элемента в комплексах*/
-"<"              { PrintJsonWithValueNull("l_ang_brack"); }   
-">"              { PrintJsonWithValueNull("r_ang_brack"); }
+"<"              { PrintJsonWithValueNull("l_ang_brack", yytext); }
+">"              { PrintJsonWithValueNull("r_ang_brack", yytext); }
     /*частное от деления(В Z остаток) или для консоли*/
-"/"              { PrintJsonWithValueNull("slash"); }
+"/"              { PrintJsonWithValueNull("slash", yytext); }
     /*присвоить тао значение с выхода псевдослучайного генератора
       или  спец. символ в операции перечисления единиц */
-"X"              { PrintJsonWithValueNull("letter_X"); }
+"X"              { PrintJsonWithValueNull("letter_X", yytext); }
     /*вызов функции или умножение по mod 2^32(в Z переполнение)*/
-"*"              { PrintJsonWithValueNull("star"); }
-"↑"              { PrintJsonWithValueNull("up_arrow"); }
+"*"              { PrintJsonWithValueNull("star", yytext); }
+"↑"              { PrintJsonWithValueNull("up_arrow", yytext); }
     /*операции над комплексами*/
     /*используется для копирования элементов комплекса*/
-"#"              { PrintJsonWithValueNull("copy"); }
+"#"              { PrintJsonWithValueNull("copy", yytext); }
     /*используется для операций над комплексами*/
-"@"              {PrintJsonWithValueNull("at_sign"); }
+"@"              {PrintJsonWithValueNull("at_sign", yytext); }
     /*сумма по mod 2^32(в Z переполнение) и создание комплекса*/
-"+"              { PrintJsonWithValueNull("plus"); }
+"+"              { PrintJsonWithValueNull("plus", yytext); }
     /*вычитаение по mod 2^32 и уничтожение компекса*/
-"-"              { PrintJsonWithValueNull("minus"); }
+"-"              { PrintJsonWithValueNull("minus", yytext); }
     /*вес булевого вектора и сокращение ёмкости комплекса*/
-"%"              { PrintJsonWithValueNull("percent"); }
+"%"              { PrintJsonWithValueNull("percent", yytext); }
 
     /*********************************/
 
     /*присвоение наименьшего значения(т.е. все нули)*/
-"O"              { PrintJsonWithValueNull("set_min"); }
+"O"              { PrintJsonWithValueNull("set_min", yytext); }
     /*присвоение наибольшего значение(т.е. все единицы)*/
-"⁻"              { PrintJsonWithValueNull("set_max"); }
+"⁻"              { PrintJsonWithValueNull("set_max", yytext); }
     /*присвоение*/
-"⇒"              { PrintJsonWithValueNull("assign"); }
+"⇒"              { PrintJsonWithValueNull("assign", yytext); }
     /*обмен значениями*/
-"⇔"              { PrintJsonWithValueNull("swap"); }
+"⇔"              { PrintJsonWithValueNull("swap", yytext); }
     /*присвоить тао значение с выхода таймера компьютера */
-"T"              { PrintJsonWithValueNull("get_time"); }
+"T"              { PrintJsonWithValueNull("get_time", yytext); }
     /*метки*/
 \§{DCONST}      {
-                    PrintJsonWithValueNull("paragraph"); 
-                    PrintJsonWithValueInt(INT, atoi(yytext + 2));
+                    //здесь и во многих других местах копируем 2 байта т.к. это юникод
+                    char *str = strndup(yytext, 2);
+                    PrintJsonWithValueNull("paragraph", str);
+                    PrintJsonWithValueInt(INT, yytext + 2);
                 }
     /*отношения сравнения*/
-"="             { PrintJsonWithValueNull("je"); }
-"≠"             { PrintJsonWithValueNull("jne"); }
-"≥"             { PrintJsonWithValueNull("jge"); }
-"≤"             { PrintJsonWithValueNull("jle"); }
+"="             { PrintJsonWithValueNull("je", yytext); }
+"≠"             { PrintJsonWithValueNull("jne", yytext); }
+"≥"             { PrintJsonWithValueNull("jge", yytext); }
+"≤"             { PrintJsonWithValueNull("jle", yytext); }
 
     /*операции перехода*/
-"→"             { PrintJsonWithValueNull("jmp"); }
-"↪"             { PrintJsonWithValueNull("jz"); }
-"↦"             { PrintJsonWithValueNull("jnz"); }
+"→"             { PrintJsonWithValueNull("jmp", yytext); }
+"↪"             { PrintJsonWithValueNull("jz", yytext); }
+"↦"             { PrintJsonWithValueNull("jnz", yytext); }
 
    /*разделители*/ 
-"("             { PrintJsonWithValueNull("lpar"); }
-")"             { PrintJsonWithValueNull("rpar"); }
-"["             { PrintJsonWithValueNull("lbrack"); }
-"]"             { PrintJsonWithValueNull("rbrack"); }
-"'"             { PrintJsonWithValueNull("quote"); }
-","             { PrintJsonWithValueNull("comma"); }
-"."             { PrintJsonWithValueNull("dot"); }
+"("             { PrintJsonWithValueNull("lpar", yytext); }
+")"             { PrintJsonWithValueNull("rpar", yytext); }
+"["             { PrintJsonWithValueNull("lbrack", yytext); }
+"]"             { PrintJsonWithValueNull("rbrack", yytext); }
+"'"             { PrintJsonWithValueNull("quote", yytext); }
+","             { PrintJsonWithValueNull("comma", yytext); }
+"."             { PrintJsonWithValueNull("dot", yytext); }
 \{[^\}]*\}      { 
-                    PrintJsonWithValueNull("lbrace");
-                    char *str = strndup(yytext + 1, strlen(yytext) - 2);
-                    PrintJsonWithValueString("asm", str);
-                    PrintJsonWithValueNull("rbrace");
+                    char *str = strndup(yytext, 1);
+                    PrintJsonWithValueNull("lbrace", str);
+                    int str_len = strlen(yytext) - 2;
+                    str = strndup(yytext + 1, str_len);
+                    PrintJsonWithValueString("asm", str, str_len);
+                    PrintJsonWithValueNull("rbrace", yytext + str_len);
                 }
     /*ничего не делаем*/
-[\n\t ]         {   ;   }
+[\n]            { ++err_line_ptr; err_column_ptr = 1; }
+[ ]             { ++err_column_ptr; }
+[\t ]           { err_column_ptr+=4; }
+.               {
+                    PrintJsonWithLexicalError(yytext, err_line_ptr, err_column_ptr);
+                    ++err_column_ptr;
+                }
 
 %%
 
