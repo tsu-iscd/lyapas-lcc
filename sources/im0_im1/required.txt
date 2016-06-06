@@ -1,0 +1,8 @@
+sudo apt-get install bison
+cd ./jansson-2.7
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+cd ../..
