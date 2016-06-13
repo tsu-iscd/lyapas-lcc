@@ -2,12 +2,12 @@
 
 Assuming that you are in the project directory, type the following.
 
-Requirements:
+## Requirements
 * libjansson-dev 
 * bison
 * flex
 
-Instaltaion:
+## Instalation
 ```bash
 mkdir build
 cd build
