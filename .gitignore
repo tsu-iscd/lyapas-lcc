@@ -6,4 +6,4 @@ tags.*
 *.swp
 .idea
 
-sources/im1ToIm2/bin/
+build
