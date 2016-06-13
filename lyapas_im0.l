@@ -3,14 +3,19 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <jansson.h>
+#include "print_json.h"
 
 # define INT "int"
 # define ID "id"
 # define COMPLEX "complex"
+
 typedef unsigned long long int uint64;
 int first_time = 1;
 int err_line_ptr = 1;
 int err_column_ptr = 1;
+const char *file_name_string;
+
 void PutComma() 
 {
     if (!first_time) 
@@ -187,11 +192,11 @@ void PrintJsonWithLexicalError(const char *yytext, int err_line_ptr, int err_col
    \"kind\": \"lexical\",\n\
    \"details\": \"Character \"%s\" are not valid.\",\n\
    \"location\": {\n\
-     \"file\": \"main\",\n\
+     \"file\": \"%s\",\n\
      \"line\": %d,\n\
      \"column\": %d\n\
     }\n\
-  }", yytext, err_line_ptr, err_column_ptr);
+  }", yytext, file_name_string, err_line_ptr, err_column_ptr);
 }
 %}
 VAR     [a-z]
@@ -355,10 +360,38 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
 
 %%
 
-int main(int argc, char *argv[]) {
-    yyin = stdin;
-    printf("[");
-    yylex();
-    printf("]\n");
+int main(int argc, char *argv[]) 
+{
+    json_error_t json_err;
+    json_t *program;
+    json_t *result;
+
+    program = json_loadf(stdin, 0, &json_err);    
+    if(!program)
+    {
+        fprintf(stderr,"Incorrect JSON\n");
+        return 0;
+    }
+    
+    json_t *source_value = json_object_get(program, "source");
+    json_t *file_name_value = json_object_get(program, "file");
+    
+    file_name_string = json_string_value(file_name_value);
+    const char *source_string = json_string_value(source_value);
+    
+    FILE * file = fopen("file.tmp", "w+");
+    
+    if(file != NULL)
+    {
+        fprintf(file, "%s", source_string);
+        fseek(file, SEEK_SET, 0);
+
+        yyin = file;
+        printf("[");
+        yylex();
+        printf("]\n");
+    }
+    
+    fclose(file);
     return 0;
 }

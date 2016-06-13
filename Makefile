@@ -1,10 +1,10 @@
 BINARIES=lyapas_im0 im0_im1 im1_im1_ast im1_im2
-TEMP_FILES=lyapas_im0.c im0_im1.c syntree*
+TEMP_FILES=lyapas_im0.c im0_im1.c file.tmp syntree*
 
 all: $(BINARIES)
 
-lyapas_im0: lyapas_im0.c
-	gcc -o $@ $< -lfl
+lyapas_im0: lyapas_im0.c print_json.o
+	gcc -o $@ $^ -lfl -ljansson
 
 lyapas_im0.c: lyapas_im0.l
 	flex -o $@ $<
