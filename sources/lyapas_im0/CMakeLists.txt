@@ -15,7 +15,15 @@ ENDIF()
 
 set(SOURCE_FILES
     ${PROJECT_BINARY_DIR}/lyapas_im0.c
+    ${PROJECT_SOURCE_DIR}/print_json.c
+)
+
+#copy header to build directory; needed for lyapas_im0.c
+#FIXME: if you know good solve
+configure_file (
+    ${PROJECT_SOURCE_DIR}/print_json.h
+    ${PROJECT_BINARY_DIR}/print_json.h
 )
 
 add_executable(lyapas_im0 ${SOURCE_FILES})
-target_link_libraries(lyapas_im0 "-lfl")
+target_link_libraries(lyapas_im0 "-ljansson -lfl")
