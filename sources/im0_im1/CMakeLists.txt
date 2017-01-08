@@ -15,10 +15,7 @@ ENDIF()
 
 set(SOURCE_FILES
     ${PROJECT_BINARY_DIR}/im0_im1.c
-    ${PROJECT_SOURCE_DIR}/print_json.c
 )
-# для lyapas_im0.c, который генерируется в PROJECT_BINARY_DIR и использует include print_json.h
-include_directories(".")
 
 add_executable(im0_im1 ${SOURCE_FILES})
-target_link_libraries(im0_im1 "-ljansson")
+target_link_libraries(im0_im1 print_json "-ljansson")
