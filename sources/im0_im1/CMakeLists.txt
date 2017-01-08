@@ -17,13 +17,8 @@ set(SOURCE_FILES
     ${PROJECT_BINARY_DIR}/im0_im1.c
     ${PROJECT_SOURCE_DIR}/print_json.c
 )
-
-#copy header to build directory; needed for im0_im1.c
-#FIXME: if you know good solve
-configure_file (
-    ${PROJECT_SOURCE_DIR}/print_json.h
-    ${PROJECT_BINARY_DIR}/print_json.h
-)
+# для lyapas_im0.c, который генерируется в PROJECT_BINARY_DIR и использует include print_json.h
+include_directories(".")
 
 add_executable(im0_im1 ${SOURCE_FILES})
 target_link_libraries(im0_im1 "-ljansson")
