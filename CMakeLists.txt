@@ -5,6 +5,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # общие библиотеки
 add_subdirectory("sources/libs/print_json")
+add_subdirectory("sources/libs/translation_module")
 
 # промежуточные трансляторы
 add_subdirectory("sources/lyapas_im0")

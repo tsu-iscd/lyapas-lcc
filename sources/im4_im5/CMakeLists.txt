@@ -8,4 +8,5 @@ set(SOURCE_FILES
 )
 
 add_executable(im4_im5 ${SOURCE_FILES})
+target_link_libraries(im4_im5 translation_module)
 
