@@ -2,6 +2,19 @@
 
 Assuming that you are in the project directory, type the following.
 
+## Requirements
+* libjansson-dev 
+* bison
+* flex
+
+## Instalation
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
 ```bash
 $ sudo apt-get install python-pip libgraphviz-dev build-essential
 $ sudo pip install virtualenv
