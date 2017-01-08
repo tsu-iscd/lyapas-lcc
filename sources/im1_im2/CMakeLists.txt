@@ -3,8 +3,6 @@ project(im1_im2)
 
 include_directories(libraries/jsoncpp)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
-
 set(SOURCE_FILES
     libraries/jsoncpp/jsoncpp.cpp
     libraries/backward-cpp/backward.cpp

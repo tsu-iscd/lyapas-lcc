@@ -2,6 +2,12 @@
 
 #include <translation_module/translation_module.h>
 
-class Dvyyaz : public tm::TranslationModule {
+namespace dyaz {
 
+class Dvyyaz : public trm::TranslationModule {
+    virtual bool valid(const JSON &cmds, std::string &error) override;
+    virtual void preprocess(JSON &cmds) override;
+    virtual void postprocess(JSON &cmds) override;
 };
+
+}
