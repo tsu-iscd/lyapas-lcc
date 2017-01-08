@@ -19,5 +19,7 @@ bool trm::TranslationModule::valid(const JSON &cmds, std::string &error)
 
 void trm::TranslationModule::process(JSON &cmds)
 {
+    std::string designations = readDesignations();
+    std::string rules = readRules();
     // трансляция по конфиг-файлу
 }

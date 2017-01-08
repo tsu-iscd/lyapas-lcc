@@ -18,6 +18,9 @@ private:
     // поведение этой функции опеределяется конфиг файлами трансляции
     virtual void process(JSON &cmds) final;
     virtual void postprocess(JSON &cmds) = 0;
+
+    virtual std::string readDesignations() = 0;
+    virtual std::string readRules() = 0;
 };
 
 }
