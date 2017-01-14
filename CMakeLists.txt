@@ -6,6 +6,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # общие библиотеки
+add_subdirectory("sources/libs/backward-cpp")
+add_subdirectory("sources/libs/jsoncpp")
 add_subdirectory("sources/libs/print_json")
 add_subdirectory("sources/libs/translation_module")
 

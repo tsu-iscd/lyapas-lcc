@@ -6,5 +6,5 @@ set(SOURCE_FILES
     dvyyaz.cpp
 )
 
-add_executable(im2_im3 ${SOURCE_FILES})
-target_link_libraries(im2_im3 translation_module)
+add_executable(im2_im3 ${SOURCE_FILES} ${BACKWARD_ENABLE})
+target_link_libraries(im2_im3 translation_module "-ldw")
