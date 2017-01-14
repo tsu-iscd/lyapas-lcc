@@ -5,6 +5,6 @@ set(SOURCE_FILES
     main.cpp
 )
 
-add_executable(im4_im5 ${SOURCE_FILES})
-target_link_libraries(im4_im5 translation_module)
+add_executable(im4_im5 ${SOURCE_FILES} ${BACKWARD_ENABLE})
+target_link_libraries(im4_im5 translation_module "-ldw")
 
