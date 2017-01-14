@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Json::Value tryParseJson(istream &stream)
+Json::Value parseJsonFromStream(istream &stream)
 {
     Json::Value json;
     Json::Reader reader;
@@ -19,20 +19,22 @@ Json::Value tryParseJson(istream &stream)
     throw std::runtime_error("Json Parse Error: " + reader.getFormattedErrorMessages());
 }
 
+Json::Value parseJsonFromFile(const char *name)
+{
+    ifstream jsonFile;
+    jsonFile.exceptions(ifstream::failbit | ifstream::badbit);
+    jsonFile.open(name, std::ifstream::binary);
+
+    return parseJsonFromStream(jsonFile);
+}
+
 int main(int argc, char* argv[])
 {
     Json::Value jsonTree;
-    if(argc < 2)
-    {
-        jsonTree = tryParseJson(std::cin);
-    }
-    else
-    {
-        string pathToFile(argv[1]);
-
-        ifstream jsonFile;
-        jsonFile.open(pathToFile, std::ifstream::binary);
-        jsonTree = tryParseJson(jsonFile);
+    if(argc < 2) {
+        jsonTree = parseJsonFromStream(std::cin);
+    } else {
+        jsonTree = parseJsonFromFile(argv[1]);
     }
 
     CmdFactory factory;
