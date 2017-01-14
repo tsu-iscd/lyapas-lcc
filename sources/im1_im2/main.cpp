@@ -6,42 +6,43 @@
 
 using namespace std;
 
-Json::Value parseJsonFromStream(istream &stream)
+void parseJsonFromStream(istream &stream, Json::Value &json)
 {
-    Json::Value json;
     Json::Reader reader;
-
-    if(reader.parse(stream, json))
+    if(!reader.parse(stream, json))
     {
-        return json;
+        throw std::runtime_error("Json Parse Error: " + reader.getFormattedErrorMessages());
     }
-
-    throw std::runtime_error("Json Parse Error: " + reader.getFormattedErrorMessages());
 }
 
-Json::Value parseJsonFromFile(const char *name)
+void parseJsonFromFile(const char *name, Json::Value &json)
 {
     ifstream jsonFile;
     jsonFile.exceptions(ifstream::failbit | ifstream::badbit);
     jsonFile.open(name, std::ifstream::binary);
 
-    return parseJsonFromStream(jsonFile);
+    parseJsonFromStream(jsonFile, json);
+}
+
+void writeJsonToStream(ostream &stream, const Json::Value &json)
+{
+    stream << json.toStyledString();
 }
 
 int main(int argc, char* argv[])
 {
     Json::Value jsonTree;
     if(argc < 2) {
-        jsonTree = parseJsonFromStream(std::cin);
+        parseJsonFromStream(std::cin, jsonTree);
     } else {
-        jsonTree = parseJsonFromFile(argv[1]);
+        parseJsonFromFile(argv[1], jsonTree);
     }
 
     CmdFactory factory;
     TreeParser treeParser(factory);
 
-    auto result = treeParser.parseTree(jsonTree);
-    cout << result->toJson().toStyledString() << endl;
+    Json::Value jsonResult = treeParser.parseTree(jsonTree)->toJson();
+    writeJsonToStream(cout, jsonResult);
 
     return 0;
 }
