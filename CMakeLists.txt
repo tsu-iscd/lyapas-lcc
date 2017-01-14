@@ -9,6 +9,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_subdirectory("sources/libs/backward-cpp")
 add_subdirectory("sources/libs/jsoncpp")
 add_subdirectory("sources/libs/print_json")
+add_subdirectory("sources/libs/shared_utils")
 add_subdirectory("sources/libs/translation_module")
 
 # промежуточные трансляторы

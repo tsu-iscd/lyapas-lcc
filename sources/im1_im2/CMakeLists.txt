@@ -40,4 +40,4 @@ set(SOURCE_FILES
 )
 
 add_executable(im1_im2 ${SOURCE_FILES} ${BACKWARD_ENABLE})
-target_link_libraries(im1_im2 jsoncpp "-ldw")
+target_link_libraries(im1_im2 jsoncpp shared_utils "-ldw")
