@@ -2,9 +2,9 @@
 
 #include <stdexcept>
 #include <string>
+#include <json/json.h>
 
-// TODO(vsafonov): заменить на JSON объект. Нужно слинковать JSON либу.
-typedef int JSON;
+typedef Json::Value JSON;
 
 namespace trm {
 
