@@ -44,3 +44,4 @@ set(SOURCE_FILES
 )
 
 add_executable(im1_im2 ${SOURCE_FILES})
+target_link_libraries(im1_im2 "-ldw")
