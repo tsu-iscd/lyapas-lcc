@@ -1,3 +1,171 @@
 R"(
+cmd/create_complex: "<complex>", {int}
+=>
+alloc 3, "<complex_struct>"
+move "<complex_cardinality>", 0
+move "<complex_capacity>", {int}
+cmd/alloc_at_least: {int}, "<complex_buffer>"
+cmd/move: "<complex_buffer_opt>", "<complex_buffer>"
+
+cmd/remove_complex: "<complex>"
+=>
+cmd/dealloc: "<complex_buffer_opt>"
+cmd/dealloc: "<complex_struct>"
+
+cmd/reduce_complex: "<complex>"
+=>
+cmd/realloc: "<complex_capacity>", "<complex_cardinality>", "<complex_buffer>"
+cmd/move: "<complex_capacity>", "<complex_cardinality>"
+cmd/move: "<complex_buffer_opt>", "<complex_buffer>"
+
+cmd/clear_complex: "<complex>"
+=>
+cmd/move: "<free_var=1>", 0
+label: <free_label=1>
+cmd/compare: "<complex_cardinality>", "<free_var=1>"
+cmd/jump_eq: <free_label=2>
+cmd/move: "<complex_cell=<free_var=1>>", 0
+cmd/inc: "<free_var=1>"
+cmd/jump: <free_label=1>
+label: <free_label=2>
+
+cmd/insert_string_in_complex "<symbol_complex>", <string>
+=>
+cmd/definition_string "<string>", "<free_var=1>"
+cmd/compare "<complex_capacity>", <string_len>
+cmd/jump_geq <free_label=1>
+cmd/error "Length of string greater than capacity of complex"
+label <free_label=1>
+cmd/move "<complex_cardinality>", <string_len>
+cmd/move "<free_var=2>", 0
+label <free_label=2>
+cmd/compare "<complex_cardinality>", "<free_var=2>"
+cmd/jump_geq <free_label=3>
+cmd/move "<complex_cell=<free_var=2>>", "1byte <free_var=1>[<free_var=2>]"
+cmd/inc "<free_var=2>"
+cmd/jump <free_label=2>
+label <free_label=3>
+
+cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
+=>
+cmd/compare "<complex_cardinality>", "<complex_capacity>"
+cmd/jump_neq <free_label=1>
+cmd/error "Capacity is too small for inserting"
+label <free_label=1>
+cmd/move "<free_var=1>", {int}
+cmd/compare "<free_var=1>", "<complex_cardinality>"
+cmd/jump_leq <free_label=2>
+cmd/move "<free_var=1>", "<complex_cardinality>"
+label <free_label=2>
+cmd/inc "<complex_cardinality>"
+cmd/move "<free_var=2>", "<free_var=1>"
+cmd/inc "<free_var=2>"
+label <free_label=3>
+cmd/compare "<complex_cardinality>", "<free_var=2>"
+cmd/jump_geq <free_label=4>
+cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=2> - 1>"
+cmd/inc "<free_var=2>"
+cmd/jump <free_label=3>
+label <free_label=4>
+cmd/move "<complex_cell=<free_var=1>>", {readable_int}
+
+cmd/remove_element_from_complex "<complex>", {int}, {writable_int}
+=>
+cmd/compare "<complex_cardinality>", 0
+cmd/jump_neq <free_label=1>
+cmd/error "Cardinality is too small for removing" ^^J
+label <free_label=1>
+cmd/move "<free_var=1>", {int}
+cmd/compare "<free_var=1>", "<complex_cardinality>"
+cmd/jump_lt <free_label=2>
+cmd/move "<free_var=1>", "<complex_cardinality>"
+cmd/dec "<free_var=1>"
+label <free_label=2>
+cmd/move {writable_int}, "<complex_cell=<free_var=1>>"
+label <free_label=3>
+cmd/inc "<free_var=1>"
+cmd/compare "<complex_cardinality>", "<free_var=1>"
+cmd/jump_geq <free_label=4>
+cmd/move "<complex_cell=<free_var=1> - 1>", "<complex_cell=<free_var=1>>"
+cmd/jump <free_label=3>
+label <free_label=4>
+cmd/dec "<complex_cardinality>"
+
+cmd/copy_complex "<complex:1>", "<complex:2>", {int:1}, {int:2}, {int:3}
+=>
+cmd/move "<free_var=1>", {int:2}
+cmd/move "<free_var=2>", {int:3}
+cmd/compare "<free_var=1>", "<complex_cardinality:1>"
+cmd/jump_lt <free_label=1>
+cmd/move "<free_var=1>", 0
+label <free_label=1>
+cmd/move "<free_var=3>", "<complex_cardinality:1>"
+cmd/sub "<free_var=3>", "<free_var=1>"
+cmd/compare {int:1}, "<free_var=3>"
+cmd/jump_leq <free_label=2>
+cmd/error "Cardinality of first complex is too small"
+label <free_label=2>
+cmd/compare "<free_var=2>", "<complex_cardinality:2>"
+cmd/jump_lt <free_label=3>
+cmd/compare "<complex_cardinality:2>", {int:1}
+cmd/jump_geq <free_label=4>
+cmd/error "Cardinality of second complex is too small"
+label <free_label=4>
+cmd/move "<free_var=2>", "<complex_cardinality:2>"
+cmd/sub "<free_var=2>", {int:1}
+cmd/jump <free_label=5>
+label <free_label=3>
+cmd/move "<free_var=3>", "<complex_cardinality:2>"
+cmd/sub "<free_var=3>", "<free_var=2>"
+cmd/compare <int:1>, "<free_var=3>"
+cmd/jump_leq <free_label=5>
+cmd/error "Cardinality of second complex is too small"
+label <free_label=5>
+cmd/compare "<complex_cardinality:1>", "<free_var=1>"
+cmd/jump_geq <free_label=6>
+cmd/move "<complex_cell:2=<free_var=2>>", "<complex_cell:1=<free_var=1>>"
+cmd/inc "<free_var=1>"
+cmd/inc "<free_var=2>"
+cmd/jump <free_label=5>
+label <free_label=6>
+
+cmd/write_complex "<symbol_complex>"
+=>
+cmd/move "<free_var=1>", 0
+label <free_label=1>
+cmd/compare "<free_var=1>", "<complex_cardinality>"
+cmd/jump_geq <free_label=2>
+cmd/write_char "<complex_cell=<free_var=1>>"
+cmd/inc "<free_var=1>"
+cmd/jump <free_label=1>
+label <free_label=2>
+
+cmd/write_string "<string>"
+=>
+cmd/move "<free_var=1>", 0
+cmd/definition_string "<string>", "<free_var=2>"
+label <free_label=1>
+cmd/compare "<free_var=1>", <string_len>
+cmd/jump_geq <free_label=2>
+cmd/write_char "1byte <free_var=2>[<free_var=1>]"
+cmd/inc "<free_var=1>"
+cmd/jump <free_label=1>
+label <free_label=2>
+
+cmd/read_complex "<symbol_complex>"
+=>
+cmd/move "<free_var=1>", "<complex_cardinality>"
+label <free_label=1>
+cmd/compare "<free_var=1>", "<complex_capacity>"
+cmd/jump_geq <free_label=3>
+cmd/read_char "<complex_cell=<free_var=1>>"
+cmd/compare "<complex_cell=<free_var=1>>", 13
+cmd/jump_eq <free_label=2>
+cmd/inc "<free_var=1>"
+cmd/jump <free_label=1>
+label <free_label=2>
+cmd/inc "<free_var=1>"
+label <free_label=3>
+cmd/move "<complex_cardinality>", "<free_var=1>"
 
 )"

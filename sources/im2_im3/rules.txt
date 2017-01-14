@@ -1,3 +1,112 @@
 R"(
+cmd/store {arg}
+=>
+cmd/move {arg}, "acc"
+
+cmd/load {arg}
+=>
+cmd/move "acc", {arg}
+
+cmd/swap {variable:1}, {variable:2}
+=>
+cmd/move "swaptemp", {variable:1}
+cmd/move {variable:1}, {variable:2}
+cmd/move {variable:2}, "swaptemp"
+
+cmd/swap_comp_el "<complex>", "<int:1>", "<int:2>"
+=>
+cmd/move "swaptemp", "<complex>[<int:1>]"
+cmd/move "<complex>[<int:1>]", "<complex>[<int:2>]"
+cmd/move "<complex>[<int:2>]", "swaptemp"
+
+cmd/get_time
+=>
+cmd/get_time "acc"
+
+cmd/set_random
+=>
+cmd/set_random "acc"
+
+cmd/get_random
+=>
+cmd/get_random "acc"
+
+cmd/get_number_least_1
+=>
+cmd/get_number_least_1 "acc"
+
+cmd/not
+=>
+cmd/not "acc"
+
+cmd/weight
+=>
+cmd/weight "acc"
+
+cmd/or {readable_int}
+=>
+cmd/or "acc", {readable_int}
+
+cmd/and {readable_int}
+=>
+cmd/and "acc", {readable_int}
+
+cmd/xor {readable_int}
+=>
+cmd/xor "acc", {readable_int}
+
+cmd/left_shift {readable_int}
+=>
+cmd/left_shift "acc", {readable_int}
+
+cmd/right_shift {readable_int}
+=>
+cmd/right_shift "acc", {readable_int}
+
+cmd/inc {writable_int}
+=>
+cmd/inc {writable_int}
+cmd/move "acc", {writable_int}
+
+cmd/dec {writable_int}
+=>
+cmd/dec {writable_int}
+cmd/move "acc", {writable_int}
+
+cmd/add {readable_int}
+=>
+cmd/add "acc", {readable_int}
+
+cmd/sub {readable_int}
+=>
+cmd/sub "acc", {readable_int}
+
+cmd/mul {readable_int}
+=>
+cmd/mul "acc", {readable_int}, "Z"
+
+cmd/div {readable_int}
+=>
+cmd/div "acc", {readable_int}, "Z"
+
+cmd/mod {readable_int}
+=>
+cmd/mod "acc", {readable_int}, "Z"
+
+cmd/ddiv {readable_int}
+=>
+cmd/ddiv "acc", {readable_int}, "Z"
+
+cmd/compare {readable_int}
+=>
+cmd/compare "acc", {readable_int}
+
+cmd/insert_element_in_complex {complex}, {int}
+=>
+cmd/insert_element_in_complex {complex}, {int}, "acc"
+
+cmd/remove_element_from_complex {complex}, {int}
+=>
+cmd/remove_element_from_complex {complex}, {int}, "acc"
 
 )"
