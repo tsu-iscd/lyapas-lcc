@@ -4,9 +4,7 @@
 #include "TreeParser/IParser.h"
 #include "TreeParser/TreeParser.h"
 
-using namespace std;
-
-void parseJsonFromStream(istream &stream, Json::Value &json)
+void parseJsonFromStream(std::istream &stream, Json::Value &json)
 {
     Json::Reader reader;
     if(!reader.parse(stream, json))
@@ -17,14 +15,14 @@ void parseJsonFromStream(istream &stream, Json::Value &json)
 
 void parseJsonFromFile(const char *name, Json::Value &json)
 {
-    ifstream jsonFile;
-    jsonFile.exceptions(ifstream::failbit | ifstream::badbit);
+    std::ifstream jsonFile;
+    jsonFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     jsonFile.open(name, std::ifstream::binary);
 
     parseJsonFromStream(jsonFile, json);
 }
 
-void writeJsonToStream(ostream &stream, const Json::Value &json)
+void writeJsonToStream(std::ostream &stream, const Json::Value &json)
 {
     stream << json.toStyledString();
 }
@@ -42,7 +40,7 @@ int main(int argc, char* argv[])
     TreeParser treeParser(factory);
 
     Json::Value jsonResult = treeParser.parseTree(jsonTree)->toJson();
-    writeJsonToStream(cout, jsonResult);
+    writeJsonToStream(std::cout, jsonResult);
 
     return 0;
 }
