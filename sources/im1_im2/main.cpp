@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include "json/json.h"
-#include "source/TreeParser/IParser.h"
-#include "source/TreeParser/TreeParser.h"
+#include "TreeParser/IParser.h"
+#include "TreeParser/TreeParser.h"
 
 using namespace std;
 
