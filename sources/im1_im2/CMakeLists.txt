@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 2.8.8)
 project(im1_im2)
 
-include_directories(libraries/jsoncpp)
-
 set(SOURCE_FILES
-    libraries/jsoncpp/jsoncpp.cpp
     libraries/backward-cpp/backward.cpp
     main.cpp
     source/CompositeCmd/ICmd.cpp
@@ -44,4 +41,4 @@ set(SOURCE_FILES
 )
 
 add_executable(im1_im2 ${SOURCE_FILES})
-target_link_libraries(im1_im2 "-ldw")
+target_link_libraries(im1_im2 jsoncpp "-ldw")
