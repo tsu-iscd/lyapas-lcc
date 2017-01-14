@@ -18,4 +18,4 @@ set(SOURCE_FILES
 )
 
 add_executable(lyapas_im0 ${SOURCE_FILES})
-target_link_libraries(lyapas_im0 print_json "-ljansson -lfl")
+target_link_libraries(lyapas_im0 ${COMMON_C_LIBS} "-lfl")

@@ -6,5 +6,5 @@ set(SOURCE_FILES
 )
 
 add_executable(im4_im5 ${SOURCE_FILES} ${BACKWARD_ENABLE})
-target_link_libraries(im4_im5 translation_module "-ldw")
+target_link_libraries(im4_im5 ${COMMON_CXX_LIBS})
 

@@ -13,6 +13,9 @@ add_subdirectory("sources/libs/shared_utils")
 add_subdirectory("sources/libs/translation_module")
 
 # промежуточные трансляторы
+set(COMMON_C_LIBS print_json "-ljansson")
+set(COMMON_CXX_LIBS translation_module jsoncpp shared_utils "-ldw")
+
 add_subdirectory("sources/lyapas_im0")
 add_subdirectory("sources/im0_im1")
 add_subdirectory("sources/im1_im2")

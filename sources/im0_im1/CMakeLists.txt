@@ -18,4 +18,4 @@ set(SOURCE_FILES
 )
 
 add_executable(im0_im1 ${SOURCE_FILES})
-target_link_libraries(im0_im1 print_json "-ljansson")
+target_link_libraries(im0_im1 ${COMMON_C_LIBS})
