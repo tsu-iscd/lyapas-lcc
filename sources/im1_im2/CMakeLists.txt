@@ -3,40 +3,40 @@ project(im1_im2)
 
 set(SOURCE_FILES
     main.cpp
-    source/CompositeCmd/ICmd.cpp
-    source/CompositeCmd/ICmd.h
-    source/TreeParser/IParser.cpp
-    source/TreeParser/IParser.h
-    source/CompositeCmd/LeafCmd.cpp
-    source/CompositeCmd/LeafCmd.h
-    source/CompositeCmd/CompositeCmd.cpp
-    source/CompositeCmd/CompositeCmd.h
-    source/CompositeCmd/Composites/ProcedureCmd.cpp
-    source/CompositeCmd/Composites/ProcedureCmd.h
-    source/TreeParser/CmdFactory.cpp
-    source/TreeParser/CmdFactory.h
-    source/TreeParser/TreeParser.cpp
-    source/TreeParser/TreeParser.h
-    source/CompositeCmd/Composites/OperationCmd.cpp
-    source/CompositeCmd/Composites/OperationCmd.h
-    source/CompositeCmd/Composites/ParagraphCmd.cpp
-    source/CompositeCmd/Composites/ParagraphCmd.h
-    source/CompositeCmd/Leafs/VariableCmd.cpp
-    source/CompositeCmd/Leafs/VariableCmd.h
-    source/CompositeCmd/Leafs/ConstantCmd.cpp
-    source/CompositeCmd/Leafs/ConstantCmd.h
-    source/CompositeCmd/Composites/ComplexCmd.cpp
-    source/CompositeCmd/Composites/ComplexCmd.h
-    source/CompositeCmd/Composites/PrefaceCmd.cpp
-    source/CompositeCmd/Composites/PrefaceCmd.h
-    source/CompositeCmd/Composites/ProgramCmd.cpp
-    source/CompositeCmd/Composites/ProgramCmd.h
-    source/CompositeCmd/Composites/ArgsCmd.cpp
-    source/CompositeCmd/Composites/ArgsCmd.h
-    source/CompositeCmd/Leafs/StringCmd.cpp
-    source/CompositeCmd/Leafs/StringCmd.h
-    source/CompositeCmd/Leafs/AsmCmd.cpp
-    source/CompositeCmd/Leafs/AsmCmd.h
+    CompositeCmd/ICmd.cpp
+    CompositeCmd/ICmd.h
+    TreeParser/IParser.cpp
+    TreeParser/IParser.h
+    CompositeCmd/LeafCmd.cpp
+    CompositeCmd/LeafCmd.h
+    CompositeCmd/CompositeCmd.cpp
+    CompositeCmd/CompositeCmd.h
+    CompositeCmd/Composites/ProcedureCmd.cpp
+    CompositeCmd/Composites/ProcedureCmd.h
+    TreeParser/CmdFactory.cpp
+    TreeParser/CmdFactory.h
+    TreeParser/TreeParser.cpp
+    TreeParser/TreeParser.h
+    CompositeCmd/Composites/OperationCmd.cpp
+    CompositeCmd/Composites/OperationCmd.h
+    CompositeCmd/Composites/ParagraphCmd.cpp
+    CompositeCmd/Composites/ParagraphCmd.h
+    CompositeCmd/Leafs/VariableCmd.cpp
+    CompositeCmd/Leafs/VariableCmd.h
+    CompositeCmd/Leafs/ConstantCmd.cpp
+    CompositeCmd/Leafs/ConstantCmd.h
+    CompositeCmd/Composites/ComplexCmd.cpp
+    CompositeCmd/Composites/ComplexCmd.h
+    CompositeCmd/Composites/PrefaceCmd.cpp
+    CompositeCmd/Composites/PrefaceCmd.h
+    CompositeCmd/Composites/ProgramCmd.cpp
+    CompositeCmd/Composites/ProgramCmd.h
+    CompositeCmd/Composites/ArgsCmd.cpp
+    CompositeCmd/Composites/ArgsCmd.h
+    CompositeCmd/Leafs/StringCmd.cpp
+    CompositeCmd/Leafs/StringCmd.h
+    CompositeCmd/Leafs/AsmCmd.cpp
+    CompositeCmd/Leafs/AsmCmd.h
 )
 
 add_executable(im1_im2 ${SOURCE_FILES} ${BACKWARD_ENABLE})
