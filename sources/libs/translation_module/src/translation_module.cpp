@@ -1,5 +1,9 @@
 #include "translation_module.h"
 
+trm::TranslationModule::~TranslationModule()
+{
+}
+
 void trm::TranslationModule::translate(JSON &cmds)
 {
     std::string error;

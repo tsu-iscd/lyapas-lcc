@@ -10,6 +10,8 @@ namespace trm {
 
 class TranslationModule {
 public:
+    ~TranslationModule();
+
     void translate(JSON &cmds);
 
 private:
