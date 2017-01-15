@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <json/json.h>
+#include "cmd_translator.h"
 
 typedef Json::Value JSON;
 
@@ -21,6 +22,7 @@ private:
     virtual void process(JSON &cmds) final;
     virtual void postprocess(JSON &cmds) = 0;
 
+    CmdTranslator getCmdTranslator();
     virtual std::string getDesignations() = 0;
     virtual std::string getRules() = 0;
 };

@@ -10,5 +10,5 @@ set(TRANSLATION_MODULE_SRCS
 )
 
 add_library(translation_module STATIC ${TRANSLATION_MODULE_SRCS})
-target_link_libraries(translation_module jsoncpp)
+target_link_libraries(translation_module shared_utils jsoncpp)
 target_include_directories(translation_module INTERFACE "${PROJECT_INCLUDE_DIR}")
