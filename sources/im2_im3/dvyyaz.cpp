@@ -13,14 +13,14 @@ void dyaz::Dvyyaz::postprocess(JSON &cmds)
 {
 }
 
-std::string dyaz::Dvyyaz::readDesignations()
+std::string dyaz::Dvyyaz::getDesignations()
 {
     return std::string(
 #include "designations.txt"
     );
 }
 
-std::string dyaz::Dvyyaz::readRules()
+std::string dyaz::Dvyyaz::getRules()
 {
     return std::string(
 #include "rules.txt"

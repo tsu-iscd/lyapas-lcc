@@ -19,8 +19,8 @@ private:
     virtual void process(JSON &cmds) final;
     virtual void postprocess(JSON &cmds) = 0;
 
-    virtual std::string readDesignations() = 0;
-    virtual std::string readRules() = 0;
+    virtual std::string getDesignations() = 0;
+    virtual std::string getRules() = 0;
 };
 
 }

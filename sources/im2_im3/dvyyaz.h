@@ -10,8 +10,8 @@ private:
     virtual void preprocess(JSON &cmds) override;
     virtual void postprocess(JSON &cmds) override;
 
-    virtual std::string readDesignations() override;
-    virtual std::string readRules() override;
+    virtual std::string getDesignations() override;
+    virtual std::string getRules() override;
 };
 
 }
