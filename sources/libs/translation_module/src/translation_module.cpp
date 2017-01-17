@@ -1,7 +1,11 @@
 #include "translation_module.h"
+#include <string>
 #include <vector>
 #include <shared_utils/string_helper.h>
 #include "cmd_translator.h"
+#include "cmd_info.h"
+
+namespace trm {
 
 trm::TranslationModule::~TranslationModule()
 {
@@ -24,13 +28,13 @@ bool trm::TranslationModule::valid(const JSON &cmds, std::string &error)
     return true;
 }
 
-trm::CmdTranslator trm::TranslationModule::getCmdTranslator()
+std::map<CmdInfo, trm::CmdTranslator> getCmdTranslators(const std::string &rules)
 {
-    std::vector<std::vector<ArgBuilder>> cmdsArgBulders;
+    std::map<CmdInfo, trm::CmdTranslator> cmdTranslators;
 
-    std::istringstream rules(getRules());
+    std::istringstream rulesStream(rules);
     std::string line;
-    while (std::getline(rules, line)) {
+    while (std::getline(rulesStream, line)) {
         // парсинг: type[/name]: arg1, arg2, arg3 ...
 
         // пропускаем пустые строки и комментариии
@@ -45,7 +49,7 @@ trm::CmdTranslator trm::TranslationModule::getCmdTranslator()
             throw std::runtime_error("Invalid rules file");
         }
         std::string type(line.begin(), line.begin() + colon);
-        std::istringstream args(std::string(line.begin() + colon + 1, line.end()));
+        std::istringstream argsStream(std::string(line.begin() + colon + 1, line.end()));
 
         // type[/name]
         std::string name;
@@ -55,23 +59,27 @@ trm::CmdTranslator trm::TranslationModule::getCmdTranslator()
             type = type.substr(0, slash);
         }
 
-        std::vector<ArgBuilder> argBuilders;
+        std::vector<std::string> args;
         // arg1, arg2, arg3 ...
         std::string arg;
-        while (std::getline(args, arg, ',')) {
+        while (std::getline(argsStream, arg, ',')) {
             sutils::lrstrip(arg);
-            argBuilders.push_back(trm::createArgBuilder(arg));
+            args.push_back(arg);
         }
-        cmdsArgBulders.push_back(std::move(argBuilders));
+
+        // TODO(vsafonov):
+        // 1) пропустить =>
+        // 2) парсить команды до пустой строки
+
+        cmdTranslators.emplace(CmdInfo{type, name}, args);
     }
 
-    // TODO(vsafonov): добавить коллекцию с заполнителями
-    return {std::move(cmdsArgBulders), {}};
+    return cmdTranslators;
 }
 
 void trm::TranslationModule::process(JSON &cmds)
 {
-    static trm::CmdTranslator cmdTranslator = getCmdTranslator();
+    static std::map<CmdInfo, trm::CmdTranslator> cmdTranslators = getCmdTranslators(getRules());
 
     if (!cmds.isArray()) {
         throw std::runtime_error("JSON with commands is not array");
@@ -82,11 +90,17 @@ void trm::TranslationModule::process(JSON &cmds)
     // 2) пропускать команды, которые не требуют трансляции.
     JSON resultCmds;
     for (auto &&cmd : cmds) {
-        std::vector<JSON> newCmds = cmdTranslator.translate(cmd);
-        for (JSON &newCmd : newCmds) {
-            resultCmds.append(std::move(newCmd));
+        auto p = cmdTranslators.find(createCmdInfo(cmd));
+        if (p != cmdTranslators.end()) {
+            for (auto &&resultCmd : p->second.translate(cmd)) {
+                resultCmds.append(std::move(resultCmd));
+            }
+        } else {
+            resultCmds.append(std::move(cmd));
         }
     }
 
     cmds = std::move(resultCmds);
+}
+
 }
