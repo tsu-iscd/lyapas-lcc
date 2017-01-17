@@ -7,6 +7,7 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/translation_module)
 set(TRANSLATION_MODULE_SRCS
     ${PROJECT_SOURCE_DIR}/translation_module.cpp
+    ${PROJECT_SOURCE_DIR}/cmd_info.cpp
 )
 
 add_library(translation_module STATIC ${TRANSLATION_MODULE_SRCS})
