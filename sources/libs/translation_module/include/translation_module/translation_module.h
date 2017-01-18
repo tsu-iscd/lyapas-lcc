@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include <string>
 #include <json/json.h>
-#include "cmd_translator.h"
 
 typedef Json::Value JSON;
 

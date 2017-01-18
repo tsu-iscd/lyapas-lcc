@@ -1,5 +1,4 @@
 #include "translation_module.h"
-#include <string>
 #include <vector>
 #include <shared_utils/string_helper.h>
 #include "cmd_translator.h"
@@ -28,9 +27,11 @@ bool trm::TranslationModule::valid(const JSON &cmds, std::string &error)
     return true;
 }
 
-std::map<CmdInfo, trm::CmdTranslator> getCmdTranslators(const std::string &rules)
+using CmdTranslators = std::map<CmdInfo, trm::CmdTranslator>;
+
+CmdTranslators getCmdTranslators(const std::string &rules)
 {
-    std::map<CmdInfo, trm::CmdTranslator> cmdTranslators;
+    CmdTranslators cmdTranslators;
 
     std::istringstream rulesStream(rules);
     std::string line;
@@ -79,7 +80,7 @@ std::map<CmdInfo, trm::CmdTranslator> getCmdTranslators(const std::string &rules
 
 void trm::TranslationModule::process(JSON &cmds)
 {
-    static std::map<CmdInfo, trm::CmdTranslator> cmdTranslators = getCmdTranslators(getRules());
+    static CmdTranslators cmdTranslators = getCmdTranslators(getRules());
 
     if (!cmds.isArray()) {
         throw std::runtime_error("JSON with commands is not array");
