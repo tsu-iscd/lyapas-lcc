@@ -47,4 +47,9 @@ private:
     StringMap &stringMap;
 };
 
+std::unique_ptr<IFiller> createIFiller()
+{
+
+}
+
 }

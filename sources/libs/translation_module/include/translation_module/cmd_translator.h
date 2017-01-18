@@ -15,11 +15,63 @@ class CmdBuilder {
 class ArgBuilder {
 };
 
+enum class ArgType {
+    StringPattern,
+    JsonPattern
+};
+
+ArgType cleanArg(std::string &arg) {
+    auto eraseBorders = [](std::string &str) {
+        if (str.size() >= 2) {
+            str = std::string(str.begin() + 1, str.end() - 1);
+        } else {
+            throw std::runtime_error("string is too small");
+        }
+    };
+
+    auto isBorderedBy = [](std::string &str, char b, char e) {
+        if (str.size() < 2) {
+            return false;
+        }
+        return str.front() == b && str.back() == e;
+    };
+
+    if (isBorderedBy(arg, '{', '}')) {
+        eraseBorders(arg);
+        return ArgType::JsonPattern;
+    }
+
+    if (isBorderedBy(arg, '"', '"')) {
+        eraseBorders(arg);
+        if (isBorderedBy(arg, '<', '>')) {
+            eraseBorders(arg);
+            return ArgType::StringPattern;
+        }
+    }
+
+    throw std::runtime_error("Некорректный тип аргумента");
+}
+
 class CmdTranslator
 {
 public:
     CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst)
     {
+        for (const auto &arg : src.args) {
+            std::string cleanedArg(arg);
+            ArgType argType = cleanArg(cleanedArg);
+            switch (argType) {
+            case ArgType::JsonPattern:
+                // TODO(vsafonov): написать свою реализацию make_unique (либо перейти на C++14)
+                srcFillers.push_back(std::unique_ptr<IFiller>(new JsonFiller(cleanedArg, srcArgJson)));
+                break;
+            case ArgType::StringPattern:
+                srcFillers.push_back(std::unique_ptr<IFiller>(new StringFiller(cleanedArg, srcArgString)));
+                break;
+            default:
+                throw std::runtime_error("Обработчик не установлен");
+            }
+        }
     }
 
     std::vector<Json::Value> translate(const Json::Value &cmd)
