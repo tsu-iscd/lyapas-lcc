@@ -8,6 +8,7 @@ namespace trm {
 struct CmdInfo {
     std::string type;
     std::string name;
+    std::vector<std::string> args;
 
     // TODO(vsafonov): может быть, они не нужны для map. нужно перепроверить
     bool operator==(const CmdInfo &rhs) const;

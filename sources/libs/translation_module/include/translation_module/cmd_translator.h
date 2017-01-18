@@ -18,7 +18,7 @@ class ArgBuilder {
 class CmdTranslator
 {
 public:
-    CmdTranslator(const std::vector<std::string> &args)
+    CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst)
     {
     }
 
