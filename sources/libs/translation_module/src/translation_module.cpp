@@ -29,24 +29,32 @@ bool trm::TranslationModule::valid(const JSON &cmds, std::string &error)
 
 using CmdTranslators = std::map<CmdInfo, trm::CmdTranslator>;
 
-// парсинг: type[/name]: arg1, arg2, arg3 ...
+// парсинг: type[/name] [arg1, arg2, arg3 ...]
 CmdInfo parseCmdInfoFromString(const std::string line)
 {
-    // type: args
-    auto colon = line.find(':');
-    if (colon == std::string::npos) {
-        throw std::runtime_error("Invalid rules file");
+    // lambda для парсинга type[/name]
+    auto parseNameAndType = [](std::string &type, std::string &name) {
+        auto slash = type.find('/');
+        if (slash != std::string::npos) {
+            name = std::string(type.begin() + slash + 1, type.end());
+            type = type.substr(0, slash);
+        }
+    };
+
+    // type args
+    auto firstSpace = line.find(' ');
+    if (firstSpace == std::string::npos) {
+        std::string type = line;
+        std::string name;
+        parseNameAndType(type, name);
+        return {type, name, {}};
     }
-    std::string type(line.begin(), line.begin() + colon);
-    std::istringstream argsStream(std::string(line.begin() + colon + 1, line.end()));
+    std::string type(line.begin(), line.begin() + firstSpace);
+    std::istringstream argsStream(std::string(line.begin() + firstSpace + 1, line.end()));
 
     // type[/name]
     std::string name;
-    auto slash = type.find('/');
-    if (slash != std::string::npos) {
-        name = std::string(type.begin() + slash + 1, type.end());
-        type = type.substr(0, slash);
-    }
+    parseNameAndType(type, name);
 
     // arg1, arg2, arg3 ...
     std::vector<std::string> args;
