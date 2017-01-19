@@ -4,16 +4,12 @@
 #include <vector>
 #include <json/json.h>
 #include "aliases.h"
+#include "arg_builders.h"
 #include "cmd_info.h"
 #include "translation_module.h"
 #include "fillers.h"
 
 namespace trm {
-
-class ArgBuilder {
-public:
-    Json::Value createArg();
-};
 
 class CmdBuilder {
 public:
@@ -141,11 +137,5 @@ private:
     StringMap srcArgString;
     IntMap srcArgInt;
 };
-
-//
-inline ArgBuilder createArgBuilder(const std::string& arg)
-{
-    return ArgBuilder();
-}
 
 }
