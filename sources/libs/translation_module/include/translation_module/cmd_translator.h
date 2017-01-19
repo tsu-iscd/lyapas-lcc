@@ -10,9 +10,38 @@
 
 namespace trm {
 
-class CmdBuilder {
-};
 class ArgBuilder {
+public:
+    Json::Value createArg();
+};
+
+class CmdBuilder {
+public:
+    CmdBuilder(Json::Value &&cmdSample,
+               std::vector<std::shared_ptr<ArgBuilder>> &&argBuilders) :
+        cmdSample(std::move(cmdSample)),
+        argBuilders(std::move(argBuilders))
+    {
+    }
+
+    Json::Value createCmd()
+    {
+        Json::Value result(cmdSample);
+
+        if (!argBuilders.empty()) {
+            Json::Value &args = result["args"] = Json::Value(Json::arrayValue);
+
+            for (auto &argBuilder : argBuilders) {
+                args.append(argBuilder->createArg());
+            }
+        }
+
+        return result;
+    }
+
+private:
+    Json::Value cmdSample;
+    std::vector<std::shared_ptr<ArgBuilder>> argBuilders;
 };
 
 enum class ArgType {
@@ -72,6 +101,25 @@ public:
                 throw std::runtime_error("Обработчик не установлен");
             }
         }
+
+        for (const auto &dstCmd : dst) {
+            Json::Value sample;
+            if (dstCmd.type.empty()) {
+                throw std::runtime_error("Некорректный тип");
+            }
+            sample["type"] = dstCmd.type;
+            sample["name"] = dstCmd.name;
+
+            std::vector<std::shared_ptr<ArgBuilder>> argBuilders;
+            for (const auto &arg : dstCmd.args) {
+                // arg:
+                // int, "string" => ConstArgBuilder
+                // {} => JsonArgBuilder
+                // "<> <>" => PatternArgBuilder
+            }
+
+            cmdBuilders.emplace_back(std::move(sample), std::move(argBuilders));
+        }
     }
 
     std::vector<Json::Value> translate(const Json::Value &cmd)
@@ -83,20 +131,15 @@ public:
         for (auto i = 0; i < cmd.size(); ++i) {
             srcFillers[i]->fill(cmd[i]);
         }
-
     }
 
 private:
+    std::vector<std::unique_ptr<IFiller>> srcFillers;
+    std::vector<CmdBuilder> cmdBuilders;
+
     JsonMap srcArgJson;
     StringMap srcArgString;
     IntMap srcArgInt;
-    std::vector<std::unique_ptr<IFiller>> srcFillers;
-
-    std::vector<CmdBuilder> cmdBuilders;
-
-    //TODO(vsafonov): будут в cmd билдере
-    //Json::Value cmdSample;
-    //std::vector<std::unique_ptr<ArgBuilder>> argBuilders;
 };
 
 //
