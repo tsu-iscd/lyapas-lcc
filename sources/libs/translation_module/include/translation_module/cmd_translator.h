@@ -12,12 +12,7 @@
 
 namespace trm {
 
-enum class ArgType {
-    StringPattern,
-    JsonPattern
-};
-
-ArgType cleanArg(std::string &arg) {
+std::unique_ptr<IFiller> createFiller(std::string value, JsonMap &jsonMap, StringMap &stringMap) {
     auto eraseBorders = [](std::string &str) {
         if (str.size() >= 2) {
             str = std::string(str.begin() + 1, str.end() - 1);
@@ -33,20 +28,20 @@ ArgType cleanArg(std::string &arg) {
         return str.front() == b && str.back() == e;
     };
 
-    if (isBorderedBy(arg, '{', '}')) {
-        eraseBorders(arg);
-        return ArgType::JsonPattern;
+    if (isBorderedBy(value, '{', '}')) {
+        eraseBorders(value);
+        return std::unique_ptr<IFiller>(new JsonFiller(value, jsonMap));
     }
 
-    if (isBorderedBy(arg, '"', '"')) {
-        eraseBorders(arg);
-        if (isBorderedBy(arg, '<', '>')) {
-            eraseBorders(arg);
-            return ArgType::StringPattern;
+    if (isBorderedBy(value, '"', '"')) {
+        eraseBorders(value);
+        if (isBorderedBy(value, '<', '>')) {
+            eraseBorders(value);
+            return std::unique_ptr<IFiller>(new StringFiller(value, stringMap));
         }
     }
 
-    throw std::runtime_error("Некорректный тип аргумента");
+    throw std::runtime_error("Некорректное значение строки");
 }
 
 class CmdTranslator
@@ -55,19 +50,7 @@ public:
     CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst)
     {
         for (const auto &arg : src.args) {
-            std::string cleanedArg(arg);
-            ArgType argType = cleanArg(cleanedArg);
-            switch (argType) {
-            case ArgType::JsonPattern:
-                // TODO(vsafonov): написать свою реализацию make_unique (либо перейти на C++14)
-                srcFillers.push_back(std::unique_ptr<IFiller>(new JsonFiller(cleanedArg, srcArgJson)));
-                break;
-            case ArgType::StringPattern:
-                srcFillers.push_back(std::unique_ptr<IFiller>(new StringFiller(cleanedArg, srcArgString)));
-                break;
-            default:
-                throw std::runtime_error("Обработчик не установлен");
-            }
+            srcFillers.push_back(createFiller(arg, srcArgJson, srcArgString));
         }
 
         for (const auto &dstCmd : dst) {
@@ -80,10 +63,7 @@ public:
 
             std::vector<std::shared_ptr<ArgBuilder>> argBuilders;
             for (const auto &arg : dstCmd.args) {
-                // arg:
-                // int, "string" => ConstArgBuilder
-                // {} => JsonArgBuilder
-                // "<> <>" => PatternArgBuilder
+                createArgBuilder(arg);
             }
 
             cmdBuilders.emplace_back(std::move(sample), std::move(argBuilders));
