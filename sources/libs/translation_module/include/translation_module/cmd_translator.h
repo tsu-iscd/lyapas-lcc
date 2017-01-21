@@ -40,14 +40,16 @@ public:
         }
     }
 
+    CmdTranslator(const CmdTranslator &other) = delete;
+
     std::vector<Json::Value> translate(const Json::Value &cmd)
     {
-        if (cmd.size() != srcFillers.size()) {
+        const Json::Value &args = cmd["args"];
+        if (args.size() != srcFillers.size()) {
             throw std::runtime_error("Cmd has invalid arguments count");
         }
-
-        for (auto i = 0; i < cmd.size(); ++i) {
-            srcFillers[i]->fill(cmd[i]);
+        for (auto i = 0; i < args.size(); ++i) {
+            srcFillers[i]->fill(args[i]);
         }
 
         std::vector<Json::Value> result;

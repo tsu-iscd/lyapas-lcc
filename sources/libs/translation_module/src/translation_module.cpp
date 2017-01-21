@@ -1,4 +1,6 @@
 #include "translation_module.h"
+#include <tuple>
+#include <utility>
 #include <vector>
 #include <shared_utils/string_helper.h>
 #include "cmd_translator.h"
@@ -101,7 +103,9 @@ CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &repl
             dstCmds.push_back(parseCmdInfoFromString(line));
         }
 
-        auto p = cmdTranslators.emplace(srcCmd, CmdTranslator{srcCmd, dstCmds, replacers});
+        auto p = cmdTranslators.emplace(std::piecewise_construct,
+                                        std::forward_as_tuple(srcCmd),
+                                        std::forward_as_tuple(srcCmd, dstCmds, replacers));
         if (!p.second) {
             throw std::runtime_error("Команда для трансляции повторяется более одного раза.");
         }
