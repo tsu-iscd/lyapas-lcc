@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdint>
 #include <experimental/optional>
+#include <experimental/string_view>
 
 namespace trm {
 
@@ -13,5 +14,7 @@ using IntMap = std::map<std::string, int64_t>;
 
 template <typename T>
 using Optional = std::experimental::optional<T>;
+using StringView = std::experimental::string_view;
+
 
 }

@@ -82,7 +82,75 @@ public:
 
     Json::Value createArg() override
     {
-        throw std::runtime_error("Не реализовано.");
+        auto findPair = [](const StringView &str, char lchar, char rchar) -> StringView {
+            Optional<unsigned> lindex;
+            int count = 0;
+
+            for (unsigned i = 0; i < str.size(); ++i) {
+                char c = str[i];
+                if (c == lchar) {
+                    if (count == 0) {
+                        lindex = i;
+                    }
+                    ++count;
+                } else if (c == rchar && bool(lindex)) {
+                    --count;
+                    if (count == 0) {
+                        return {str.data() + *lindex, i - *lindex};
+                    }
+                }
+            }
+
+            return {str.data(), 0};
+        };
+
+        auto findMostDeepPair = [&](const StringView &str, char lchar, char rchar) -> std::pair<bool, StringView> {
+            auto foundPair = findPair(str, lchar, rchar);
+            if (foundPair.empty()) {
+                return {false, {nullptr, 0}};
+            }
+
+            while (true) {
+                auto newFoundPair = findPair(foundPair.substr(1, foundPair.size() - 2), lchar, rchar);
+                if (newFoundPair.empty()) {
+                    return {true, foundPair};
+                }
+                foundPair = newFoundPair;
+            }
+        };
+
+        while(true) {
+            StringView sw(patternedString.data(), patternedString.size());
+            auto result = findMostDeepPair(sw, '<', '>');
+
+            if (result.first) {
+                auto replaceFrom = std::distance(sw.data(), patternedString.data());
+                auto replaceSize = sw.size();
+
+                PatternStringInfo patternStringInfo(std::string(result.second.data() + 1,
+                                                                result.second.size() - 2));
+
+                auto p = storage.srcArgString.find(patternStringInfo.getNameWithGroup());
+                if (p != storage.srcArgString.end()) {
+                    const std::string &newValue = p->second;
+
+                    patternedString.replace(replaceFrom, replaceSize, newValue);
+                    continue;
+                }
+
+                auto replacer = storage.replacers.find(patternStringInfo.getName());
+                if (replacer != storage.replacers.end()) {
+                    const std::string &newValue = replacer->second(patternStringInfo);
+
+                    patternedString.replace(replaceFrom, replaceSize, newValue);
+                    continue;
+                }
+
+                throw std::runtime_error("Нет замены для шаблона " + patternStringInfo.getName());
+            } else {
+                return packer->pack(std::string(sw.data(), sw.size()));
+            }
+        }
     }
 
     PackerPtr packer;
