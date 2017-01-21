@@ -50,7 +50,8 @@ private:
 };
 
 
-std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &storage) {
+std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &storage)
+{
     auto eraseBorders = [](std::string &str) {
         if (str.size() >= 2) {
             str = std::string(str.begin() + 1, str.end() - 1);

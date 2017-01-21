@@ -90,7 +90,8 @@ public:
     const CmdTranslatorStorage &storage;
 };
 
-std::shared_ptr<ArgBuilder> createArgBuilder(std::string value, CmdTranslatorStorage &storage) {
+std::shared_ptr<ArgBuilder> createArgBuilder(std::string value, CmdTranslatorStorage &storage)
+{
     //FIXME(vsafonov): DRY, эти функции повторяеются в fillers.h
     auto eraseBorders = [](std::string &str) {
         if (str.size() >= 2) {
