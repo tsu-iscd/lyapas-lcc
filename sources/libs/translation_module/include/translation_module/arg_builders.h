@@ -8,6 +8,27 @@
 
 namespace trm {
 
+class Packer {
+public:
+    virtual ~Packer() = default;
+    virtual Json::Value pack(const std::string &value);
+};
+using PackerPtr = std::shared_ptr<Packer>;
+
+class IntPacker : public Packer {
+    Json::Value pack(const std::string &value) override
+    {
+        return Json::Value(std::stoll(value));
+    }
+};
+
+class StringPacker : public Packer {
+    Json::Value pack(const std::string &value) override
+    {
+        return Json::Value(value);
+    }
+};
+
 class ArgBuilder {
 public:
     virtual ~ArgBuilder() = default;
@@ -50,7 +71,8 @@ private:
 
 class PatternArgBuilder : public ArgBuilder {
 public:
-    PatternArgBuilder(const std::string patternedString, const Replacers &replacers) :
+    PatternArgBuilder(PackerPtr packer, const std::string patternedString, const Replacers &replacers) :
+        packer(packer),
         patternedString(patternedString),
         replacers(replacers)
     {
@@ -61,6 +83,7 @@ public:
         throw std::runtime_error("Не реализовано.");
     }
 
+    PackerPtr packer;
     std::string patternedString;
     const Replacers &replacers;
 };
