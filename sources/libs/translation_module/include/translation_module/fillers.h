@@ -39,9 +39,6 @@ public:
 
     void fill(const Json::Value &json) override
     {
-        if (!json.isString()) {
-            throw std::runtime_error("Ожидался JSON с типом String.");
-        }
         stringMap[fieldName] = json.asString();
     }
 private:

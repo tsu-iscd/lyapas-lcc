@@ -96,7 +96,7 @@ public:
                 } else if (c == rchar && bool(lindex)) {
                     --count;
                     if (count == 0) {
-                        return {str.data() + *lindex, i - *lindex};
+                        return {str.data() + *lindex, i - *lindex + 1};
                     }
                 }
             }
@@ -124,11 +124,12 @@ public:
             auto result = findMostDeepPair(sw, '<', '>');
 
             if (result.first) {
-                auto replaceFrom = std::distance(sw.data(), patternedString.data());
-                auto replaceSize = sw.size();
+                StringView &foundSubstr = result.second;
+                auto replaceFrom = std::distance(patternedString.data(), foundSubstr.data());
+                auto replaceSize = foundSubstr.size();
 
-                PatternStringInfo patternStringInfo(std::string(result.second.data() + 1,
-                                                                result.second.size() - 2));
+                PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1,
+                                                                foundSubstr.size() - 2));
 
                 auto p = storage.srcArgString.find(patternStringInfo.getNameWithGroup());
                 if (p != storage.srcArgString.end()) {
