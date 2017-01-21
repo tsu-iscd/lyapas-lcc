@@ -13,11 +13,10 @@ void dyaz::Dvyyaz::postprocess(JSON &cmds)
 {
 }
 
-std::string dyaz::Dvyyaz::getDesignations()
+const trm::Replacers &dyaz::Dvyyaz::getReplacers()
 {
-    return std::string(
-#include "designations.txt"
-    );
+    static trm::Replacers replacers;
+    return replacers;
 }
 
 std::string dyaz::Dvyyaz::getRules()

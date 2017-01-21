@@ -3,6 +3,7 @@
 #include <memory>
 #include <json/json.h>
 #include "aliases.h"
+#include "cmd_translator_storage.h"
 
 namespace trm {
 
@@ -49,7 +50,7 @@ private:
 };
 
 
-std::unique_ptr<IFiller> createFiller(std::string value, JsonMap &jsonMap, StringMap &stringMap) {
+std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &storage) {
     auto eraseBorders = [](std::string &str) {
         if (str.size() >= 2) {
             str = std::string(str.begin() + 1, str.end() - 1);
@@ -67,14 +68,14 @@ std::unique_ptr<IFiller> createFiller(std::string value, JsonMap &jsonMap, Strin
 
     if (isBorderedBy(value, '{', '}')) {
         eraseBorders(value);
-        return std::unique_ptr<IFiller>(new JsonFiller(value, jsonMap));
+        return std::unique_ptr<IFiller>(new JsonFiller(value, storage.srcArgJson));
     }
 
     if (isBorderedBy(value, '"', '"')) {
         eraseBorders(value);
         if (isBorderedBy(value, '<', '>')) {
             eraseBorders(value);
-            return std::unique_ptr<IFiller>(new StringFiller(value, stringMap));
+            return std::unique_ptr<IFiller>(new StringFiller(value, storage.srcArgString));
         }
     }
 

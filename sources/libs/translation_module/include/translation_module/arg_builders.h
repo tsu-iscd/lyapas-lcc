@@ -4,6 +4,7 @@
 #include <memory>
 #include "aliases.h"
 #include "replacers.h"
+#include "cmd_translator_storage.h"
 
 namespace trm {
 
@@ -64,7 +65,7 @@ public:
     const Replacers &replacers;
 };
 
-std::shared_ptr<ArgBuilder> createArgBuilder(const std::string& value) {
+std::shared_ptr<ArgBuilder> createArgBuilder(const std::string& value, CmdTranslatorStorage &storage) {
     // arg:
     // int, "string" => ConstArgBuilder
     // {} => JsonArgBuilder

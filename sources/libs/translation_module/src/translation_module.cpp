@@ -67,7 +67,7 @@ CmdInfo parseCmdInfoFromString(const std::string line)
     return {type, name, std::move(args)};
 }
 
-CmdTranslators getCmdTranslators(const std::string &rules)
+CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &replacers)
 {
     CmdTranslators cmdTranslators;
 
@@ -101,7 +101,7 @@ CmdTranslators getCmdTranslators(const std::string &rules)
             dstCmds.push_back(parseCmdInfoFromString(line));
         }
 
-        auto p = cmdTranslators.emplace(srcCmd, CmdTranslator{srcCmd, dstCmds});
+        auto p = cmdTranslators.emplace(srcCmd, CmdTranslator{srcCmd, dstCmds, replacers});
         if (!p.second) {
             throw std::runtime_error("Команда для трансляции повторяется более одного раза.");
         }
@@ -112,7 +112,7 @@ CmdTranslators getCmdTranslators(const std::string &rules)
 
 void trm::TranslationModule::process(JSON &cmds)
 {
-    static CmdTranslators cmdTranslators = getCmdTranslators(getRules());
+    static CmdTranslators cmdTranslators = getCmdTranslators(getRules(), getReplacers());
 
     if (!cmds.isArray()) {
         throw std::runtime_error("JSON with commands is not array");

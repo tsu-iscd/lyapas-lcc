@@ -7,6 +7,7 @@
 #include "arg_builders.h"
 #include "cmd_builder.h"
 #include "cmd_info.h"
+#include "cmd_translator_storage.h"
 #include "translation_module.h"
 #include "fillers.h"
 
@@ -15,10 +16,11 @@ namespace trm {
 class CmdTranslator
 {
 public:
-    CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst)
+    CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst, const Replacers &replacers) :
+        storage{replacers, {}, {}, {}}
     {
         for (const auto &arg : src.args) {
-            srcFillers.push_back(createFiller(arg, srcArgJson, srcArgString));
+            srcFillers.push_back(createFiller(arg, storage));
         }
 
         for (const auto &dstCmd : dst) {
@@ -31,7 +33,7 @@ public:
 
             std::vector<std::shared_ptr<ArgBuilder>> argBuilders;
             for (const auto &arg : dstCmd.args) {
-                createArgBuilder(arg);
+                argBuilders.push_back(createArgBuilder(arg, storage));
             }
 
             cmdBuilders.emplace_back(std::move(sample), std::move(argBuilders));
@@ -47,15 +49,19 @@ public:
         for (auto i = 0; i < cmd.size(); ++i) {
             srcFillers[i]->fill(cmd[i]);
         }
+
+        std::vector<Json::Value> result;
+        for (auto &cmdBuilder : cmdBuilders) {
+            result.push_back(cmdBuilder.createCmd());
+        }
+        return result;
     }
 
 private:
     std::vector<std::unique_ptr<IFiller>> srcFillers;
     std::vector<CmdBuilder> cmdBuilders;
 
-    JsonMap srcArgJson;
-    StringMap srcArgString;
-    IntMap srcArgInt;
+    CmdTranslatorStorage storage;
 };
 
 }
