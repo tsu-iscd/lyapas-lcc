@@ -13,7 +13,7 @@ void dyaz::Dvyyaz::postprocess(JSON &cmds)
 {
 }
 
-const trm::Replacers &dyaz::Dvyyaz::getReplacers()
+const trm::Replacers &dyaz::Dvyyaz::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
     return replacers;
