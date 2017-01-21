@@ -59,7 +59,7 @@ std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &s
         }
     };
 
-    auto isBorderedBy = [](std::string &str, char b, char e) {
+    auto isBorderedBy = [](const std::string &str, char b, char e) {
         if (str.size() < 2) {
             return false;
         }
@@ -68,14 +68,14 @@ std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &s
 
     if (isBorderedBy(value, '{', '}')) {
         eraseBorders(value);
-        return std::unique_ptr<IFiller>(new JsonFiller(value, storage.srcArgJson));
+        return std::make_unique<JsonFiller>(value, storage.srcArgJson);
     }
 
     if (isBorderedBy(value, '"', '"')) {
         eraseBorders(value);
         if (isBorderedBy(value, '<', '>')) {
             eraseBorders(value);
-            return std::unique_ptr<IFiller>(new StringFiller(value, storage.srcArgString));
+            return std::make_unique<StringFiller>(value, storage.srcArgString);
         }
     }
 

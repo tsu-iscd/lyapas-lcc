@@ -11,11 +11,12 @@ namespace trm {
 class Packer {
 public:
     virtual ~Packer() = default;
-    virtual Json::Value pack(const std::string &value);
+    virtual Json::Value pack(const std::string &value) = 0;
 };
 using PackerPtr = std::shared_ptr<Packer>;
 
 class IntPacker : public Packer {
+public:
     Json::Value pack(const std::string &value) override
     {
         return Json::Value(std::stoll(value));
@@ -23,6 +24,7 @@ class IntPacker : public Packer {
 };
 
 class StringPacker : public Packer {
+public:
     Json::Value pack(const std::string &value) override
     {
         return Json::Value(value);
@@ -71,10 +73,10 @@ private:
 
 class PatternArgBuilder : public ArgBuilder {
 public:
-    PatternArgBuilder(PackerPtr packer, const std::string patternedString, const Replacers &replacers) :
+    PatternArgBuilder(PackerPtr packer, const std::string patternedString, const CmdTranslatorStorage &storage) :
         packer(packer),
         patternedString(patternedString),
-        replacers(replacers)
+        storage(storage)
     {
     }
 
@@ -85,14 +87,49 @@ public:
 
     PackerPtr packer;
     std::string patternedString;
-    const Replacers &replacers;
+    const CmdTranslatorStorage &storage;
 };
 
-std::shared_ptr<ArgBuilder> createArgBuilder(const std::string& value, CmdTranslatorStorage &storage) {
-    // arg:
-    // int, "string" => ConstArgBuilder
+std::shared_ptr<ArgBuilder> createArgBuilder(std::string value, CmdTranslatorStorage &storage) {
+    //FIXME(vsafonov): DRY, эти функции повторяеются в fillers.h
+    auto eraseBorders = [](std::string &str) {
+        if (str.size() >= 2) {
+            str = std::string(str.begin() + 1, str.end() - 1);
+        } else {
+            throw std::runtime_error("string is too small");
+        }
+    };
+
+    auto isBorderedBy = [](const std::string &str, char b, char e) {
+        if (str.size() < 2) {
+            return false;
+        }
+        return str.front() == b && str.back() == e;
+    };
+
     // {} => JsonArgBuilder
-    // "<> <>" => PatternArgBuilder
+    if (isBorderedBy(value, '{', '}')) {
+        eraseBorders(value);
+        return std::make_shared<JsonArgBuilder>(value, storage.srcArgJson);
+    }
+
+    // int, "string" => ConstArgBuilder
+    // <> <>, "<> <>" => PatternArgBuilder
+    PackerPtr packer;
+    if (isBorderedBy(value, '"', '"')) {
+        eraseBorders(value);
+        packer = std::make_shared<StringPacker>();
+    } else {
+        packer = std::make_shared<IntPacker>();
+    }
+
+    auto left = value.find('<');
+    auto right = value.rfind('>');
+    if (left != std::string::npos && right != std::string::npos && left < right) {
+        return std::make_shared<PatternArgBuilder>(packer, value, storage);
+    } else {
+        return std::make_shared<ConstArgBuilder>(packer->pack(value));
+    }
 }
 
 }
