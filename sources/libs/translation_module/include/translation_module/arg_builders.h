@@ -119,23 +119,25 @@ public:
             }
         };
 
+        std::string workString(patternedString);
         while(true) {
-            StringView sw(patternedString.data(), patternedString.size());
+            StringView sw(workString.data(), workString.size());
             auto result = findMostDeepPair(sw, '<', '>');
 
             if (result.first) {
                 StringView &foundSubstr = result.second;
-                auto replaceFrom = std::distance(patternedString.data(), foundSubstr.data());
+                auto replaceFrom = std::distance(workString.data(), foundSubstr.data());
                 auto replaceSize = foundSubstr.size();
 
                 PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1,
-                                                                foundSubstr.size() - 2));
+                                                                foundSubstr.size() - 2),
+                                                    storage.srcArgString);
 
                 auto p = storage.srcArgString.find(patternStringInfo.getNameWithGroup());
                 if (p != storage.srcArgString.end()) {
                     const std::string &newValue = p->second;
 
-                    patternedString.replace(replaceFrom, replaceSize, newValue);
+                    workString.replace(replaceFrom, replaceSize, newValue);
                     continue;
                 }
 
@@ -143,7 +145,7 @@ public:
                 if (replacer != storage.replacers.end()) {
                     const std::string &newValue = replacer->second->resolve(patternStringInfo);
 
-                    patternedString.replace(replaceFrom, replaceSize, newValue);
+                    workString.replace(replaceFrom, replaceSize, newValue);
                     continue;
                 }
 
@@ -155,7 +157,7 @@ public:
     }
 
     PackerPtr packer;
-    std::string patternedString;
+    const std::string patternedString;
     const CmdTranslatorStorage &storage;
 };
 

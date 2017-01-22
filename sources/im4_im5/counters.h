@@ -61,19 +61,12 @@ public:
         if (nextCmd["type"].asString() == "cmd") {
             if (nextCmd["cmd"].asString() == "definition_procedure") {
                 currentProcedure = nextCmd["args"][0].asString();
-                return;
             }
-        }
-
-        if (issuedCount) {
-            counters[currentProcedure] += issuedCount;
-            issuedCount = 0;
         }
     }
 
     unsigned long getFreeVariable(unsigned long index)
     {
-        issuedCount = std::max(index, issuedCount);
         return counters[currentProcedure] + index;
     }
 
@@ -83,7 +76,6 @@ private:
 
     std::map<std::string, unsigned long> counters;
     std::string currentProcedure;
-    unsigned long issuedCount = 0;
 };
 
 class LabelCounter {
@@ -109,17 +101,16 @@ public:
     // вызывается перед трансляцией новой команды
     void updateState(const JSON &nextCmd)
     {
+        if (issuedCount) {
+            counters[currentProcedure] += issuedCount;
+            issuedCount = 0;
+        }
+
         if (nextCmd["type"].asString() == "cmd") {
             if (nextCmd["cmd"].asString() == "definition_procedure")
             {
                 currentProcedure = nextCmd["args"][0].asString();
-                return;
             }
-        }
-
-        if (issuedCount) {
-            counters[currentProcedure] += issuedCount;
-            issuedCount = 0;
         }
     }
 

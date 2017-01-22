@@ -12,7 +12,8 @@ namespace trm {
 class PatternStringInfo {
 public:
     // name[:group][=param]
-    PatternStringInfo(std::string pattern)
+    PatternStringInfo(std::string pattern, const StringMap &stringMap) :
+        stringMap(stringMap)
     {
         auto equals = pattern.rfind('=');
         if (equals != std::string::npos) {
@@ -33,19 +34,29 @@ public:
         }
     }
 
-    const std::string &getName()
+    const std::string &getName() const
     {
         return name;
     }
 
-    const std::string &getNameWithGroup()
+    const std::string &getNameWithGroup() const
     {
         return nameWithGroup;
     }
 
-    const Optional<std::string> &getParam()
+    const Optional<unsigned long> &getGroup() const
+    {
+        return group;
+    }
+
+    const Optional<std::string> &getParam() const
     {
         return param;
+    }
+
+    const StringMap &getStringMap() const
+    {
+        return stringMap;
     }
 
 private:
@@ -53,11 +64,16 @@ private:
     std::string nameWithGroup;
     Optional<unsigned long> group;
     Optional<std::string> param;
+
+    // FIXME(vsafonov): это поле тут не к месту
+    const StringMap &stringMap;
 };
 
 class Replacer {
 public:
-    virtual void updateState(const Json::Value &cmd);
+    virtual void updateState(const Json::Value &cmd)
+    {
+    }
     virtual std::string resolve(const PatternStringInfo &patternStringInfo) = 0;
 };
 using ReplacerPtr = std::shared_ptr<Replacer>;

@@ -30,7 +30,8 @@ cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
 
-cmd/insert_string_in_complex "<symbol_complex>", "<string>"
+# нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+cmd/insert_string_in_complex "<complex>", "<string>"
 =>
 cmd/definition_string "<string>", "<free_var=1>"
 cmd/compare "<complex_capacity>", <string_len>
@@ -118,7 +119,7 @@ cmd/jump <free_label=5>
 label <free_label=3>
 cmd/move "<free_var=3>", "<complex_cardinality:2>"
 cmd/sub "<free_var=3>", "<free_var=2>"
-cmd/compare <int:1>, "<free_var=3>"
+cmd/compare {int:1}, "<free_var=3>"
 cmd/jump_leq <free_label=5>
 cmd/error "Cardinality of second complex is too small"
 label <free_label=5>
@@ -130,7 +131,8 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=5>
 label <free_label=6>
 
-cmd/write_complex "<symbol_complex>"
+# нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+cmd/write_complex "<complex>"
 =>
 cmd/move "<free_var=1>", 0
 label <free_label=1>
@@ -153,7 +155,9 @@ cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
 
-cmd/read_complex "<symbol_complex>"
+# нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+# 13 - код символа перевода строки
+cmd/read_complex "<complex>"
 =>
 cmd/move "<free_var=1>", "<complex_cardinality>"
 label <free_label=1>
