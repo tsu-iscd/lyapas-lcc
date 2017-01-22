@@ -2,7 +2,9 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <string>
+#include <json/json.h>
 #include "aliases.h"
 
 namespace trm {
@@ -53,7 +55,12 @@ private:
     Optional<std::string> param;
 };
 
-using ReplaceFunction = std::function<std::string(const PatternStringInfo &patternStringInfo)>;
-using Replacers = std::map<std::string, ReplaceFunction>;
+class Replacer {
+public:
+    virtual void updateState(const Json::Value &cmd);
+    virtual std::string resolve(const PatternStringInfo &patternStringInfo) = 0;
+};
+using ReplacerPtr = std::shared_ptr<Replacer>;
+using Replacers = std::map<std::string, ReplacerPtr>;
 
 }

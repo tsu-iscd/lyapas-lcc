@@ -16,7 +16,7 @@ void Complexoyaz::postprocess(JSON &cmds)
 {
 }
 
-const trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
+trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
     return replacers;

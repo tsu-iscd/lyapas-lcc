@@ -22,7 +22,7 @@ private:
     virtual void process(JSON &cmds) final;
     virtual void postprocess(JSON &cmds) = 0;
 
-    virtual const Replacers &getReplacers(const JSON &cmds) = 0;
+    virtual Replacers &getReplacers(const JSON &cmds) = 0;
     virtual std::string getRules() = 0;
 };
 

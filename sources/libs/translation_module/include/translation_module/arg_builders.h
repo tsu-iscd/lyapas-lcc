@@ -141,7 +141,7 @@ public:
 
                 auto replacer = storage.replacers.find(patternStringInfo.getName());
                 if (replacer != storage.replacers.end()) {
-                    const std::string &newValue = replacer->second(patternStringInfo);
+                    const std::string &newValue = replacer->second->resolve(patternStringInfo);
 
                     patternedString.replace(replaceFrom, replaceSize, newValue);
                     continue;
