@@ -129,6 +129,8 @@ void trm::TranslationModule::process(JSON &cmds)
     for (auto &&cmd : cmds) {
         auto p = cmdTranslators.find(createCmdInfo(cmd));
         if (p != cmdTranslators.end()) {
+            // обновлять replacers
+
             for (auto &&resultCmd : p->second.translate(cmd)) {
                 resultCmds.append(std::move(resultCmd));
             }
