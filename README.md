@@ -3,7 +3,8 @@
 Assuming that you are in the project directory, type the following.
 
 ## Requirements
-* libjansson-dev 
+* libjansson-dev
+* libdw-dev
 * bison
 * flex
 
