@@ -1,9 +1,10 @@
 R"(
+
 cmd/create_complex: "<complex>", {int}
 =>
-alloc 3, "<complex_struct>"
-move "<complex_cardinality>", 0
-move "<complex_capacity>", {int}
+cmd/alloc 3, "<complex_struct>"
+cmd/move "<complex_cardinality>", 0
+cmd/move "<complex_capacity>", {int}
 cmd/alloc_at_least: {int}, "<complex_buffer>"
 cmd/move: "<complex_buffer_opt>", "<complex_buffer>"
 

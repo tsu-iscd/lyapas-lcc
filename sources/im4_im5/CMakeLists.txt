@@ -3,6 +3,7 @@ project(im4_im5)
 
 set(SOURCE_FILES
     main.cpp
+    complexoyaz.cpp
 )
 
 add_executable(im4_im5 ${SOURCE_FILES} ${BACKWARD_ENABLE})
