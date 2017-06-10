@@ -1,12 +1,15 @@
 ### Quick and Dirty Install Guide
 
-Assuming that you are in the project directory, type the following.
-
 ## Requirements
+Project needs g++ 5 for building.
+
+List of packages needs to be installed:
 * libjansson-dev
 * libdw-dev
 * bison
 * flex
+
+Assuming that you are in the project directory, type the following.
 
 ## Instalation
 ```bash
