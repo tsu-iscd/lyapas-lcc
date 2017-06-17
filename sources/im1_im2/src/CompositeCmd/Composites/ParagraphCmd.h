@@ -1,9 +1,4 @@
-//
-// Created by Safonov Vadim on 11/20/15.
-//
-
-#ifndef IM1TOIM2_PARAGRAPHCMD_H
-#define IM1TOIM2_PARAGRAPHCMD_H
+#pragma once
 
 #include "../CompositeCmd.h"
 
@@ -13,6 +8,3 @@ public:
 
     virtual Json::Value toJson() override;
 };
-
-
-#endif //IM1TOIM2_PARAGRAPHCMD_H

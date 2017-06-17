@@ -1,10 +1,9 @@
-//
-// Created by s15-22 on 21.11.15.
-//
-
 #include "VariableCmd.h"
 
-VariableCmd::VariableCmd(Json::Value json) : LeafCmd(json) { }
+VariableCmd::VariableCmd(Json::Value json) :
+    LeafCmd(json)
+{
+}
 
 Json::Value VariableCmd::toJson()
 {

@@ -1,10 +1,9 @@
-//
-// Created by vosafonov on 27.03.16.
-//
-
 #include "ArgsCmd.h"
 
-ArgsCmd::ArgsCmd(Json::Value processJson) : CompositeCmd(processJson) {}
+ArgsCmd::ArgsCmd(Json::Value processJson) :
+    CompositeCmd(processJson)
+{
+}
 
 Json::Value ArgsCmd::toJson()
 {

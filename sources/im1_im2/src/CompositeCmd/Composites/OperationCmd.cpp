@@ -1,10 +1,9 @@
-//
-// Created by s15-22 on 18.11.15.
-//
-
 #include "OperationCmd.h"
 
-OperationCmd::OperationCmd(Json::Value processJson) : CompositeCmd(processJson) {}
+OperationCmd::OperationCmd(Json::Value processJson)
+    : CompositeCmd(processJson)
+{
+}
 
 Json::Value OperationCmd::toJson()
 {

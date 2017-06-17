@@ -1,10 +1,9 @@
-//
-// Created by vosafonov on 15.05.16.
-//
-
 #include "StringCmd.h"
 
-StringCmd::StringCmd(Json::Value json) : LeafCmd(json) { }
+StringCmd::StringCmd(Json::Value json) :
+    LeafCmd(json)
+{
+}
 
 Json::Value StringCmd::toJson()
 {

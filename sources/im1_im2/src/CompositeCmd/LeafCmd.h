@@ -1,9 +1,4 @@
-//
-// Created by Safonov Vadim on 11/6/15.
-//
-
-#ifndef IM1TOIM2_LEAFCMD_H
-#define IM1TOIM2_LEAFCMD_H
+#pragma once
 
 #include "ICmd.h"
 
@@ -13,6 +8,3 @@ public:
 
     LeafCmd(Json::Value json);
 };
-
-
-#endif //IM1TOIM2_LEAFCMD_H

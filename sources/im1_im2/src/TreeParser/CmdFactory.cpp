@@ -1,7 +1,3 @@
-//
-// Created by s15-22 on 07.11.15.
-//
-
 #include <iostream>
 #include "CmdFactory.h"
 #include "../CompositeCmd/Composites/ProcedureCmd.h"
@@ -54,4 +50,3 @@ ICmd::SPtr CmdFactory::createCmd(std::string type, Json::Value json)
         return nullptr;
     }
 }
-
