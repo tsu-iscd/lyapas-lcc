@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 2.8.8)
-project(im1_im2)
+project(${BIN_NAME})
 
-set(SOURCE_FILES
-    main.cpp
+add_library(${LIB_NAME} STATIC
     CompositeCmd/ICmd.cpp
     CompositeCmd/ICmd.h
     TreeParser/IParser.cpp
@@ -39,5 +38,14 @@ set(SOURCE_FILES
     CompositeCmd/Leafs/AsmCmd.h
 )
 
-add_executable(im1_im2 ${SOURCE_FILES} ${BACKWARD_ENABLE})
-target_link_libraries(im1_im2 ${COMMON_CXX_LIBS})
+target_link_libraries(${LIB_NAME} ${COMMON_CXX_LIBS})
+set_target_properties(${LIB_NAME} PROPERTIES
+    INTERDACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_executable(${PROJECT_NAME}
+    main.cpp
+    ${BACKWARD_ENABLE})
+target_link_libraries(${PROJECT_NAME}
+    ${LIB_NAME}
+)
