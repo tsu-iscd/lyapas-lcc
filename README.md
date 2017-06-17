@@ -13,6 +13,7 @@ Assuming that you are in the project directory, type the following.
 
 ## Instalation
 ```bash
+git submodule update --recursive --init
 mkdir build
 cd build
 cmake ..
