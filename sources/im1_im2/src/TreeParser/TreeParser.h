@@ -1,10 +1,4 @@
-//
-// Created by s15-22 on 07.11.15.
-//
-
-#ifndef IM1TOIM2_TREEPARSER_H
-#define IM1TOIM2_TREEPARSER_H
-
+#pragma once
 
 #include "IParser.h"
 
@@ -18,6 +12,3 @@ private:
 
     CmdFactory _cmdFactory;
 };
-
-
-#endif //IM1TOIM2_TREEPARSER_H

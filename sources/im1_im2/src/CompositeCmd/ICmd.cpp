@@ -1,10 +1,9 @@
-//
-// Created by Safonov Vadim on 11/4/15.
-//
-
 #include "ICmd.h"
 
-ICmd::ICmd(Json::Value json) : _cmdJson(json[0]) {}
+ICmd::ICmd(Json::Value json) :
+    _cmdJson(json[0])
+{
+}
 
 std::string ICmd::asString()
 {
@@ -29,6 +28,7 @@ Json::Value ICmd::toJson()
 
 Json::Value ICmd::toArgumentFormat()
 {
-    throw std::runtime_error(std::string(typeid(*this).name()) + "ICmd: can't use toArgumentFormat(), please override this function\n"
+    throw std::runtime_error(std::string(typeid(*this).name())
+                             + "ICmd: can't use toArgumentFormat(), please override this function\n"
                              + _cmdJson.toStyledString());
 }

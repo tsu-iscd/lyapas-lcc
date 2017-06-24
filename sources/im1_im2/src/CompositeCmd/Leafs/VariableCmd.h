@@ -1,9 +1,4 @@
-//
-// Created by s15-22 on 21.11.15.
-//
-
-#ifndef IM1TOIM2_VARIABLECMD_H
-#define IM1TOIM2_VARIABLECMD_H
+#pragma once
 
 #include "../LeafCmd.h"
 
@@ -14,6 +9,3 @@ public:
     virtual Json::Value toJson() override;
     virtual Json::Value toArgumentFormat() override;
 };
-
-
-#endif //IM1TOIM2_VARIABLECMD_H
