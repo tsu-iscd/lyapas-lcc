@@ -9,7 +9,6 @@ Json::Value ConstantCmd::toJson()
 {
     Json::Value result;
 
-    result[fieldName::cmd_postfix] = "_c";
     result[fieldName::args].append(_cmdJson[fieldName::value]);
 
     return result;

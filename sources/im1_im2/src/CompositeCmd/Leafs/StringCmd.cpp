@@ -9,7 +9,6 @@ Json::Value StringCmd::toJson()
 {
     Json::Value result;
 
-    result[fieldName::cmd_postfix] = "_s";
     result[fieldName::args].append("\"" + _cmdJson[fieldName::value].asString() + "\"");
 
     return result;

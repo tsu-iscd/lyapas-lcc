@@ -24,10 +24,6 @@ Json::Value ComplexCmd::toJson()
         for(auto arg : child[fieldName::args]) {
             result[fieldName::args].append(arg);
         }
-
-        result[fieldName::cmd_postfix] = child[fieldName::cmd_postfix];
-    } else {
-        result[fieldName::cmd_postfix] = "";
     }
 
     return result;

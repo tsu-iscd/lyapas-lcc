@@ -23,7 +23,6 @@ public:
 namespace fieldName {
 
 const std::string cmd = "cmd";
-const std::string cmd_postfix = "cmd_postfix";
 const std::string args = "args";
 const std::string value = "value";
 const std::string name = "name";
