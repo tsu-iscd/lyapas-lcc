@@ -7,14 +7,29 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # общие библиотеки
 add_subdirectory("sources/libs/backward-cpp")
+add_subdirectory("sources/libs/googletest")
 add_subdirectory("sources/libs/jsoncpp")
+
 add_subdirectory("sources/libs/print_json")
 add_subdirectory("sources/libs/shared_utils")
 add_subdirectory("sources/libs/translation_module")
 
 # промежуточные трансляторы
-set(COMMON_C_LIBS print_json "-ljansson")
-set(COMMON_CXX_LIBS translation_module jsoncpp shared_utils "-ldw")
+set(COMMON_C_LIBS
+    print_json
+    "-ljansson")
+
+set(COMMON_CXX_LIBS
+    translation_module
+    jsoncpp
+    shared_utils
+    "-ldw")
+
+set(COMMON_TEST_LIBS
+    gtest)
+
+# включаем тесты
+enable_testing()
 
 add_subdirectory("sources/lyapas_im0")
 add_subdirectory("sources/im0_im1")
