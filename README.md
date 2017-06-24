@@ -1,3 +1,6 @@
+### Detailed Install Guide
+[Курс молодого бойца](https://github.com/tsu-iscd/lyapas-lcc/wiki/Курс-молодого-бойца.)
+
 ### Quick and Dirty Install Guide
 
 ## Requirements
