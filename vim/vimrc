@@ -1,0 +1,5 @@
+highlight LYAPAS_vars    ctermfg=cyan guifg=#00ffff
+highlight LYAPAS_ddigit  ctermfg=red  guifg=#ff0000
+highlight LYAPAS_sting   ctermfg=brown  guifg=#ff0000
+highlight LYAPAS_complex ctermfg=blue  guifg=#ff0000
+highlight LYAPAS_inc     ctermfg=yellow  guifg=#ff0000
