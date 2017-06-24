@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../CompositeCmd/ICmd.h"
-#include "../CompositeCmd/CompositeCmd.h"
+#include <CompositeCmd/ICmd.h>
+#include <CompositeCmd/Composites/CompositeCmd.h>
 
 class CmdFactory {
 public:

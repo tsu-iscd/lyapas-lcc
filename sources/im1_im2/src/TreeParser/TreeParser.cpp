@@ -1,4 +1,3 @@
-#include <iostream>
 #include "TreeParser.h"
 
 TreeParser::TreeParser(CmdFactory &cmdFactory)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CmdFactory.h"
-#include "../CompositeCmd/CompositeCmd.h"
+#include <CompositeCmd/Composites/CompositeCmd.h>
 
 class IParser {
 public:

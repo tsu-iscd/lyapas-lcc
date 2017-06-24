@@ -1,17 +1,15 @@
-#include <iostream>
 #include "CmdFactory.h"
-#include "../CompositeCmd/Composites/ProcedureCmd.h"
-#include "../CompositeCmd/Composites/ParagraphCmd.h"
-#include "../CompositeCmd/Composites/OperationCmd.h"
-#include "../CompositeCmd/Composites/ComplexCmd.h"
-#include "../CompositeCmd/Composites/PrefaceCmd.h"
-#include "../CompositeCmd/Composites/ProgramCmd.h"
-#include "../CompositeCmd/Composites/ArgsCmd.h"
-
-#include "../CompositeCmd/Leafs/VariableCmd.h"
-#include "../CompositeCmd/Leafs/ConstantCmd.h"
-#include "../CompositeCmd/Leafs/StringCmd.h"
-#include "../CompositeCmd/Leafs/AsmCmd.h"
+#include <CompositeCmd/Composites/ProcedureCmd.h>
+#include <CompositeCmd/Composites/ParagraphCmd.h>
+#include <CompositeCmd/Composites/OperationCmd.h>
+#include <CompositeCmd/Composites/ComplexCmd.h>
+#include <CompositeCmd/Composites/PrefaceCmd.h>
+#include <CompositeCmd/Composites/ProgramCmd.h>
+#include <CompositeCmd/Composites/ArgsCmd.h>
+#include <CompositeCmd/Leafs/VariableCmd.h>
+#include <CompositeCmd/Leafs/ConstantCmd.h>
+#include <CompositeCmd/Leafs/StringCmd.h>
+#include <CompositeCmd/Leafs/AsmCmd.h>
 
 CompositeCmd::SPtrComposite CmdFactory::createCompositeCmd(std::string type, Json::Value json)
 {
