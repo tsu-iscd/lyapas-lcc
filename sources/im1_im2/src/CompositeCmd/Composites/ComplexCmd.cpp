@@ -1,10 +1,9 @@
-//
-// Created by Safonov Vadim on 11/23/15.
-//
-
 #include "ComplexCmd.h"
 
-ComplexCmd::ComplexCmd(Json::Value processJson) : CompositeCmd(processJson) { }
+ComplexCmd::ComplexCmd(Json::Value processJson) :
+    CompositeCmd(processJson)
+{
+}
 
 Json::Value ComplexCmd::toJson()
 {
