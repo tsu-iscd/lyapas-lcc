@@ -1,7 +1,7 @@
 ### Quick and Dirty Install Guide
 
 ## Requirements
-Project needs g++ 5 for building.
+Project requires g++ 5 and cmake 2.8.8 for building.
 
 List of packages needs to be installed:
 * libjansson-dev
