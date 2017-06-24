@@ -32,7 +32,7 @@ Json::Value ProcedureCmd::toJson()
 Json::Value ProcedureCmd::buildSignature()
 {
     Json::Value signature;
-    signature[fieldName::type] = _cmdJson[fieldName::type].asString();
+    signature[fieldName::type] = "definition";
 
     auto& signatureArgs = signature[fieldName::args];
     signatureArgs.append(_cmdJson[fieldName::name].asString());
