@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../LeafCmd.h"
+#include "LeafCmd.h"
 
 class ConstantCmd : public LeafCmd {
 public:

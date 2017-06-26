@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../LeafCmd.h"
+#include "LeafCmd.h"
 
 class AsmCmd : public LeafCmd {
 public:

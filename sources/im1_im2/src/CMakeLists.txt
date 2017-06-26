@@ -3,8 +3,8 @@ project(${BIN_NAME})
 
 add_library(${LIB_NAME} STATIC
     CompositeCmd/ICmd.cpp
-    CompositeCmd/LeafCmd.cpp
-    CompositeCmd/CompositeCmd.cpp
+    CompositeCmd/Leafs/LeafCmd.cpp
+    CompositeCmd/Composites/CompositeCmd.cpp
     CompositeCmd/Composites/ProcedureCmd.cpp
     TreeParser/CmdFactory.cpp
     TreeParser/TreeParser.cpp
@@ -22,7 +22,8 @@ add_library(${LIB_NAME} STATIC
 
 target_link_libraries(${LIB_NAME} ${COMMON_CXX_LIBS})
 set_target_properties(${LIB_NAME} PROPERTIES
-    INTERDACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
+    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
+    INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_executable(${PROJECT_NAME}

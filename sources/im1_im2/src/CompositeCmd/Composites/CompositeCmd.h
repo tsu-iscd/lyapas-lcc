@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ICmd.h"
+#include <CompositeCmd/ICmd.h>
 
 class CompositeCmd : public ICmd {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CompositeCmd.h"
+#include "CompositeCmd.h"
 
 class ComplexCmd : public CompositeCmd {
 public:
