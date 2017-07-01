@@ -20,7 +20,7 @@ Json::Value ComplexCmd::toJson()
     if (it != nameMap.end()) {
         complexType = it->second;
     } else {
-        throw std::runtime_error("Invalid type of complex");
+        throw std::runtime_error("Invalid type of complex: " + complexType);
     }
 
     if (_cmdJson.isMember(fieldName::number)) {
