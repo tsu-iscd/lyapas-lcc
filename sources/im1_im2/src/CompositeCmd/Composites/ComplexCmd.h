@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CompositeCmd.h"
+#include <unordered_map>
 
 class ComplexCmd : public CompositeCmd {
 public:
@@ -8,4 +9,7 @@ public:
 
     virtual Json::Value toJson() override;
     virtual Json::Value toArgumentFormat() override;
+
+private:
+    std::unordered_map<std::string, std::string> nameMap;
 };

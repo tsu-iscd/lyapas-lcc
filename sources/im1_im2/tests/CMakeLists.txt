@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.8.8)
 project(${TEST_NAME})
 
 add_executable(${PROJECT_NAME}
+    ${BACKWARD_ENABLE}
     main.cpp
+    ComplexCmd.cpp
     example.cpp
 )
 target_link_libraries(${PROJECT_NAME}

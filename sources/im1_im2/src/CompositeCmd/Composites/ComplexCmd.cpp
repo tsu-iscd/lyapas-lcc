@@ -3,24 +3,36 @@
 ComplexCmd::ComplexCmd(Json::Value processJson) :
     CompositeCmd(processJson)
 {
+    nameMap.emplace("symbol_complex", "F");
+    nameMap.emplace("logic_complex", "L");
+    nameMap.emplace("global_complex_1", "G1");
+    nameMap.emplace("global_complex_4", "G4");
 }
 
 Json::Value ComplexCmd::toJson()
 {
-    if(_children.size() > 1) throw std::runtime_error("Complex can't have more one child; correct children = 1 or 0");
-
-    Json::Value result;
-
-    std::string complexType = _cmdJson[fieldName::type].asString();
-    result[fieldName::args].append(complexType);
-
-    if(_cmdJson.isMember(fieldName::number)) {
-        result[fieldName::args].append(_cmdJson[fieldName::number]);
+    if (_children.size() > 1) {
+        throw std::runtime_error("Complex can't have more one child; correct children = 1 or 0");
     }
 
-    if(_children.size() == 1) {
+    std::string complexType = _cmdJson[fieldName::type].asString();
+    auto it = nameMap.find(complexType);
+    if (it != nameMap.end()) {
+        complexType = it->second;
+    } else {
+        throw std::runtime_error("Invalid type of complex");
+    }
+
+    if (_cmdJson.isMember(fieldName::number)) {
+        complexType += _cmdJson[fieldName::number].asString();
+    }
+
+    Json::Value result;
+    result[fieldName::args].append(complexType);
+
+    if (_children.size() == 1) {
         auto child = _children.back()->toJson();
-        for(auto arg : child[fieldName::args]) {
+        for (auto &arg : child[fieldName::args]) {
             result[fieldName::args].append(arg);
         }
     }
