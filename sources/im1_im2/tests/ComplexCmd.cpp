@@ -6,10 +6,21 @@
 
 class ComplexCmdFixture : public ::testing::Test {
 protected:
-    CompositeCmd::SPtrComposite createCmd(const Json::Value &json)
+    CompositeCmd::SPtrComposite createCmd(const Json::Value &complex)
     {
         Json::Value wrappedJson;
-        wrappedJson.append(json);
+        wrappedJson.append(complex);
+        return parser.parseTree(wrappedJson);
+    }
+
+    CompositeCmd::SPtrComposite createCmd(const Json::Value &complex, const Json::Value &index)
+    {
+        Json::Value wrappedIndex;
+        wrappedIndex.append(index);
+
+        Json::Value wrappedJson;
+        wrappedJson.append(complex);
+        wrappedJson.append(wrappedIndex);
         return parser.parseTree(wrappedJson);
     }
 
@@ -81,4 +92,46 @@ TEST_F(ComplexCmdFixture, globalComplex4)
     Json::Value &args = cmd[fieldName::args];
     ASSERT_EQ(1, args.size());
     ASSERT_EQ("G4", args[0].asString());
+}
+
+TEST_F(ComplexCmdFixture, constComplexCell)
+{
+    Json::Value complexJson;
+    complexJson["type"] = "symbol_complex";
+    complexJson["number"] = 1;
+
+    Json::Value indexJson;
+    indexJson["value"] = 5;
+    indexJson["type"] = "const";
+    auto complex = createCmd(complexJson, indexJson);
+
+
+    Json::Value cmd = complex->toJson();
+    ASSERT_EQ(1, cmd.size());
+    ASSERT_TRUE(cmd.isMember(fieldName::args));
+
+    Json::Value &args = cmd[fieldName::args];
+    ASSERT_EQ(1, args.size());
+    ASSERT_EQ("F1[5]", args[0].asString());
+}
+
+TEST_F(ComplexCmdFixture, variableComplexCell)
+{
+    Json::Value complexJson;
+    complexJson["type"] = "logic_complex";
+    complexJson["number"] = 5;
+
+    Json::Value indexJson;
+    indexJson["name"] = "a";
+    indexJson["type"] = "var";
+    auto complex = createCmd(complexJson, indexJson);
+
+
+    Json::Value cmd = complex->toJson();
+    ASSERT_EQ(1, cmd.size());
+    ASSERT_TRUE(cmd.isMember(fieldName::args));
+
+    Json::Value &args = cmd[fieldName::args];
+    ASSERT_EQ(1, args.size());
+    ASSERT_EQ("L5[a]", args[0].asString());
 }

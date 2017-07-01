@@ -27,16 +27,22 @@ Json::Value ComplexCmd::toJson()
         complexType += _cmdJson[fieldName::number].asString();
     }
 
-    Json::Value result;
-    result[fieldName::args].append(complexType);
 
     if (_children.size() == 1) {
-        auto child = _children.back()->toJson();
-        for (auto &arg : child[fieldName::args]) {
-            result[fieldName::args].append(arg);
+        Json::Value child = _children.back()->toJson();
+        Json::Value &args = child[fieldName::args];
+        if (args.size() != 1) {
+            throw std::runtime_error("Invalid count of child's args. Expected 1, actually " +
+                                     std::to_string(args.size()));
         }
+
+        complexType += "[";
+        complexType += args[0].asString();
+        complexType += "]";
     }
 
+    Json::Value result;
+    result[fieldName::args].append(complexType);
     return result;
 }
 
