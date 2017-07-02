@@ -180,11 +180,7 @@ TEST_F(ComplexCmdFixture, toArgumentFormat)
 
     Json::Value cmd = complex->toArgumentFormat();
     ASSERT_EQ(1, cmd.size());
-    ASSERT_TRUE(cmd.isMember(fieldName::args));
-
-    Json::Value &args = cmd[fieldName::args];
-    ASSERT_EQ(1, args.size());
-    ASSERT_EQ("F1", args[0].asString());
+    ASSERT_EQ("F1", cmd[0].asString());
 }
 
 TEST_F(ComplexCmdFixture, toArgumentFormatWithIndex)

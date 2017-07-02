@@ -44,7 +44,7 @@ Json::Value ComplexCmd::toArgumentFormat()
     }
 
     Json::Value result;
-    result[fieldName::args].append(getComplexName(_cmdJson));
+    result.append(getComplexName(_cmdJson));
     return result;
 }
 
