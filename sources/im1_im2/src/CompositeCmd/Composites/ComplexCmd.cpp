@@ -36,9 +36,9 @@ Json::Value ComplexCmd::toJson()
                                      std::to_string(args.size()));
         }
 
-        complexType += "[";
+        complexType += '[';
         complexType += args[0].asString();
-        complexType += "]";
+        complexType += ']';
     }
 
     Json::Value result;
