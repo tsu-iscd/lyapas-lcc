@@ -39,10 +39,12 @@ Json::Value ComplexCmd::toJson()
 
 Json::Value ComplexCmd::toArgumentFormat()
 {
-    if(_children.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
+    if (_children.size() != 0) {
+        throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
+    }
 
     Json::Value result;
-    result.append(getComplexName(_cmdJson));
+    result[fieldName::args].append(getComplexName(_cmdJson));
     return result;
 }
 

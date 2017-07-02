@@ -169,3 +169,35 @@ TEST_F(ComplexCmdFixture, ComplexCapacity)
     ASSERT_EQ(1, args.size());
     ASSERT_EQ("Q7", args[0].asString());
 }
+
+TEST_F(ComplexCmdFixture, toArgumentFormat)
+{
+    Json::Value complexJson;
+    complexJson["type"] = "symbol_complex";
+    complexJson["number"] = 1;
+    auto complex = createCmd(complexJson);
+
+
+    Json::Value cmd = complex->toArgumentFormat();
+    ASSERT_EQ(1, cmd.size());
+    ASSERT_TRUE(cmd.isMember(fieldName::args));
+
+    Json::Value &args = cmd[fieldName::args];
+    ASSERT_EQ(1, args.size());
+    ASSERT_EQ("F1", args[0].asString());
+}
+
+TEST_F(ComplexCmdFixture, toArgumentFormatWithIndex)
+{
+    Json::Value complexJson;
+    complexJson["type"] = "symbol_complex";
+    complexJson["number"] = 1;
+
+    Json::Value indexJson;
+    indexJson["value"] = 5;
+    indexJson["type"] = "const";
+    auto complex = createCmd(complexJson, indexJson);
+
+
+    ASSERT_THROW(complex->toArgumentFormat(), std::runtime_error);
+}
