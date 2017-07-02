@@ -7,6 +7,8 @@ ComplexCmd::ComplexCmd(Json::Value processJson) :
     nameMap.emplace("logic_complex", "L");
     nameMap.emplace("global_complex_1", "G1");
     nameMap.emplace("global_complex_4", "G4");
+    nameMap.emplace("complex_cardinality", "S");
+    nameMap.emplace("complex_capacity", "Q");
 }
 
 Json::Value ComplexCmd::toJson()

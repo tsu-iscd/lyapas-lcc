@@ -135,3 +135,37 @@ TEST_F(ComplexCmdFixture, variableComplexCell)
     ASSERT_EQ(1, args.size());
     ASSERT_EQ("L5[a]", args[0].asString());
 }
+
+TEST_F(ComplexCmdFixture, ComplexCardinality)
+{
+    Json::Value complexJson;
+    complexJson["type"] = "complex_cardinality";
+    complexJson["number"] = 5;
+    auto complex = createCmd(complexJson);
+
+
+    Json::Value cmd = complex->toJson();
+    ASSERT_EQ(1, cmd.size());
+    ASSERT_TRUE(cmd.isMember(fieldName::args));
+
+    Json::Value &args = cmd[fieldName::args];
+    ASSERT_EQ(1, args.size());
+    ASSERT_EQ("S5", args[0].asString());
+}
+
+TEST_F(ComplexCmdFixture, ComplexCapacity)
+{
+    Json::Value complexJson;
+    complexJson["type"] = "complex_capacity";
+    complexJson["number"] = 7;
+    auto complex = createCmd(complexJson);
+
+
+    Json::Value cmd = complex->toJson();
+    ASSERT_EQ(1, cmd.size());
+    ASSERT_TRUE(cmd.isMember(fieldName::args));
+
+    Json::Value &args = cmd[fieldName::args];
+    ASSERT_EQ(1, args.size());
+    ASSERT_EQ("Q7", args[0].asString());
+}
