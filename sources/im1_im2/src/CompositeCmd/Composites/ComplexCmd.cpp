@@ -15,18 +15,7 @@ Json::Value ComplexCmd::toJson()
         throw std::runtime_error("Complex can't have more one child; correct children = 1 or 0");
     }
 
-    std::string complexType = _cmdJson[fieldName::type].asString();
-    auto it = nameMap.find(complexType);
-    if (it != nameMap.end()) {
-        complexType = it->second;
-    } else {
-        throw std::runtime_error("Invalid type of complex: " + complexType);
-    }
-
-    if (_cmdJson.isMember(fieldName::number)) {
-        complexType += _cmdJson[fieldName::number].asString();
-    }
-
+    std::string complexName = getComplexName(_cmdJson);
 
     if (_children.size() == 1) {
         Json::Value child = _children.back()->toJson();
@@ -36,13 +25,13 @@ Json::Value ComplexCmd::toJson()
                                      std::to_string(args.size()));
         }
 
-        complexType += '[';
-        complexType += args[0].asString();
-        complexType += ']';
+        complexName += '[';
+        complexName += args[0].asString();
+        complexName += ']';
     }
 
     Json::Value result;
-    result[fieldName::args].append(complexType);
+    result[fieldName::args].append(complexName);
     return result;
 }
 
@@ -51,7 +40,23 @@ Json::Value ComplexCmd::toArgumentFormat()
     if(_children.size() != 0) throw std::runtime_error("Complex can't have any children when it contains in arguments of procedure");
 
     Json::Value result;
-    result.append(_cmdJson[fieldName::type].asString());
-    result.append(_cmdJson[fieldName::number]);
+    result.append(getComplexName(_cmdJson));
     return result;
+}
+
+std::string ComplexCmd::getComplexName(Json::Value &complexJson) const
+{
+    std::string complexName = _cmdJson[fieldName::type].asString();
+    auto it = nameMap.find(complexName);
+    if (it != nameMap.end()) {
+        complexName = it->second;
+    } else {
+        throw std::runtime_error("Invalid type of complex: " + complexName);
+    }
+
+    if (_cmdJson.isMember(fieldName::number)) {
+        complexName += _cmdJson[fieldName::number].asString();
+    }
+
+    return complexName;
 }

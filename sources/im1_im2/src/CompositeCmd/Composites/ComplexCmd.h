@@ -11,5 +11,7 @@ public:
     virtual Json::Value toArgumentFormat() override;
 
 private:
+    std::string getComplexName(Json::Value &complexJson) const;
+
     std::unordered_map<std::string, std::string> nameMap;
 };
