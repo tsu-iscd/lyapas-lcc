@@ -49,6 +49,15 @@ public:
         return group;
     }
 
+    std::string getGroupAsString() const
+    {
+        if (group) {
+            return ":" + std::to_string(*group);
+        } else {
+            return "";
+        }
+    }
+
     const Optional<std::string> &getParam() const
     {
         return param;

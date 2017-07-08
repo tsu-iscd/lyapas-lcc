@@ -20,75 +20,68 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
 
-    auto groupTag = [](const trm::Optional<unsigned long> &group) -> std::string {
-        if (group) {
-            return ":" + std::to_string(*group);
-        } else {
-            return {};
-        }
-    };
-
     replacers.insert({"free_var", std::make_shared<cyaz::FreeVarReplacer>(cmds)});
     replacers.insert({"free_label", std::make_shared<cyaz::FreeLabelReplacer>(cmds)});
 
     auto complexStruct = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
-        return "<complex" + groupTag(group) +">_struct";
+        return "<complex" + patternStringInfo.getGroupAsString() + ">_struct";
     };
-    replacers.insert({"complex_struct", std::make_shared<cyaz::FunctionalReplacer>(complexStruct)});
+    replacers.insert({"complex_struct",
+                      std::make_shared<cyaz::FunctionalReplacer>(complexStruct)});
 
     auto complexCardinality = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
-        return "4byte <complex" + groupTag(group) +">_struct[0]";
+        return "4byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]";
     };
-    replacers.insert({"complex_cardinality", std::make_shared<cyaz::FunctionalReplacer>(complexCardinality)});
+    replacers.insert({"complex_cardinality",
+                      std::make_shared<cyaz::FunctionalReplacer>(complexCardinality)});
 
     auto complexCapacity = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
-        return "4byte <complex" + groupTag(group) +">_struct[1]";
+        return "4byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]";
     };
-    replacers.insert({"complex_capacity", std::make_shared<cyaz::FunctionalReplacer>(complexCapacity)});
+    replacers.insert({"complex_capacity",
+                      std::make_shared<cyaz::FunctionalReplacer>(complexCapacity)});
 
     auto complexBuffer = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
-        return "4byte <complex" + groupTag(group) +">_struct[2]";
+        return "4byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]";
     };
-    replacers.insert({"complex_buffer", std::make_shared<cyaz::FunctionalReplacer>(complexBuffer)});
+    replacers.insert({"complex_buffer",
+                      std::make_shared<cyaz::FunctionalReplacer>(complexBuffer)});
 
     auto complexBufferOpt = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
-        return "<complex" + groupTag(group) +">_buffer";
+        return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer";
     };
-    replacers.insert({"complex_buffer_opt", std::make_shared<cyaz::FunctionalReplacer>(complexBufferOpt)});
+    replacers.insert({"complex_buffer_opt",
+                      std::make_shared<cyaz::FunctionalReplacer>(complexBufferOpt)});
 
     auto complexCell = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
+        const std::string &group = patternStringInfo.getGroupAsString();
         const auto &param = patternStringInfo.getParam();
 
         if (!param) {
             throw std::runtime_error("Не указан параметр");
         }
 
-        auto p = patternStringInfo.getStringMap().find("complex" + groupTag(group));
+        auto p = patternStringInfo.getStringMap().find("complex" + group);
         if (p == patternStringInfo.getStringMap().end()) {
             throw std::runtime_error("У транслируемой команды нет аргумента <complex>");
         }
         std::string byteSize = (p->second[0] == 'L' ? "4byte" : "1byte");
 
-        return byteSize + " <complex" + groupTag(group) +">_buffer[" + *patternStringInfo.getParam() + "]";
+        return byteSize + " <complex" + group + ">_buffer[" + *param + "]";
     };
-    replacers.insert({"complex_cell", std::make_shared<cyaz::FunctionalReplacer>(complexCell)});
+    replacers.insert({"complex_cell",
+                      std::make_shared<cyaz::FunctionalReplacer>(complexCell)});
 
     auto stringLen = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        const auto &group = patternStringInfo.getGroup();
-        auto p = patternStringInfo.getStringMap().find("string" + groupTag(group));
+        auto p = patternStringInfo.getStringMap().find("string" + patternStringInfo.getGroupAsString());
         if (p == patternStringInfo.getStringMap().end()) {
-            throw std::runtime_error("У транслируемой команды нет аргумента <complex>");
+            throw std::runtime_error("У транслируемой команды нет аргумента <string>");
         }
 
         return std::to_string(p->second.size());
     };
-    replacers.insert({"string_len", std::make_shared<cyaz::FunctionalReplacer>(stringLen)});
+    replacers.insert({"string_len",
+                      std::make_shared<cyaz::FunctionalReplacer>(stringLen)});
 
     return replacers;
 }
