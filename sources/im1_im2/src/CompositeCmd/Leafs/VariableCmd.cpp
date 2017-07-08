@@ -9,7 +9,6 @@ Json::Value VariableCmd::toJson()
 {
     Json::Value result;
 
-    result[fieldName::cmd_postfix] = "_v";
     result[fieldName::args].append(_cmdJson[fieldName::name]);
 
     return result;
