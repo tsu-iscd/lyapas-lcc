@@ -1,10 +1,9 @@
-//
-// Created by Safonov Vadim on 11/6/15.
-//
-
 #include "CompositeCmd.h"
 
-CompositeCmd::CompositeCmd(Json::Value json) : ICmd(json) { }
+CompositeCmd::CompositeCmd(Json::Value json) :
+    ICmd(json)
+{
+}
 
 void CompositeCmd::add(const SPtr &child)
 {

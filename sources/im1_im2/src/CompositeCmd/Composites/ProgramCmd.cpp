@@ -1,10 +1,9 @@
-//
-// Created by vosafonov on 27.03.16.
-//
-
 #include "ProgramCmd.h"
 
-ProgramCmd::ProgramCmd(Json::Value processJson) : CompositeCmd(processJson) {}
+ProgramCmd::ProgramCmd(Json::Value processJson) :
+    CompositeCmd(processJson)
+{
+}
 
 Json::Value ProgramCmd::toJson()
 {

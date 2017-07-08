@@ -1,11 +1,7 @@
-//
-// Created by Safonov Vadim on 11/23/15.
-//
+#pragma once
 
-#ifndef IM1TOIM2_COMPLEXCMD_H
-#define IM1TOIM2_COMPLEXCMD_H
-
-#include "../CompositeCmd.h"
+#include "CompositeCmd.h"
+#include <unordered_map>
 
 class ComplexCmd : public CompositeCmd {
 public:
@@ -13,7 +9,9 @@ public:
 
     virtual Json::Value toJson() override;
     virtual Json::Value toArgumentFormat() override;
+
+private:
+    std::string getComplexName(Json::Value &complexJson) const;
+
+    std::unordered_map<std::string, std::string> nameMap;
 };
-
-
-#endif //IM1TOIM2_COMPLEXCMD_H

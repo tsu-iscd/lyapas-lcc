@@ -1,11 +1,10 @@
-//
-// Created by Safonov Vadim on 11/6/15.
-//
-
 #include "ProcedureCmd.h"
 
-ProcedureCmd::ProcedureCmd(Json::Value processJson, ProcedureCmd::Type type)
-    : CompositeCmd(processJson), _type(type) {}
+ProcedureCmd::ProcedureCmd(Json::Value processJson, ProcedureCmd::Type type) :
+    CompositeCmd(processJson),
+    _type(type)
+{
+}
 
 Json::Value ProcedureCmd::toJson()
 {
@@ -19,19 +18,21 @@ Json::Value ProcedureCmd::toJson()
         result.append(signature);
         for(SPtr& child : _children) {
             auto paragraph = child->toJson();
-            for(auto cmd : paragraph) {
+            for(auto &cmd : paragraph) {
                 result.append(cmd);
             }
         }
 
         return result;
+    } else {
+        throw std::logic_error("Unexpectable case");
     }
 }
 
 Json::Value ProcedureCmd::buildSignature()
 {
     Json::Value signature;
-    signature[fieldName::type] = _cmdJson[fieldName::type].asString();
+    signature[fieldName::type] = "definition";
 
     auto& signatureArgs = signature[fieldName::args];
     signatureArgs.append(_cmdJson[fieldName::name].asString());

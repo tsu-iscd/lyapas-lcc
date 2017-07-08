@@ -26,7 +26,8 @@ set(COMMON_CXX_LIBS
     "-ldw")
 
 set(COMMON_TEST_LIBS
-    gtest)
+    gtest
+    "-ldw")
 
 # включаем тесты
 enable_testing()

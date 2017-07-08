@@ -1,8 +1,3 @@
-//
-// Created by s15-22 on 07.11.15.
-//
-
-#include <iostream>
 #include "TreeParser.h"
 
 TreeParser::TreeParser(CmdFactory &cmdFactory)

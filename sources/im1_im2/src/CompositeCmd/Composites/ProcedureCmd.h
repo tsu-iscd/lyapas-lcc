@@ -1,12 +1,6 @@
-//
-// Created by Safonov Vadim on 11/6/15.
-//
+#pragma once
 
-#ifndef IM1TOIM2_PROCCMD_H
-#define IM1TOIM2_PROCCMD_H
-
-
-#include "../CompositeCmd.h"
+#include "CompositeCmd.h"
 
 class ProcedureCmd : public CompositeCmd {
 public:
@@ -22,6 +16,3 @@ private:
 
     Type _type;
 };
-
-
-#endif //IM1TOIM2_PROCCMD_H

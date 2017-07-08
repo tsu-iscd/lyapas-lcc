@@ -1,9 +1,4 @@
-//
-// Created by Safonov Vadim on 11/4/15.
-//
-
-#ifndef IM1TOIM2_ICMD_H
-#define IM1TOIM2_ICMD_H
+#pragma once
 
 #include <memory>
 #include <list>
@@ -12,7 +7,6 @@
 #include <json/json.h>
 
 class ICmd {
-
 protected:
     Json::Value _cmdJson;
 
@@ -27,14 +21,13 @@ public:
 };
 
 namespace fieldName {
+
 const std::string cmd = "cmd";
-const std::string cmd_postfix = "cmd_postfix";
 const std::string args = "args";
 const std::string value = "value";
 const std::string name = "name";
 const std::string type = "type";
 const std::string number = "number";
 const std::string command = "command";
-}
 
-#endif //IM1TOIM2_COMPOSITECMD_H
+}

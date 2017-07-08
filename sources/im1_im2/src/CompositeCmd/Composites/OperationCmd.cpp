@@ -1,10 +1,9 @@
-//
-// Created by s15-22 on 18.11.15.
-//
-
 #include "OperationCmd.h"
 
-OperationCmd::OperationCmd(Json::Value processJson) : CompositeCmd(processJson) {}
+OperationCmd::OperationCmd(Json::Value processJson)
+    : CompositeCmd(processJson)
+{
+}
 
 Json::Value OperationCmd::toJson()
 {
@@ -15,8 +14,6 @@ Json::Value OperationCmd::toJson()
     if(_children.size() == 1) {
         auto child = _children.back()->toJson();
         result[fieldName::args] = child[fieldName::args];
-
-        operationName +=  child[fieldName::cmd_postfix].asString();
     } else if(_children.size() >= 2) {
         for(SPtr& child : _children) {
             for(auto& arg : child->toArgumentFormat()) {

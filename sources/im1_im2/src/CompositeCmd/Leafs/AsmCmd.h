@@ -1,11 +1,6 @@
-//
-// Created by vosafonov on 16.05.16.
-//
+#pragma once
 
-#ifndef IM1TOIM2_ASMCMD_H
-#define IM1TOIM2_ASMCMD_H
-
-#include "../LeafCmd.h"
+#include "LeafCmd.h"
 
 class AsmCmd : public LeafCmd {
 public:
@@ -13,6 +8,3 @@ public:
 
     virtual Json::Value toJson() override;
 };
-
-
-#endif //IM1TOIM2_ASMCMD_H
