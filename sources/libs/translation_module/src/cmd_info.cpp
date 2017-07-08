@@ -34,10 +34,10 @@ CmdInfo createCmdInfo(const Json::Value &json)
         }
 
         return {typeStr, cmd.asString(), std::move(args)};
-    } else if (typeStr == "label") {
+    } else if (typeStr == "label" || typeStr == "definition") {
         return {typeStr, "", std::move(args)};
     } else {
-        throw std::logic_error("Undefined type of object");
+        throw std::logic_error("Undefined type of object: '" + typeStr + "'");
     }
 }
 

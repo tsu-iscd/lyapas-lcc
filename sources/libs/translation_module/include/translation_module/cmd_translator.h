@@ -46,7 +46,7 @@ public:
     {
         const Json::Value &args = cmd["args"];
         if (args.size() != srcFillers.size()) {
-            throw std::runtime_error("Cmd has invalid arguments count");
+            throw std::runtime_error("Cmd has invalid arguments count: type is " + cmd["type"].asString());
         }
         for (auto i = 0; i < args.size(); ++i) {
             srcFillers[i]->fill(args[i]);
