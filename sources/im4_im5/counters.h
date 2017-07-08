@@ -15,7 +15,7 @@ public:
         fullIgnore.insert("write_string");
         fullIgnore.insert("asm");
 
-        firstArgIgnore.insert("definition_procedure");
+        firstArgIgnore.insert("definition");
         firstArgIgnore.insert("call");
     }
 
@@ -27,7 +27,7 @@ public:
         std::string cmdName = cmd["cmd"].asString();
 
         // переключатель между счетчиками
-        if (cmdName == "definition_procedure")
+        if (cmdName == "definition")
         {
             currentProcedure = cmd["args"][0].asString();
             counters[currentProcedure] = 0;
@@ -50,7 +50,8 @@ public:
             if (arg.isString()) {
                 std::string argStr(arg.asString());
                 if (std::regex_match(argStr, match, variable) && match.size() == 2) {
-                    counters[currentProcedure] = std::max(std::stoul(match[1].str()), counters[currentProcedure]);
+                    counters[currentProcedure] = std::max(std::stoul(match[1].str()),
+                                                          counters[currentProcedure]);
                 }
             }
         }
@@ -58,10 +59,8 @@ public:
 
     void updateState(const JSON &nextCmd)
     {
-        if (nextCmd["type"].asString() == "cmd") {
-            if (nextCmd["cmd"].asString() == "definition_procedure") {
-                currentProcedure = nextCmd["args"][0].asString();
-            }
+        if (nextCmd["type"].asString() == "cmd" && nextCmd["cmd"].asString() == "definition") {
+            currentProcedure = nextCmd["args"][0].asString();
         }
     }
 
@@ -84,17 +83,14 @@ public:
     void process(const JSON &cmd)
     {
         // переключатель между счетчиками
-        if (cmd["type"].asString() == "cmd") {
-            if (cmd["cmd"].asString() == "definition_procedure")
-            {
-                currentProcedure = cmd["args"][0].asString();
-                counters[currentProcedure] = 0;
-            }
+        if (cmd["type"].asString() == "cmd" && cmd["cmd"].asString() == "definition") {
+            currentProcedure = cmd["args"][0].asString();
+            counters[currentProcedure] = 0;
         }
 
-
         if (cmd["type"].asString() == "label") {
-            counters[currentProcedure] = std::max(cmd["number"].asUInt(), counters[currentProcedure]);
+            counters[currentProcedure] = std::max(cmd["number"].asUInt(),
+                                                  counters[currentProcedure]);
         }
     }
 
@@ -106,11 +102,8 @@ public:
             issuedCount = 0;
         }
 
-        if (nextCmd["type"].asString() == "cmd") {
-            if (nextCmd["cmd"].asString() == "definition_procedure")
-            {
-                currentProcedure = nextCmd["args"][0].asString();
-            }
+        if (nextCmd["type"].asString() == "cmd" && nextCmd["cmd"].asString() == "definition") {
+            currentProcedure = nextCmd["args"][0].asString();
         }
     }
 
@@ -128,5 +121,3 @@ private:
 };
 
 }
-
-
