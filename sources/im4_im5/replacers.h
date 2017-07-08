@@ -24,7 +24,7 @@ public:
     {
         trm::Optional<std::string> param = patternStringInfo.getParam();
         if (!param) {
-            throw std::runtime_error("Паттерн " + patternStringInfo.getName()+ " указан без параметра");
+            throw std::runtime_error("Паттерн " + patternStringInfo.getName() + " указан без параметра");
         }
 
         return 't' + std::to_string(counter.getFreeVariable(std::stoul(*param)));
@@ -52,7 +52,7 @@ public:
     {
         trm::Optional<std::string> param = patternStringInfo.getParam();
         if (!param) {
-            throw std::runtime_error("Паттерн " + patternStringInfo.getName()+ " указан без параметра");
+            throw std::runtime_error("Паттерн " + patternStringInfo.getName() + " указан без параметра");
         }
 
         return std::to_string(counter.getFreeLabel(std::stoul(*param)));
