@@ -19,11 +19,11 @@ def process_args(datum):
 def convert(datum):
     datum_type = datum["type"]
     if datum_type == "cmd":
-        return datum["cmd"] + " %s" % ", ".join(process_args(datum)) + "\n"
+        return datum["cmd"] + " " + ", ".join(process_args(datum)) + "\n"
     elif datum_type == "label":
         return "label " + str(datum["number"]) + "\n"
     elif datum_type == "definition":
-        return "definition %s" % ", ".join(process_args(datum)) + "\n"
+        return "definition" + " " + ", ".join(process_args(datum)) + "\n"
     else:
         raise NameError('Unknown type "' + datum_type + '"')
 
