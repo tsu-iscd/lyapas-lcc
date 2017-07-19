@@ -21,7 +21,7 @@ def convert(datum):
     if datum_type == "cmd":
         return datum["cmd"] + " " + ", ".join(process_args(datum)) + "\n"
     elif datum_type == "label":
-        return "label " + str(datum["number"]) + "\n"
+        return "label" + " " + str(datum["number"]) + "\n"
     elif datum_type == "definition":
         return "definition" + " " + ", ".join(process_args(datum)) + "\n"
     else:
