@@ -4,14 +4,14 @@ import argparse
 
 def process_args(datum):
     if "args" in datum:
-	args = datum["args"]
+        args = datum["args"]
         processed_args = []
-	for arg in args:
-	    if isinstance(arg, int):
-	        processed_args.append(str(arg))
-	    else:
-	        processed_args.append(arg)
-	return processed_args
+        for arg in args:
+            if isinstance(arg, int):
+                processed_args.append(str(arg))
+            else:
+                processed_args.append(arg)
+        return processed_args
     return [] 
 
 def convert(datum):
