@@ -29,8 +29,7 @@ def convert(datum):
 
 def main(args):
     with open(args.in_filename, "r") as in_file, open(args.out_filename, "w") as out_file:
-        json_string = in_file.read()
-        json_data = json.loads(json_string)
+        json_data = json.load(in_file)
         for datum in json_data:
             out_file.write(convert(datum))
                 
