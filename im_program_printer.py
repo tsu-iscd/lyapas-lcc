@@ -9,8 +9,10 @@ def process_args(datum):
         for arg in args:
             if isinstance(arg, int):
                 processed_args.append(str(arg))
-            else:
+            elif isinstance(arg, basestring):
                 processed_args.append(arg)
+            else:
+                raise TypeError('Unexpected type "' + type(arg).__name__ + '"')
         return processed_args
     return [] 
 
