@@ -5,6 +5,7 @@ add_executable(${PROJECT_NAME}
     ${BACKWARD_ENABLE}
     main.cpp
     example.cpp
+    translator_fixture.cpp
 )
 target_link_libraries(${PROJECT_NAME}
     ${LIB_NAME}

@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include "translation_module/translation_module.h"
+#include "translator_fixture.h"
 
 TEST(Example, example)
 {
