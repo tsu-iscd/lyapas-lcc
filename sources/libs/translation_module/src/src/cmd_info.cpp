@@ -6,12 +6,26 @@ namespace trm {
 
 bool CmdInfo::operator==(const CmdInfo &rhs) const
 {
-    return rhs.type == type && rhs.name == name;
+    return type == rhs.type &&
+       name == rhs.name &&
+       args.size() == rhs.args.size();
 }
 
 bool CmdInfo::operator<(const CmdInfo &rhs) const
 {
-    return rhs.type < type || (rhs.name < name);
+    if (type != rhs.type) {
+        return type < rhs.type;
+    }
+
+    if (name != rhs.name) {
+        return name < rhs.name;
+    }
+
+    if (args.size() != rhs.args.size()) {
+        return args.size() < rhs.args.size();
+    }
+
+    return true;
 }
 
 CmdInfo createCmdInfo(const Json::Value &json)
