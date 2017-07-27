@@ -25,7 +25,7 @@ bool CmdInfo::operator<(const CmdInfo &rhs) const
         return args.size() < rhs.args.size();
     }
 
-    return true;
+    return false;
 }
 
 CmdInfo createCmdInfo(const Json::Value &json)
