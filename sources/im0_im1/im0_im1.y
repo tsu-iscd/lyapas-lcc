@@ -988,13 +988,13 @@ comp_op:
     | AT_SIGN R_ANG_BRACK comp {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("insert_element_in_complex"));
+        json_object_set(root, "name", json_string("push_back_element_to_complex"));
 
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $3);
     }
-    | AT_SIGN R_ANG_BRACK comp_el {
+    | AT_SIGN R_ANG_BRACK comp comp_index {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
         json_object_set(root, "name", json_string("insert_element_in_complex"));
@@ -1002,6 +1002,7 @@ comp_op:
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $3);
+        json_array_append($$, $4);
     }
     | AT_SIGN L_ANG_BRACK comp {
         json_t *root = json_object();
@@ -1012,14 +1013,15 @@ comp_op:
         json_array_append($$, root);
         json_array_append($$, $3);
     }
-    | AT_SIGN L_ANG_BRACK comp_el {
+    | AT_SIGN L_ANG_BRACK comp comp_index {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("remove_element_from_complex"));
+        json_object_set(root, "name", json_string("pop_back_element_from_complex"));
 
         $$ = json_array();
         json_array_append($$, root);
         json_array_append($$, $3);
+        json_array_append($$, $4);
     }
     | AT_SIGN SHARP comp comp LPAR arg COMMA arg COMMA arg RPAR {
         json_t *root = json_object();
@@ -1213,6 +1215,23 @@ comp:
 
         $$ = json_array();
         json_array_append($$, root);
+    }
+;
+
+comp_index:
+    DOT INT {
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("const"));
+        json_object_set(index_root, "value", $2);
+        $$ = json_array();
+        json_array_append($$, index_root);
+    }
+    | ID {
+        json_t *index_root = json_object();
+        json_object_set(index_root, "type", json_string("var"));
+        json_object_set(index_root, "name", $1);
+        $$ = json_array();
+        json_array_append($$, index_root);
     }
 ;
 
