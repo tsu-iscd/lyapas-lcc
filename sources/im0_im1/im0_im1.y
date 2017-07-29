@@ -1007,7 +1007,7 @@ comp_op:
     | AT_SIGN L_ANG_BRACK comp {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("remove_element_from_complex"));
+        json_object_set(root, "name", json_string("pop_back_element_from_complex"));
 
         $$ = json_array();
         json_array_append($$, root);
@@ -1016,7 +1016,7 @@ comp_op:
     | AT_SIGN L_ANG_BRACK comp comp_index {
         json_t *root = json_object();
         json_object_set(root, "type", json_string("operation"));
-        json_object_set(root, "name", json_string("pop_back_element_from_complex"));
+        json_object_set(root, "name", json_string("remove_element_from_complex"));
 
         $$ = json_array();
         json_array_append($$, root);
