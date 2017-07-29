@@ -28,14 +28,25 @@ def convert(datum):
         raise NameError('Unknown type "' + datum_type + '"')
 
 def main(args):
-    with open(args.in_filename, "r") as in_file, open(args.out_filename, "w") as out_file:
-        json_data = json.load(in_file)
+    if args.in_filename is None:
+        input_data = ""
+        while True:
+            try:
+                input_data += raw_input() + "\n"
+            except EOFError:
+                break
+        json_data = json.loads(input_data)
+    else:    
+        with open(args.in_filename, "r") as in_file:
+            json_data = json.load(in_file)
+    
+    with open(args.out_filename, "w") as out_file:
         for datum in json_data:
             out_file.write(convert(datum))
                 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Converting json to human readable format")
-    parser.add_argument("in_filename", help="Path for input json file")
-    parser.add_argument("out_filename", help="Path for output file")
+    parser.add_argument("in_filename", help="Path for input json file", default=None, nargs="?")
+    parser.add_argument("out_filename", help="Path for output file", default="out.json.processed", nargs="?")
     args = parser.parse_args()
     main(args)
