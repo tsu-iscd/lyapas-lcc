@@ -6,6 +6,7 @@ SET(BisonOutput ${PROJECT_BINARY_DIR}/im0_im1.c)
 IF(BISON_FOUND)
     ADD_CUSTOM_COMMAND(
         OUTPUT ${BisonOutput}
+        DEPENDS ${PROJECT_SOURCE_DIR}/im0_im1.y
         COMMAND ${BISON_EXECUTABLE}
                 --output=${BisonOutput}
                 ${PROJECT_SOURCE_DIR}/im0_im1.y

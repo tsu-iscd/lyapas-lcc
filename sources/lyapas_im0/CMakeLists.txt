@@ -6,6 +6,7 @@ SET(FlexOutput ${PROJECT_BINARY_DIR}/lyapas_im0.c)
 IF(FLEX_FOUND)
     ADD_CUSTOM_COMMAND(
         OUTPUT ${FlexOutput}
+        DEPENDS ${PROJECT_SOURCE_DIR}/lyapas_im0.l
         COMMAND ${FLEX_EXECUTABLE}
                 --outfile=${FlexOutput}
                 ${PROJECT_SOURCE_DIR}/lyapas_im0.l
