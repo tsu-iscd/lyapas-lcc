@@ -36,6 +36,6 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Converting json to human readable format")
     parser.add_argument("in_file", help="Path for input json file", nargs="?", type=argparse.FileType("r"), default=sys.stdin)
-    parser.add_argument("out_file", help="Path for output file", nargs="?", type=argparse.FileType("w"), default = sys.stdout)
+    parser.add_argument("out_file", help="Path for output file", nargs="?", type=argparse.FileType("w"), default=sys.stdout)
     args = parser.parse_args()
     main(args)
