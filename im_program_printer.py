@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 import json
 import argparse
+import sys
 
 def process_args(datum):
     if "args" in datum:
@@ -28,14 +29,13 @@ def convert(datum):
         raise NameError('Unknown type "' + datum_type + '"')
 
 def main(args):
-    with open(args.in_filename, "r") as in_file, open(args.out_filename, "w") as out_file:
-        json_data = json.load(in_file)
-        for datum in json_data:
-            out_file.write(convert(datum))
+    json_data = json.load(args.in_file)
+    for datum in json_data:
+        args.out_file.write(convert(datum))
                 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Converting json to human readable format")
-    parser.add_argument("in_filename", help="Path for input json file")
-    parser.add_argument("out_filename", help="Path for output file")
+    parser.add_argument("in_file", help="Path for input json file", nargs="?", type=argparse.FileType("r"), default=sys.stdin)
+    parser.add_argument("out_file", help="Path for output file", nargs="?", type=argparse.FileType("w"), default=sys.stdout)
     args = parser.parse_args()
     main(args)
