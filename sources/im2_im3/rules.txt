@@ -108,8 +108,16 @@ cmd/insert_element_in_complex {complex}, {int}
 =>
 cmd/insert_element_in_complex {complex}, {int}, "acc"
 
+cmd/push_back_element_to_complex {complex}
+=>
+cmd/push_back_element_to_complex {complex}, "acc"
+
 cmd/remove_element_from_complex {complex}, {int}
 =>
 cmd/remove_element_from_complex {complex}, {int}, "acc"
+
+cmd/pop_back_element_from_complex {complex}
+=>
+cmd/pop_back_element_from_complex {complex}, "acc"
 
 )"
