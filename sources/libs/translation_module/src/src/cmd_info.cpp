@@ -1,17 +1,28 @@
 #include "cmd_info.h"
 #include <exception>
+#include <tuple>
 #include <vector>
 
 namespace trm {
 
+#define COMPARE(op) \
+    size_t lsize = args.size(); \
+    size_t rsize = rhs.args.size(); \
+    \
+    auto make = [](const CmdInfo &c, size_t &size) { \
+        return std::tie(c.type, c.name, size); \
+    }; \
+    \
+    return make(*this, lsize) op make(rhs, rsize)
+
 bool CmdInfo::operator==(const CmdInfo &rhs) const
 {
-    return rhs.type == type && rhs.name == name;
+    COMPARE(==);
 }
 
 bool CmdInfo::operator<(const CmdInfo &rhs) const
 {
-    return rhs.type < type || (rhs.name < name);
+    COMPARE(<);
 }
 
 CmdInfo createCmdInfo(const Json::Value &json)
@@ -34,10 +45,10 @@ CmdInfo createCmdInfo(const Json::Value &json)
         }
 
         return {typeStr, cmd.asString(), std::move(args)};
-    } else if (typeStr == "lable") {
+    } else if (typeStr == "label" || typeStr == "definition") {
         return {typeStr, "", std::move(args)};
     } else {
-        throw std::logic_error("Undefined type of object");
+        throw std::logic_error("Undefined type of object: '" + typeStr + "'");
     }
 }
 

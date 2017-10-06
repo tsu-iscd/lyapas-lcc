@@ -5,15 +5,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++1y")
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-# общие библиотеки
-add_subdirectory("sources/libs/backward-cpp")
-add_subdirectory("sources/libs/googletest")
-add_subdirectory("sources/libs/jsoncpp")
-
-add_subdirectory("sources/libs/print_json")
-add_subdirectory("sources/libs/shared_utils")
-add_subdirectory("sources/libs/translation_module")
-
 # промежуточные трансляторы
 set(COMMON_C_LIBS
     print_json
@@ -31,6 +22,15 @@ set(COMMON_TEST_LIBS
 
 # включаем тесты
 enable_testing()
+
+# общие библиотеки
+add_subdirectory("sources/libs/backward-cpp")
+add_subdirectory("sources/libs/googletest")
+add_subdirectory("sources/libs/jsoncpp")
+
+add_subdirectory("sources/libs/print_json")
+add_subdirectory("sources/libs/shared_utils")
+add_subdirectory("sources/libs/translation_module")
 
 add_subdirectory("sources/lyapas_im0")
 add_subdirectory("sources/im0_im1")

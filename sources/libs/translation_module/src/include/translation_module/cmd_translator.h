@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <shared_utils/assertion.h>
 #include <json/json.h>
 #include "aliases.h"
 #include "arg_builders.h"
@@ -45,9 +46,8 @@ public:
     std::vector<Json::Value> translate(const Json::Value &cmd)
     {
         const Json::Value &args = cmd["args"];
-        if (args.size() != srcFillers.size()) {
-            throw std::runtime_error("Cmd has invalid arguments count");
-        }
+
+        LCC_ASSERT(args.size() == srcFillers.size());
         for (auto i = 0; i < args.size(); ++i) {
             srcFillers[i]->fill(args[i]);
         }
