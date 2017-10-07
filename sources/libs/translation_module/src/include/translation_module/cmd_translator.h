@@ -30,7 +30,7 @@ public:
                 throw std::runtime_error("Некорректный тип");
             }
             sample["type"] = dstCmd.type;
-            sample["name"] = dstCmd.name;
+            sample["cmd"] = dstCmd.name;
 
             std::vector<std::shared_ptr<ArgBuilder>> argBuilders;
             for (const auto &arg : dstCmd.args) {
