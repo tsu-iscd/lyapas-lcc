@@ -1,5 +1,10 @@
 R"(
 
+# TODO1: а move транслируется то не правильно, там где был комплекс, он продолжает писать L1[1], вместо L1_buffer[1]
+
+# почему alloc 3?? alloc 3 * size ячейки, 8 * 3 скорее всего будет...
+# 4 byte зашиты. Должны варьироваться 1 и 4
+# почему есть отдельная переменная complex_buffer_opt??
 cmd/create_complex "<complex>", {int}
 =>
 cmd/alloc 3, "<complex_struct>"
@@ -13,6 +18,7 @@ cmd/remove_complex "<complex>"
 cmd/dealloc "<complex_buffer_opt>"
 cmd/dealloc "<complex_struct>"
 
+# <complex_buffer> кто будет обнвоилять? сам realloc? как это будет работать?
 cmd/reduce_complex "<complex>"
 =>
 cmd/realloc "<complex_capacity>", "<complex_cardinality>", "<complex_buffer>"
@@ -29,6 +35,9 @@ cmd/move "<complex_cell=<free_var=1>>", 0
 cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
+
+# free_label -- команда :(
+# руссификация ошибок??
 
 # нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 cmd/insert_string_in_complex "<complex>", "<string>"
@@ -48,6 +57,7 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=2>
 label <free_label=3>
 
+## добавить push_back_element_to_complex
 cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
