@@ -6,7 +6,7 @@ cmd="./lcc.sh "
 
 if (($# < 1)) ; then
   echo "The argument must be given"
-  exit 0
+  exit 1
 fi
 
 for arg in "$@"; do
@@ -22,7 +22,7 @@ for arg in "$@"; do
       if $dir; then
         if ! [ -d "$arg" ] ; then
           echo "The argument is not a directory"
-          exit 0
+          exit 1
         fi
         dir=false
         for lyapas_file in $(find $arg -name "*.lyapas"); do
@@ -48,7 +48,7 @@ for arg in "$@"; do
         echo -e $TXTCOLOR_GREEN"Processed $arg"$TXTCOLOR_DEFAULT
       else
         echo "Incorrect argument value $arg"
-        exit 0
+        exit 1
       fi
       ;;
   esac
