@@ -29,8 +29,16 @@ function translate()
     echo -e $TXTCOLOR_GREEN"Processed $1"$TXTCOLOR_DEFAULT
 }
 
+function show_usage()
+{
+  echo "Usage: ./lcc.sh [--allim] FILE ..."
+  echo -e "   or: ./lcc.sh [--allim] -d DIRECTORY ... \n"
+  echo -e "Translate lyapas file to the latest intermediate language\n"
+  echo " --allim: save the result of translation to all intermediate languages"
+}
+
 if (($# < 1)) ; then
-  echo "The argument must be given"
+  show_usage
   exit 1
 fi
 
@@ -47,6 +55,7 @@ for arg in "$@"; do
       if $dir; then
         if ! [ -d "$arg" ] ; then
           echo "The argument is not a directory"
+          show_usage
           exit 1
         fi
         dir=false
@@ -56,7 +65,8 @@ for arg in "$@"; do
       elif [[ $arg == *.lyapas ]]; then 
         translate $arg
       else
-        echo "Incorrect argument value $arg"
+        echo "Incorrect argument value \"$arg\""
+        show_usage
         exit 1
       fi
       ;;
