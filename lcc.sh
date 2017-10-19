@@ -29,17 +29,17 @@ function translate()
     echo -e $TXTCOLOR_GREEN"Processed $1"$TXTCOLOR_DEFAULT
 }
 
-function show_usage()
+function show_usage_and_exit()
 {
   echo "Usage: ./lcc.sh [--allim] FILE ..."
   echo -e "   or: ./lcc.sh [--allim] -d DIRECTORY ... \n"
   echo -e "Translate lyapas file to the latest intermediate language\n"
   echo " --allim: save the result of translation to all intermediate languages"
+  exit 1
 }
 
 if (($# < 1)) ; then
-  show_usage
-  exit 1
+  show_usage_and_exit
 fi
 
 for arg in "$@"; do
@@ -55,8 +55,7 @@ for arg in "$@"; do
       if $dir; then
         if ! [ -d "$arg" ] ; then
           echo "The argument is not a directory"
-          show_usage
-          exit 1
+          show_usage_and_exit
         fi
         dir=false
         for lyapas_file in $(find $arg -name "*.lyapas"); do
@@ -66,8 +65,7 @@ for arg in "$@"; do
         translate $arg
       else
         echo "Incorrect argument value \"$arg\""
-        show_usage
-        exit 1
+        show_usage_and_exit
       fi
       ;;
   esac
