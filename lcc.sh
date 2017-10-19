@@ -49,7 +49,6 @@ for arg in "$@"; do
       ;;
     --allim) 
       allim=true 
-      cmd+=" --allim "
       ;;
     *)
       if $dir; then
