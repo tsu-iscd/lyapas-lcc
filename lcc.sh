@@ -8,11 +8,14 @@ program_to_run=($path_to_lyapas_dir"/lyapas_to_json.py"
                 $path_to_lyapas_dir"/build/im0_im1" 
                 $path_to_lyapas_dir"/build/im1_im2" 
                 $path_to_lyapas_dir"/build/im2_im3")
-suffix=(".lyapas" ".json" ".im0" ".im1" ".im2" ".im3")
+suffix=("" ".json" ".im0" ".im1" ".im2" ".im3")
 
 function translate()
 {
-  name=${1/.lyapas/}
+  name=${1%.*}
+  if [[ "$1" == *.* ]]; then
+    suffix[0]=".${1##*.}"
+  fi
   if $allim; then
     for i in ${!program_to_run[@]}; do
         cat "$name${suffix[$i]}" | ${program_to_run[$i]} > "$name${suffix[$i + 1]}"
@@ -59,14 +62,11 @@ for arg in "$@"; do
           show_usage_and_exit
         fi
         dir=false
-        for lyapas_file in $(find $arg -name "*.lyapas"); do
+        for lyapas_file in $(find $arg -type f); do
           translate $lyapas_file
         done
-      elif [[ $arg == *.lyapas ]]; then 
-        translate $arg
       else
-        echo "Incorrect argument value \"$arg\""
-        show_usage_and_exit
+        translate $arg
       fi
       ;;
   esac
