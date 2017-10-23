@@ -62,7 +62,7 @@ for arg in "$@"; do
           show_usage_and_exit
         fi
         dir=false
-        for lyapas_file in $(find $arg -type f); do
+        for lyapas_file in $(find $arg -name "*.lyapas"); do
           translate $lyapas_file
         done
       else
