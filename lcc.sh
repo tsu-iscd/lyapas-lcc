@@ -2,7 +2,7 @@
 
 dir=false
 allim=false
-path_to_lyapas_dir="`readlink -e ${0/lcc.sh/}`"
+path_to_lyapas_dir="$(dirname $(readlink -e $0))"
 program_to_run=($path_to_lyapas_dir"/lyapas_to_json.py" 
                 $path_to_lyapas_dir"/build/lyapas_im0" 
                 $path_to_lyapas_dir"/build/im0_im1" 
@@ -21,7 +21,7 @@ function translate()
         cat "$name${suffix[$i]}" | ${program_to_run[$i]} > "$name${suffix[$i + 1]}"
     done
   else
-    name+=".im3"
+    name+=${suffix[-1]}
     cat $1 \
       | "${program_to_run[0]}" \
       | "${program_to_run[1]}" \
