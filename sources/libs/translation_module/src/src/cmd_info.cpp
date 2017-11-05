@@ -45,7 +45,7 @@ CmdInfo createCmdInfo(const Json::Value &json)
         }
 
         return {typeStr, cmd.asString(), std::move(args)};
-    } else if (typeStr == "label" || typeStr == "definition") {
+    } else if (typeStr == "label" || typeStr == "definition" || typeStr == "call") {
         return {typeStr, "", std::move(args)};
     } else {
         throw std::logic_error("Undefined type of object: '" + typeStr + "'");
