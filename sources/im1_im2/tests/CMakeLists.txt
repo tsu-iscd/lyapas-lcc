@@ -5,7 +5,7 @@ add_executable(${PROJECT_NAME}
     ${BACKWARD_ENABLE}
     main.cpp
     ComplexCmd.cpp
-    example.cpp
+    ProccedureCmd.cpp
 )
 target_link_libraries(${PROJECT_NAME}
     ${LIB_NAME}
