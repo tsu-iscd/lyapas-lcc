@@ -25,14 +25,14 @@ Json::Value ProcedureCmd::toJson()
 
         return result;
     } else {
-        throw std::logic_error("Unexpectable case");
+        throw std::logic_error("Unexpected case");
     }
 }
 
 Json::Value ProcedureCmd::buildSignature()
 {
     Json::Value signature;
-    signature[fieldName::type] = _type == ProcedureCmd::Type::definition ? "definition" : "call";
+    signature[fieldName::type] = getTypeName();
 
     auto& signatureArgs = signature[fieldName::args];
     signatureArgs.append(_cmdJson[fieldName::name].asString());
@@ -54,3 +54,14 @@ Json::Value ProcedureCmd::buildSignature()
     return signature;
 }
 
+std::string ProcedureCmd::getTypeName()
+{
+    switch (_type) {
+    case ProcedureCmd::Type::definition:
+        return "definition";
+    case ProcedureCmd::Type::call:
+        return "call";
+    default:
+        throw std::logic_error("Unexpected case");
+    }
+}
