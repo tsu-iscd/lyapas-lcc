@@ -1,0 +1,29 @@
+[
+   {
+      "args" : [ "main", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ "f2", 10, "/", "a" ],
+      "type" : "call"
+   },
+   {
+      "args" : [ "f1", "a", "/", "b" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ "acc", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", "a" ],
+      "cmd" : "add",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "b", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   }
+]
