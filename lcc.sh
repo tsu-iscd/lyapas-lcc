@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 dir=false
 allim=false
 path_to_lyapas_dir="$(dirname $(readlink -e $0))"
