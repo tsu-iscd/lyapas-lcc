@@ -28,7 +28,7 @@
 
 `<memory_cell>` ::= `<memory>[<int>]`
 
-`<writable_int>` ::= `<complex_cell>` | `<complex_attribut>` | `<variable>`
+`<writable_int>` ::= `<complex_cell>` | `<complex_attribute>` | `<variable>`
 
 `<readable_int>` ::= `<writable_int>` | `<const>`
 
