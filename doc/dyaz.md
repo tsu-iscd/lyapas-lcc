@@ -51,7 +51,8 @@ move <memory_cell>, <writable_int>
 ### Чтение времени таймера
 ```
 get_time => get_time acc
-
+```
+```
 get_time <writable_int>
 ```
 Записывает значения из таймера компьютера в операнд.
@@ -59,7 +60,8 @@ get_time <writable_int>
 ### Инициализация ГПСЧ
 ```
 set_random => set_random acc
-
+```
+```
 set_random <readable_int>
 ```
 Устанавливает состояние генератора псевдослучайных чисел в состояние значения операнда.
@@ -67,7 +69,8 @@ set_random <readable_int>
 ### Чтение псевдослучайного числа
 ```
 get_random => get_random acc
-
+```
+```
 get_random <writable_int>
 ```
 Записывает значение из псевдослучайной последовательности в операнд.
@@ -77,7 +80,8 @@ get_random <writable_int>
 ### Номер правой единицы
 ```
 get_number_least_1 => get_number_least_1 acc
-
+```
+```
 get_number_least_1 <writable_int>
 ```
 Записывает в операнд номер правой единицы в бинарном представлении операнда.
@@ -85,7 +89,8 @@ get_number_least_1 <writable_int>
 ### Отрицание
 ```
 not => not acc
-
+```
+```
 not <writable_int>
 ```
 Записывает в операнд результат отрицания бинарного представления операнда.
@@ -93,7 +98,8 @@ not <writable_int>
 ### Вес булева вектора
 ```
 weight => weight acc
-
+```
+```
 weight <writable_int>
 ```
 Записывает в операнд вес булева вектора бинарного представления операнда.
@@ -101,7 +107,8 @@ weight <writable_int>
 ### Дизъюнкция
 ```
 or <readable_int> => or acc, <readable_int>
-
+```
+```
 or <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат дизъюнкции операндов.
@@ -109,7 +116,8 @@ or <writable_int>, <readable_int>
 ### Конъюнкция
 ```
 and <readable_int> => and acc, <readable_int>
-
+```
+```
 and <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат конъюнкции операндов.
@@ -117,7 +125,8 @@ and <writable_int>, <readable_int>
 ### Сложение по модулю 2
 ```
 xor <readable_int> => xor acc, <readable_int>
-
+```
+```
 xor <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат сложения по модулю 2 операндов.
@@ -125,7 +134,8 @@ xor <writable_int>, <readable_int>
 ### Левый сдвиг
 ```
 left_shift <readable_int> => left_shift acc, <readable_int>
-
+```
+```
 left_shift <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат левого сдвига первого операнда на второй.
@@ -133,7 +143,8 @@ left_shift <writable_int>, <readable_int>
 ### Правый сдвиг
 ```
 right_shift <readable_int> => right_shift acc, <readable_int>
-
+```
+```
 right_shift <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат правого сдвига первого операнда на второй.
@@ -146,7 +157,8 @@ inc <writable_int>
 =>
 inc <writable_int>
 move acc, <writable_int>
-
+```
+```
 inc <writable_int>
 ```
 Увеличивает операнд на единицу.
@@ -157,7 +169,8 @@ dec <writable_int>
 =>
 dec <writable_int>
 move acc, <writable_int>
-
+```
+```
 dec <writable_int>
 ```
 Уменьшает операнд на единицу.
@@ -165,7 +178,8 @@ dec <writable_int>
 ### Сложение
 ```
 add <readable_int> => add acc, <readable_int>
-
+```
+```
 add <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат сложения операндов.
@@ -173,7 +187,8 @@ add <writable_int>, <readable_int>
 ### Вычитание
 ```
 sub <readable_int> => sub acc, <readable_int>
-
+```
+```
 sub <writable_int>, <readable_int>
 ```
 Записывает в первый операнд результат вычитания второго операнда из первого.
@@ -181,7 +196,8 @@ sub <writable_int>, <readable_int>
 ### Умножение
 ```
 mul <readable_int> => mul acc, <readable_int>, Z
-
+```
+```
 mul <writable_int>, <readable_int>, <writable_int>
 ```
 Умножает первые два операнда, в первый операнд записывается результат, а переполнение --- в третий.
@@ -189,7 +205,8 @@ mul <writable_int>, <readable_int>, <writable_int>
 ### Деление
 ```
 div <readable_int> => div acc, <readable_int>, Z
-
+```
+```
 div <writable_int>, <readable_int>, <writable_int>
 ```
 Делит второй операнд на первый, в первый операнд записывается частное, а остаток --- в третий.
@@ -197,7 +214,8 @@ div <writable_int>, <readable_int>, <writable_int>
 ### Взятие остатка
 ```
 mod <readable_int> => mod acc, <readable_int>, Z
-
+```
+```
 mod <writable_int>, <readable_int>, <writable_int>
 ```
 Делит второй операнд на первый, в первый операнд записывается остаток, а частное --- в третий.
@@ -205,7 +223,8 @@ mod <writable_int>, <readable_int>, <writable_int>
 ### Деление двойного числа
 ```
 ddiv <readable_int> => ddiv acc, <readable_int>, Z
-
+```
+```
 ddiv <writable_int>, <readable_int>, <writable_int>
 ```
 Делит двойное число на второй операнд, в первый операнд записывается частное, а остаток --- в третий. Двойное число состоит из первого операнда в младшей части и третьего операнда в старшей части.
@@ -216,7 +235,8 @@ ddiv <writable_int>, <readable_int>, <writable_int>
 ### Сравнивание
 ```
 compare <readable_int> => compare acc, <readable_int>
-
+```
+```
 compare <readable_int>, <readable_int>
 ```
 Вычитает второй операнд из первого. Устанавливает флаг нуля, если результат равен нулю. Устанавливает флаг заема, если для вычитания требуется заем.
@@ -229,7 +249,8 @@ compare <readable_int>, <readable_int>
 insert_element_in_complex <complex>, <int>
 =>
 insert_element_in_complex <complex>, <int>, acc
-
+```
+```
 insert_element_in_complex <complex>, <int>, <readable_int>
 ```
 Третий операнд записывается в позицию перед элементом с индексом `<int>`. Если элемента с таким индексом нет, то добавляем третий операнд после последнего элемента. Мощность комплекса увеличивается на 1. Приложение завершается аварийной остановкой, если для вставки не хватает ёмкости.
@@ -239,7 +260,8 @@ insert_element_in_complex <complex>, <int>, <readable_int>
 remove_element_from_complex <complex>, <int>
 =>
 remove_element_from_complex <complex>, <int>, acc
-
+```
+```
 remove_element_from_complex <complex>, <int>, <writable_int>
 ```
 Удаляется элемент с индексом `<int>` из комплекса. Если элемента с таким индексом нет, то удаляем последний элемент. Удаленный элемент записывается в третий операнд, а мощность комплекса уменьшается на 1. Приложение завершается аварийной остановкой, если комплекс имеет нулевую мощность перед выполнением операции.
