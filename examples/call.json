@@ -1,0 +1,1 @@
+{"file": "<stdin>", "source": "main(/)\n    *f2(10/a)\n    **\nf1(a/b)\n    10+a⇒b\n    **\n"}
