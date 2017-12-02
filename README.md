@@ -12,9 +12,8 @@ List of packages needs to be installed:
 * bison
 * flex
 
-Assuming that you are in the project directory, type the following.
-
 ## Instalation
+Assuming that you are in the project directory, type the following.
 ```bash
 git submodule update --recursive --init
 mkdir build

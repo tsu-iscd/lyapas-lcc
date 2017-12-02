@@ -23,8 +23,8 @@ def convert(datum):
         return datum["cmd"] + " " + ", ".join(process_args(datum)) + "\n"
     elif datum_type == "label":
         return "label" + " " + str(datum["number"]) + "\n"
-    elif datum_type == "definition":
-        return "definition" + " " + ", ".join(process_args(datum)) + "\n"
+    elif datum_type in ["definition", "call"]:
+        return datum_type + " " + ", ".join(process_args(datum)) + "\n"
     else:
         raise NameError('Unknown type "' + datum_type + '"')
 
