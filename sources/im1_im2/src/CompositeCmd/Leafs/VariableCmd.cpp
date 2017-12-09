@@ -1,7 +1,7 @@
 #include "VariableCmd.h"
 
-VariableCmd::VariableCmd(Json::Value json) :
-    LeafCmd(json)
+VariableCmd::VariableCmd(Json::Value json)
+    : LeafCmd(json)
 {
 }
 

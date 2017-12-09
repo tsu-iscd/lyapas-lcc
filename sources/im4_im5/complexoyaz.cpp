@@ -7,13 +7,9 @@ bool Complexoyaz::valid(const JSON &cmds, std::string &error)
     return true;
 }
 
-void Complexoyaz::preprocess(JSON &cmds)
-{
-}
+void Complexoyaz::preprocess(JSON &cmds) {}
 
-void Complexoyaz::postprocess(JSON &cmds)
-{
-}
+void Complexoyaz::postprocess(JSON &cmds) {}
 
 const trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 {
@@ -28,4 +24,4 @@ std::string Complexoyaz::getRules()
     );
 }
 
-}
+}  // namespace cyaz

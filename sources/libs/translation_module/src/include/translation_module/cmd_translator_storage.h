@@ -13,5 +13,4 @@ struct CmdTranslatorStorage {
     IntMap srcArgInt;
 };
 
-}
-
+}  // namespace trm

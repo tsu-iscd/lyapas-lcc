@@ -1,7 +1,7 @@
 #include "AsmCmd.h"
 
-AsmCmd::AsmCmd(Json::Value json) :
-    LeafCmd(json)
+AsmCmd::AsmCmd(Json::Value json)
+    : LeafCmd(json)
 {
 }
 

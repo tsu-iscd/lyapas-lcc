@@ -1,7 +1,7 @@
 #include "CompositeCmd.h"
 
-CompositeCmd::CompositeCmd(Json::Value json) :
-    ICmd(json)
+CompositeCmd::CompositeCmd(Json::Value json)
+    : ICmd(json)
 {
 }
 
@@ -22,7 +22,7 @@ std::string CompositeCmd::asString()
     result = "Me: " + ICmd::asString() + ";\n";
 
     int i = 0;
-    for(SPtr& child : _children) {
+    for (SPtr &child : _children) {
         result += "Child " + std::to_string(i) + ": " + child->asString() + ";\n";
         i++;
     }
@@ -37,7 +37,7 @@ Json::Value CompositeCmd::toJson()
 
     result.append(ICmd::toJson());
 
-    for(SPtr& child : _children) {
+    for (SPtr &child : _children) {
         result.append(child->toJson());
     }
 

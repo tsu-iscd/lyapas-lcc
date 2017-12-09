@@ -4,14 +4,12 @@
 
 class ProcedureCmd : public CompositeCmd {
 public:
-    enum class Type {
-        definition,
-        call
-    };
+    enum class Type { definition, call };
 
     ProcedureCmd(Json::Value processJson, Type type);
 
     virtual Json::Value toJson() override;
+
 private:
     Json::Value buildSignature();
     std::string getTypeName();

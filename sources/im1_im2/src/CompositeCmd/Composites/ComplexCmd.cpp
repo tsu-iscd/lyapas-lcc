@@ -1,7 +1,7 @@
 #include "ComplexCmd.h"
 
-ComplexCmd::ComplexCmd(Json::Value processJson) :
-    CompositeCmd(processJson)
+ComplexCmd::ComplexCmd(Json::Value processJson)
+    : CompositeCmd(processJson)
 {
     nameMap.emplace("symbol_complex", "F");
     nameMap.emplace("logic_complex", "L");

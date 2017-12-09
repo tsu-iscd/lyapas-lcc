@@ -5,11 +5,11 @@
 
 namespace sutils {
 
-template<typename T>
-void translateSimple(int argc, char* argv[])
+template <typename T>
+void translateSimple(int argc, char *argv[])
 {
     Json::Value json;
-    if(argc < 2) {
+    if (argc < 2) {
         parseJsonFromStream(std::cin, json);
     } else {
         parseJsonFromFile(argv[1], json);
@@ -21,4 +21,4 @@ void translateSimple(int argc, char* argv[])
     writeJsonToStream(std::cout, json);
 }
 
-}
+}  // namespace sutils

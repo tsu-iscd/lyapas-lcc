@@ -2,23 +2,22 @@
 
 #include <memory>
 #include <vector>
-#include <shared_utils/assertion.h>
 #include <json/json.h>
+#include <shared_utils/assertion.h>
 #include "aliases.h"
 #include "arg_builders.h"
 #include "cmd_builder.h"
 #include "cmd_info.h"
 #include "cmd_translator_storage.h"
-#include "translation_module.h"
 #include "fillers.h"
+#include "translation_module.h"
 
 namespace trm {
 
-class CmdTranslator
-{
+class CmdTranslator {
 public:
-    CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst, const Replacers &replacers) :
-        storage{replacers, {}, {}, {}}
+    CmdTranslator(const CmdInfo &src, const std::vector<CmdInfo> &dst, const Replacers &replacers)
+        : storage{replacers, {}, {}, {}}
     {
         for (const auto &arg : src.args) {
             srcFillers.push_back(createFiller(arg, storage));
@@ -66,4 +65,4 @@ private:
     CmdTranslatorStorage storage;
 };
 
-}
+}  // namespace trm
