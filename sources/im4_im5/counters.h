@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-#include <set>
 #include <regex>
+#include <set>
+#include <string>
 #include <json/json.h>
 
 namespace cyaz {
@@ -27,8 +27,7 @@ public:
         std::string cmdName = cmd["cmd"].asString();
 
         // переключатель между счетчиками
-        if (cmdName == "definition")
-        {
+        if (cmdName == "definition") {
             currentProcedure = cmd["args"][0].asString();
             counters[currentProcedure] = 0;
         }
@@ -50,8 +49,7 @@ public:
             if (arg.isString()) {
                 std::string argStr(arg.asString());
                 if (std::regex_match(argStr, match, variable) && match.size() == 2) {
-                    counters[currentProcedure] = std::max(std::stoul(match[1].str()),
-                                                          counters[currentProcedure]);
+                    counters[currentProcedure] = std::max(std::stoul(match[1].str()), counters[currentProcedure]);
                 }
             }
         }
@@ -89,8 +87,7 @@ public:
         }
 
         if (cmd["type"].asString() == "label") {
-            counters[currentProcedure] = std::max(cmd["number"].asUInt(),
-                                                  counters[currentProcedure]);
+            counters[currentProcedure] = std::max(cmd["number"].asUInt(), counters[currentProcedure]);
         }
     }
 
@@ -120,4 +117,4 @@ private:
     unsigned issuedCount = 0;
 };
 
-}
+}  // namespace cyaz

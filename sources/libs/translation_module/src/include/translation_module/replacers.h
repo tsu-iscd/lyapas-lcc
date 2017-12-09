@@ -12,8 +12,8 @@ namespace trm {
 class PatternStringInfo {
 public:
     // name[:group][=param]
-    PatternStringInfo(std::string pattern, const StringMap &stringMap) :
-        stringMap(stringMap)
+    PatternStringInfo(std::string pattern, const StringMap &stringMap)
+        : stringMap(stringMap)
     {
         auto equals = pattern.rfind('=');
         if (equals != std::string::npos) {
@@ -80,9 +80,7 @@ private:
 
 class Replacer {
 public:
-    virtual void updateState(const Json::Value &cmd)
-    {
-    }
+    virtual void updateState(const Json::Value &cmd) {}
     virtual std::string resolve(const PatternStringInfo &patternStringInfo) = 0;
 };
 using ReplacerPtr = std::shared_ptr<Replacer>;

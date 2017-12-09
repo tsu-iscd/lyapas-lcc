@@ -22,32 +22,27 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
     auto complexStruct = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         return "<complex" + patternStringInfo.getGroupAsString() + ">_struct";
     };
-    replacers.insert({"complex_struct",
-                      std::make_shared<cyaz::FunctionalReplacer>(complexStruct)});
+    replacers.insert({"complex_struct", std::make_shared<cyaz::FunctionalReplacer>(complexStruct)});
 
     auto complexCardinality = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]";
     };
-    replacers.insert({"complex_cardinality",
-                      std::make_shared<cyaz::FunctionalReplacer>(complexCardinality)});
+    replacers.insert({"complex_cardinality", std::make_shared<cyaz::FunctionalReplacer>(complexCardinality)});
 
     auto complexCapacity = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]";
     };
-    replacers.insert({"complex_capacity",
-                      std::make_shared<cyaz::FunctionalReplacer>(complexCapacity)});
+    replacers.insert({"complex_capacity", std::make_shared<cyaz::FunctionalReplacer>(complexCapacity)});
 
     auto complexBuffer = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]";
     };
-    replacers.insert({"complex_buffer",
-                      std::make_shared<cyaz::FunctionalReplacer>(complexBuffer)});
+    replacers.insert({"complex_buffer", std::make_shared<cyaz::FunctionalReplacer>(complexBuffer)});
 
     auto complexBufferOpt = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer";
     };
-    replacers.insert({"complex_buffer_opt",
-                      std::make_shared<cyaz::FunctionalReplacer>(complexBufferOpt)});
+    replacers.insert({"complex_buffer_opt", std::make_shared<cyaz::FunctionalReplacer>(complexBufferOpt)});
 
     auto complexCell = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         const std::string &group = patternStringInfo.getGroupAsString();
@@ -65,8 +60,7 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 
         return byteSize + " <complex" + group + ">_buffer[" + *param + "]";
     };
-    replacers.insert({"complex_cell",
-                      std::make_shared<cyaz::FunctionalReplacer>(complexCell)});
+    replacers.insert({"complex_cell", std::make_shared<cyaz::FunctionalReplacer>(complexCell)});
 
     auto stringLen = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
         auto p = patternStringInfo.getStringMap().find("string" + patternStringInfo.getGroupAsString());
@@ -76,8 +70,7 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 
         return std::to_string(p->second.size());
     };
-    replacers.insert({"string_len",
-                      std::make_shared<cyaz::FunctionalReplacer>(stringLen)});
+    replacers.insert({"string_len", std::make_shared<cyaz::FunctionalReplacer>(stringLen)});
 
     return replacers;
 }

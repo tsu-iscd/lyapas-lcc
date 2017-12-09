@@ -129,8 +129,7 @@ public:
                 auto replaceFrom = std::distance(workString.data(), foundSubstr.data());
                 auto replaceSize = foundSubstr.size();
 
-                PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1,
-                                                                foundSubstr.size() - 2),
+                PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1, foundSubstr.size() - 2),
                                                     storage.srcArgString);
 
                 auto p = storage.srcArgString.find(patternStringInfo.getNameWithGroup());

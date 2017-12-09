@@ -65,8 +65,8 @@ private:
 using ReplaceFunction = std::function<std::string(const trm::PatternStringInfo &patternStringInfo)>;
 class FunctionalReplacer : public trm::Replacer {
 public:
-    FunctionalReplacer(ReplaceFunction function) :
-        function(function)
+    FunctionalReplacer(ReplaceFunction function)
+        : function(function)
     {
     }
 
@@ -79,4 +79,4 @@ private:
     ReplaceFunction function;
 };
 
-}
+}  // namespace cyaz
