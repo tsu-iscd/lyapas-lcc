@@ -30,19 +30,19 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
                       std::make_shared<cyaz::FunctionalReplacer>(complexStruct)});
 
     auto complexCardinality = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        return "4byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]";
+        return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]";
     };
     replacers.insert({"complex_cardinality",
                       std::make_shared<cyaz::FunctionalReplacer>(complexCardinality)});
 
     auto complexCapacity = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        return "4byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]";
+        return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]";
     };
     replacers.insert({"complex_capacity",
                       std::make_shared<cyaz::FunctionalReplacer>(complexCapacity)});
 
     auto complexBuffer = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
-        return "4byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]";
+        return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]";
     };
     replacers.insert({"complex_buffer",
                       std::make_shared<cyaz::FunctionalReplacer>(complexBuffer)});
@@ -65,7 +65,7 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
         if (p == patternStringInfo.getStringMap().end()) {
             throw std::runtime_error("У транслируемой команды нет аргумента <complex>");
         }
-        std::string byteSize = (p->second[0] == 'L' ? "4byte" : "1byte");
+        std::string byteSize = (p->second[0] == 'L' ? "8byte" : "1byte");
 
         return byteSize + " <complex" + group + ">_buffer[" + *param + "]";
     };

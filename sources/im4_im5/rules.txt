@@ -1,16 +1,23 @@
 R"(
 
 # TODO1: а move транслируется то не правильно, там где был комплекс, он продолжает писать L1[1], вместо L1_buffer[1]
+# SOLVE: pre or post
 
-# почему alloc 3?? alloc 3 * size ячейки, 8 * 3 скорее всего будет...
-# 4 byte зашиты. Должны варьироваться 1 и 4
-# почему есть отдельная переменная complex_buffer_opt??
+# TODO2: refresh <complex_buffer_opt> при входе в функцию
+# SOLVE: pre or post
+
+# TODO3: <free_label> записывается как команда
+# это актуально?
+
+# TOOD4: подумать о руссификации ошибок
+# post
+
 cmd/create_complex "<complex>", {int}
 =>
-cmd/alloc 3, "<complex_struct>"
+cmd/alloc 3, 8, "<complex_struct>"
 cmd/move "<complex_cardinality>", 0
 cmd/move "<complex_capacity>", {int}
-cmd/alloc_at_least {int}, "<complex_buffer>"
+cmd/alloc_at_least {int}, <complex_element_size>, "<complex_buffer>"
 cmd/move "<complex_buffer_opt>", "<complex_buffer>"
 
 cmd/remove_complex "<complex>"
@@ -18,10 +25,9 @@ cmd/remove_complex "<complex>"
 cmd/dealloc "<complex_buffer_opt>"
 cmd/dealloc "<complex_struct>"
 
-# <complex_buffer> кто будет обнвоилять? сам realloc? как это будет работать?
 cmd/reduce_complex "<complex>"
 =>
-cmd/realloc "<complex_capacity>", "<complex_cardinality>", "<complex_buffer>"
+cmd/realloc "<complex_capacity>", "<complex_cardinality>", <complex_element_size>, "<complex_buffer>"
 cmd/move "<complex_capacity>", "<complex_cardinality>"
 cmd/move "<complex_buffer_opt>", "<complex_buffer>"
 
@@ -35,9 +41,6 @@ cmd/move "<complex_cell=<free_var=1>>", 0
 cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
-
-# free_label -- команда :(
-# руссификация ошибок??
 
 # нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 cmd/insert_string_in_complex "<complex>", "<string>"
@@ -57,7 +60,7 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=2>
 label <free_label=3>
 
-## добавить push_back_element_to_complex
+# TODO: добавить push_back_element_to_complex
 cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
@@ -141,7 +144,7 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=5>
 label <free_label=6>
 
-# нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+# TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 cmd/write_complex "<complex>"
 =>
 cmd/move "<free_var=1>", 0
@@ -165,8 +168,8 @@ cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
 
-# нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
-# 13 - код символа перевода строки
+# TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+# 10 - код символа перевода строки
 cmd/read_complex "<complex>"
 =>
 cmd/move "<free_var=1>", "<complex_cardinality>"
@@ -174,7 +177,7 @@ label <free_label=1>
 cmd/compare "<free_var=1>", "<complex_capacity>"
 cmd/jump_geq <free_label=3>
 cmd/read_char "<complex_cell=<free_var=1>>"
-cmd/compare "<complex_cell=<free_var=1>>", 13
+cmd/compare "<complex_cell=<free_var=1>>", 10
 cmd/jump_eq <free_label=2>
 cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
