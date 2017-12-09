@@ -5,7 +5,7 @@ namespace sutils {
 void parseJsonFromStream(std::istream &stream, Json::Value &json)
 {
     Json::Reader reader;
-    if(!reader.parse(stream, json)) {
+    if (!reader.parse(stream, json)) {
         throw std::runtime_error("Json Parse Error: " + reader.getFormattedErrorMessages());
     }
 }
@@ -24,4 +24,4 @@ void writeJsonToStream(std::ostream &stream, const Json::Value &json)
     stream << json.toStyledString();
 }
 
-}
+}  // namespace sutils

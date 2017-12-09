@@ -7,13 +7,9 @@ bool Dvyyaz::valid(const JSON &cmds, std::string &error)
     return true;
 }
 
-void Dvyyaz::preprocess(JSON &cmds)
-{
-}
+void Dvyyaz::preprocess(JSON &cmds) {}
 
-void Dvyyaz::postprocess(JSON &cmds)
-{
-}
+void Dvyyaz::postprocess(JSON &cmds) {}
 
 trm::Replacers &Dvyyaz::getReplacers(const JSON &cmds)
 {
@@ -28,4 +24,4 @@ std::string Dvyyaz::getRules()
     );
 }
 
-}
+}  // namespace dyaz

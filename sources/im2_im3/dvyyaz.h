@@ -14,4 +14,4 @@ private:
     virtual std::string getRules() override;
 };
 
-}
+}  // namespace dyaz

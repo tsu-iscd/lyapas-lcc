@@ -1,8 +1,8 @@
 #include "ProcedureCmd.h"
 
-ProcedureCmd::ProcedureCmd(Json::Value processJson, ProcedureCmd::Type type) :
-    CompositeCmd(processJson),
-    _type(type)
+ProcedureCmd::ProcedureCmd(Json::Value processJson, ProcedureCmd::Type type)
+    : CompositeCmd(processJson)
+    , _type(type)
 {
 }
 
@@ -10,15 +10,15 @@ Json::Value ProcedureCmd::toJson()
 {
     auto signature = buildSignature();
 
-    if(_type == ProcedureCmd::Type::call) {
+    if (_type == ProcedureCmd::Type::call) {
         return signature;
-    } else if(_type == ProcedureCmd::Type::definition) {
+    } else if (_type == ProcedureCmd::Type::definition) {
         Json::Value result;
 
         result.append(signature);
-        for(SPtr& child : _children) {
+        for (SPtr &child : _children) {
             auto paragraph = child->toJson();
-            for(auto &cmd : paragraph) {
+            for (auto &cmd : paragraph) {
                 result.append(cmd);
             }
         }
@@ -34,11 +34,11 @@ Json::Value ProcedureCmd::buildSignature()
     Json::Value signature;
     signature[fieldName::type] = getTypeName();
 
-    auto& signatureArgs = signature[fieldName::args];
+    auto &signatureArgs = signature[fieldName::args];
     signatureArgs.append(_cmdJson[fieldName::name].asString());
 
     auto inArgs = _children.front()->toJson();
-    for(auto& arg : inArgs) {
+    for (auto &arg : inArgs) {
         signatureArgs.append(arg);
     }
     _children.pop_front();
@@ -46,7 +46,7 @@ Json::Value ProcedureCmd::buildSignature()
     signatureArgs.append("/");
 
     auto outArgs = _children.front()->toJson();
-    for(auto& arg : outArgs) {
+    for (auto &arg : outArgs) {
         signatureArgs.append(arg);
     }
     _children.pop_front();

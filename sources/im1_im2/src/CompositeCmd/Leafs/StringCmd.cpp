@@ -1,7 +1,7 @@
 #include "StringCmd.h"
 
-StringCmd::StringCmd(Json::Value json) :
-    LeafCmd(json)
+StringCmd::StringCmd(Json::Value json)
+    : LeafCmd(json)
 {
 }
 

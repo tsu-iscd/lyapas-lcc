@@ -14,9 +14,9 @@ public:
 
 class JsonFiller : public IFiller {
 public:
-    JsonFiller(const std::string &fieldName, JsonMap &jsonMap) :
-        fieldName(fieldName),
-        jsonMap(jsonMap)
+    JsonFiller(const std::string &fieldName, JsonMap &jsonMap)
+        : fieldName(fieldName)
+        , jsonMap(jsonMap)
     {
     }
 
@@ -24,6 +24,7 @@ public:
     {
         jsonMap[fieldName] = json;
     }
+
 private:
     std::string fieldName;
     JsonMap &jsonMap;
@@ -31,9 +32,9 @@ private:
 
 class StringFiller : public IFiller {
 public:
-    StringFiller(const std::string &fieldName, StringMap &stringMap) :
-        fieldName(fieldName),
-        stringMap(stringMap)
+    StringFiller(const std::string &fieldName, StringMap &stringMap)
+        : fieldName(fieldName)
+        , stringMap(stringMap)
     {
     }
 
@@ -41,11 +42,11 @@ public:
     {
         stringMap[fieldName] = json.asString();
     }
+
 private:
     std::string fieldName;
     StringMap &stringMap;
 };
-
 
 std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &storage)
 {
@@ -80,4 +81,4 @@ std::unique_ptr<IFiller> createFiller(std::string value, CmdTranslatorStorage &s
     throw std::runtime_error("Некорректное значение строки");
 }
 
-}
+}  // namespace trm

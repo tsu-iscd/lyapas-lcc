@@ -88,4 +88,4 @@ public:
 using ReplacerPtr = std::shared_ptr<Replacer>;
 using Replacers = std::map<std::string, ReplacerPtr>;
 
-}
+}  // namespace trm

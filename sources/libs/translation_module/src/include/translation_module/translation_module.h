@@ -26,4 +26,4 @@ private:
     virtual std::string getRules() = 0;
 };
 
-}
+}  // namespace trm

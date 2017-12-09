@@ -15,7 +15,7 @@ public:
     }
 };
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     sutils::translateSimple<Odnoyaz>(argc, argv);
     return 0;
