@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CompositeCmd.h"
 #include <unordered_map>
+#include "CompositeCmd.h"
 
 class ComplexCmd : public CompositeCmd {
 public:

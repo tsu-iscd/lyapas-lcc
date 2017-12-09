@@ -8,10 +8,9 @@ namespace trm {
 
 class CmdBuilder {
 public:
-    CmdBuilder(Json::Value &&cmdSample,
-               std::vector<std::shared_ptr<ArgBuilder>> &&argBuilders) :
-        cmdSample(std::move(cmdSample)),
-        argBuilders(std::move(argBuilders))
+    CmdBuilder(Json::Value &&cmdSample, std::vector<std::shared_ptr<ArgBuilder>> &&argBuilders)
+        : cmdSample(std::move(cmdSample))
+        , argBuilders(std::move(argBuilders))
     {
     }
 
@@ -35,5 +34,4 @@ private:
     std::vector<std::shared_ptr<ArgBuilder>> argBuilders;
 };
 
-}
-
+}  // namespace trm

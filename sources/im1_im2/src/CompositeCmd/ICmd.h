@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
 #include <list>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <json/json.h>
@@ -30,4 +30,4 @@ const std::string type = "type";
 const std::string number = "number";
 const std::string command = "command";
 
-}
+}  // namespace fieldName

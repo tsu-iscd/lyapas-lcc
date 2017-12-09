@@ -17,4 +17,4 @@ struct CmdInfo {
 
 CmdInfo createCmdInfo(const Json::Value &json);
 
-}
+}  // namespace trm

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
 #include "aliases.h"
-#include "replacers.h"
 #include "cmd_translator_storage.h"
+#include "replacers.h"
 
 namespace trm {
 
@@ -39,8 +39,8 @@ public:
 
 class ConstArgBuilder : public ArgBuilder {
 public:
-    ConstArgBuilder(const Json::Value &sample) :
-        sample(sample)
+    ConstArgBuilder(const Json::Value &sample)
+        : sample(sample)
     {
     }
 
@@ -55,9 +55,9 @@ private:
 
 class JsonArgBuilder : public ArgBuilder {
 public:
-    JsonArgBuilder(const std::string &fieldName, JsonMap &jsonMap) :
-        fieldName(fieldName),
-        jsonMap(jsonMap)
+    JsonArgBuilder(const std::string &fieldName, JsonMap &jsonMap)
+        : fieldName(fieldName)
+        , jsonMap(jsonMap)
     {
     }
 
@@ -73,10 +73,10 @@ private:
 
 class PatternArgBuilder : public ArgBuilder {
 public:
-    PatternArgBuilder(PackerPtr packer, const std::string patternedString, const CmdTranslatorStorage &storage) :
-        packer(packer),
-        patternedString(patternedString),
-        storage(storage)
+    PatternArgBuilder(PackerPtr packer, const std::string patternedString, const CmdTranslatorStorage &storage)
+        : packer(packer)
+        , patternedString(patternedString)
+        , storage(storage)
     {
     }
 
@@ -119,7 +119,7 @@ public:
             }
         };
 
-        while(true) {
+        while (true) {
             StringView sw(patternedString.data(), patternedString.size());
             auto result = findMostDeepPair(sw, '<', '>');
 
@@ -128,8 +128,7 @@ public:
                 auto replaceFrom = std::distance(patternedString.data(), foundSubstr.data());
                 auto replaceSize = foundSubstr.size();
 
-                PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1,
-                                                                foundSubstr.size() - 2));
+                PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1, foundSubstr.size() - 2));
 
                 auto p = storage.srcArgString.find(patternStringInfo.getNameWithGroup());
                 if (p != storage.srcArgString.end()) {
@@ -161,7 +160,7 @@ public:
 
 std::shared_ptr<ArgBuilder> createArgBuilder(std::string value, CmdTranslatorStorage &storage)
 {
-    //FIXME(vsafonov): DRY, эти функции повторяеются в fillers.h
+    // FIXME(vsafonov): DRY, эти функции повторяеются в fillers.h
     auto eraseBorders = [](std::string &str) {
         if (str.size() >= 2) {
             str = std::string(str.begin() + 1, str.end() - 1);
@@ -202,4 +201,4 @@ std::shared_ptr<ArgBuilder> createArgBuilder(std::string value, CmdTranslatorSto
     }
 }
 
-}
+}  // namespace trm

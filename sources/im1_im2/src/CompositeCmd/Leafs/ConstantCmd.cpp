@@ -1,7 +1,7 @@
 #include "ConstantCmd.h"
 
-ConstantCmd::ConstantCmd(Json::Value json) :
-    LeafCmd(json)
+ConstantCmd::ConstantCmd(Json::Value json)
+    : LeafCmd(json)
 {
 }
 

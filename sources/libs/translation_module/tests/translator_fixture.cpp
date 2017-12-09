@@ -12,13 +12,9 @@ bool TranslatorFixture::valid(const JSON &cmds, std::string &error)
     return true;
 }
 
-void TranslatorFixture::preprocess(JSON &cmds)
-{
-}
+void TranslatorFixture::preprocess(JSON &cmds) {}
 
-void TranslatorFixture::postprocess(JSON &cmds)
-{
-}
+void TranslatorFixture::postprocess(JSON &cmds) {}
 
 const trm::Replacers &TranslatorFixture::getReplacers(const JSON &cmds)
 {
@@ -31,4 +27,4 @@ std::string TranslatorFixture::getRules()
     return rules;
 }
 
-}
+}  // namespace trm

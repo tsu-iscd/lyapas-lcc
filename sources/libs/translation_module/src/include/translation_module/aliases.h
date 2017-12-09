@@ -1,10 +1,10 @@
 #pragma once
 
+#include <experimental/optional>
+#include <experimental/string_view>
 #include <map>
 #include <string>
 #include <cstdint>
-#include <experimental/optional>
-#include <experimental/string_view>
 
 namespace trm {
 
@@ -16,5 +16,4 @@ template <typename T>
 using Optional = std::experimental::optional<T>;
 using StringView = std::experimental::string_view;
 
-
-}
+}  // namespace trm

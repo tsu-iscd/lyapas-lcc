@@ -3,14 +3,12 @@
 #include <utility>
 #include <vector>
 #include <shared_utils/string_helper.h>
-#include "cmd_translator.h"
 #include "cmd_info.h"
+#include "cmd_translator.h"
 
 namespace trm {
 
-trm::TranslationModule::~TranslationModule()
-{
-}
+trm::TranslationModule::~TranslationModule() {}
 
 void trm::TranslationModule::translate(JSON &cmds)
 {
@@ -94,7 +92,7 @@ CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &repl
 
         // считываем набор команд
         std::vector<CmdInfo> dstCmds;
-        while(std::getline(rulesStream, line)) {
+        while (std::getline(rulesStream, line)) {
             sutils::lrstrip(line);
             if (line.empty() || line.front() == '#') {
                 break;
@@ -103,8 +101,7 @@ CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &repl
             dstCmds.push_back(parseCmdInfoFromString(line));
         }
 
-        auto p = cmdTranslators.emplace(std::piecewise_construct,
-                                        std::forward_as_tuple(srcCmd),
+        auto p = cmdTranslators.emplace(std::piecewise_construct, std::forward_as_tuple(srcCmd),
                                         std::forward_as_tuple(srcCmd, dstCmds, replacers));
         if (!p.second) {
             throw std::runtime_error("Команда для трансляции повторяется более одного раза.");
@@ -140,4 +137,4 @@ void trm::TranslationModule::process(JSON &cmds)
     cmds = std::move(resultCmds);
 }
 
-}
+}  // namespace trm

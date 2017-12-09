@@ -1,5 +1,5 @@
-#include "CompositeCmd/Composites/ProcedureCmd.h"
 #include <gtest/gtest.h>
+#include "CompositeCmd/Composites/ProcedureCmd.h"
 #include "TreeParser/TreeParser.h"
 
 class ProcedureCmdFixture : public ::testing::Test {

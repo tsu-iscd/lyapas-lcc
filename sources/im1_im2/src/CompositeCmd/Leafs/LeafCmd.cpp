@@ -1,6 +1,6 @@
 #include "LeafCmd.h"
 
-LeafCmd::LeafCmd(Json::Value json) :
-    ICmd(json)
+LeafCmd::LeafCmd(Json::Value json)
+    : ICmd(json)
 {
 }

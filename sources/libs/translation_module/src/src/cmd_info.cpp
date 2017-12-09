@@ -5,14 +5,12 @@
 
 namespace trm {
 
-#define COMPARE(op) \
-    size_t lsize = args.size(); \
-    size_t rsize = rhs.args.size(); \
-    \
-    auto make = [](const CmdInfo &c, size_t &size) { \
-        return std::tie(c.type, c.name, size); \
-    }; \
-    \
+#define COMPARE(op)                                                                            \
+    size_t lsize = args.size();                                                                \
+    size_t rsize = rhs.args.size();                                                            \
+                                                                                               \
+    auto make = [](const CmdInfo &c, size_t &size) { return std::tie(c.type, c.name, size); }; \
+                                                                                               \
     return make(*this, lsize) op make(rhs, rsize)
 
 bool CmdInfo::operator==(const CmdInfo &rhs) const
@@ -51,5 +49,4 @@ CmdInfo createCmdInfo(const Json::Value &json)
         throw std::logic_error("Undefined type of object: '" + typeStr + "'");
     }
 }
-
 }

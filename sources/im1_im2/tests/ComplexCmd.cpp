@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include "TreeParser/TreeParser.h"
 
-//TODO(vsafonov): тесты можно сделать проще, если перейти на json либу nlohmann
+// TODO(vsafonov): тесты можно сделать проще, если перейти на json либу nlohmann
 
 class ComplexCmdFixture : public ::testing::Test {
 protected:
@@ -35,7 +35,6 @@ TEST_F(ComplexCmdFixture, symbolComplex)
     complexJson["number"] = 1;
     auto complex = createCmd(complexJson);
 
-
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
     ASSERT_TRUE(cmd.isMember(fieldName::args));
@@ -52,7 +51,6 @@ TEST_F(ComplexCmdFixture, logicComplex)
     complexJson["number"] = 10;
     auto complex = createCmd(complexJson);
 
-
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
     ASSERT_TRUE(cmd.isMember(fieldName::args));
@@ -68,7 +66,6 @@ TEST_F(ComplexCmdFixture, globalComplex1)
     complexJson["type"] = "global_complex_1";
     auto complex = createCmd(complexJson);
 
-
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
     ASSERT_TRUE(cmd.isMember(fieldName::args));
@@ -83,7 +80,6 @@ TEST_F(ComplexCmdFixture, globalComplex4)
     Json::Value complexJson;
     complexJson["type"] = "global_complex_4";
     auto complex = createCmd(complexJson);
-
 
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
@@ -105,7 +101,6 @@ TEST_F(ComplexCmdFixture, constComplexCell)
     indexJson["type"] = "const";
     auto complex = createCmd(complexJson, indexJson);
 
-
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
     ASSERT_TRUE(cmd.isMember(fieldName::args));
@@ -126,7 +121,6 @@ TEST_F(ComplexCmdFixture, variableComplexCell)
     indexJson["type"] = "var";
     auto complex = createCmd(complexJson, indexJson);
 
-
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
     ASSERT_TRUE(cmd.isMember(fieldName::args));
@@ -142,7 +136,6 @@ TEST_F(ComplexCmdFixture, ComplexCardinality)
     complexJson["type"] = "complex_cardinality";
     complexJson["number"] = 5;
     auto complex = createCmd(complexJson);
-
 
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
@@ -160,7 +153,6 @@ TEST_F(ComplexCmdFixture, ComplexCapacity)
     complexJson["number"] = 7;
     auto complex = createCmd(complexJson);
 
-
     Json::Value cmd = complex->toJson();
     ASSERT_EQ(1, cmd.size());
     ASSERT_TRUE(cmd.isMember(fieldName::args));
@@ -177,7 +169,6 @@ TEST_F(ComplexCmdFixture, toArgumentFormat)
     complexJson["number"] = 1;
     auto complex = createCmd(complexJson);
 
-
     Json::Value cmd = complex->toArgumentFormat();
     ASSERT_EQ(1, cmd.size());
     ASSERT_EQ("F1", cmd[0].asString());
@@ -193,7 +184,6 @@ TEST_F(ComplexCmdFixture, toArgumentFormatWithIndex)
     indexJson["value"] = 5;
     indexJson["type"] = "const";
     auto complex = createCmd(complexJson, indexJson);
-
 
     ASSERT_THROW(complex->toArgumentFormat(), std::runtime_error);
 }

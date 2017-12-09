@@ -56,4 +56,4 @@ private:
 using ReplaceFunction = std::function<std::string(const PatternStringInfo &patternStringInfo)>;
 using Replacers = std::map<std::string, ReplaceFunction>;
 
-}
+}  // namespace trm
