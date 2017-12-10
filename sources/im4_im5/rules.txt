@@ -1,16 +1,9 @@
 R"(
 
-# TODO1: а move транслируется то не правильно, там где был комплекс, он продолжает писать L1[1], вместо L1_buffer[1]
-# SOLVE: pre or post
-
-# TODO2: refresh <complex_buffer_opt> при входе в функцию
-# SOLVE: pre or post
-
-# TODO3: <free_label> записывается как команда
-# это актуально?
-
-# TOOD4: подумать о руссификации ошибок
-# post
+# TODO: подумать о руссификации ошибок
+# TODO: bug: обновлять <complex_buffer_opt> после definition и call
+# TODO: bug: транслировать L1[*] => L1_buffer[*]
+# TODO: bug: <free_label> записывается как команда
 
 cmd/create_complex "<complex>", {int}
 =>
