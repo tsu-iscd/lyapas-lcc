@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 #include <json/json.h>
+#include <shared_utils/assertion.h>
 
 namespace cyaz {
 
@@ -80,13 +81,15 @@ public:
     // используется перед трансляцией программы для построения общей картины
     void process(const JSON &cmd)
     {
-        // переключатель между счетчиками
-        if (cmd["type"].asString() == "cmd" && cmd["cmd"].asString() == "definition") {
-            currentProcedure = cmd["args"][0].asString();
-            counters[currentProcedure] = 0;
-        }
+        const std::string &cmdType = cmd["type"].asString();
 
-        if (cmd["type"].asString() == "label") {
+        // переключение между счетчиками
+        if (cmdType == "cmd" && cmd["cmd"].asString() == "definition") {
+            const Json::Value &args = cmd["args"];
+            LCC_ENSURE(args.size() >= 1, "cmd args is too small");
+            currentProcedure = args[0].asString();
+            counters[currentProcedure] = 0;
+        } else if (cmdType == "label") {
             counters[currentProcedure] = std::max(cmd["number"].asUInt(), counters[currentProcedure]);
         }
     }
