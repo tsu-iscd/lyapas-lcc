@@ -1,0 +1,400 @@
+[
+   {
+      "args" : [ "comp", "a", "L3", "/", "b", "k", "r", "F4" ],
+      "type" : "definition"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ 3, 8, "L1_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[1]", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", 8, "8byte L1_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1_buffer", "8byte L1_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3, 8, "F2_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[1]", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", 1, "8byte F2_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2_buffer", "8byte F2_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "\"test_string\"", "t1" ],
+      "cmd" : "definition_string",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[1]", 13 ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_geq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "Length of string greater than capacity of complex" ],
+      "cmd" : "error",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", 13 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t2", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", "t2" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "jump_geq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte F2_buffer[t2]", "1byte t1[t2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t2" ],
+      "cmd" : "inc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 4 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "acc", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2", "acc" ],
+      "cmd" : "push_back_element_to_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 3 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t2", "d" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", "8byte L1_struct[0]" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 5 ],
+      "cmd" : "jump_lt",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 5 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "t3", "8byte L1_struct[0]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t3", "t1" ],
+      "cmd" : "sub",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", "t3" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 6 ],
+      "cmd" : "jump_leq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "Cardinality of first complex is too small" ],
+      "cmd" : "error",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 6 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "t2", "8byte F2_struct[0]" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 7 ],
+      "cmd" : "jump_lt",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", "a" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 8 ],
+      "cmd" : "jump_geq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "Cardinality of second complex is too small" ],
+      "cmd" : "error",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 8 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "t2", "8byte F2_struct[0]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t2", "a" ],
+      "cmd" : "sub",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 9 ],
+      "cmd" : "jump",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 7 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "t3", "8byte F2_struct[0]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t3", "t2" ],
+      "cmd" : "sub",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", "t3" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 9 ],
+      "cmd" : "jump_leq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "Cardinality of second complex is too small" ],
+      "cmd" : "error",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 9 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "8byte L1_struct[0]", "t1" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 10 ],
+      "cmd" : "jump_geq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte F2_buffer[t2]", "8byte L1_buffer[t1]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1" ],
+      "cmd" : "inc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t2" ],
+      "cmd" : "inc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 9 ],
+      "cmd" : "jump",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 10 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "acc", "L1[5]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2[i]", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L3_struct[1]", "8byte L3_struct[0]", 8, "8byte L3_struct[2]" ],
+      "cmd" : "realloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L3_struct[1]", "8byte L3_struct[0]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L3_buffer", "8byte L3_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 11 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", "t1" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 12 ],
+      "cmd" : "jump_eq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte F2_buffer[t1]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1" ],
+      "cmd" : "inc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 11 ],
+      "cmd" : "jump",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 12 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "F2_buffer" ],
+      "cmd" : "dealloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2_struct" ],
+      "cmd" : "dealloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1_buffer" ],
+      "cmd" : "dealloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1_struct" ],
+      "cmd" : "dealloc",
+      "type" : "cmd"
+   }
+]

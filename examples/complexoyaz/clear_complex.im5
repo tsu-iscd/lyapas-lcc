@@ -1,0 +1,71 @@
+[
+   {
+      "args" : [ "comp", "a", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ 3, 8, "L1_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[1]", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", 8, "8byte L1_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1_buffer", "8byte L1_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "",
+      "type" : "label"
+   },
+   {
+      "args" : [ "8byte L1_struct[0]", "t1" ],
+      "cmd" : "compare",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "jump_eq",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_buffer[t1]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1" ],
+      "cmd" : "inc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 1 ],
+      "cmd" : "jump",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 2 ],
+      "cmd" : "",
+      "type" : "label"
+   }
+]

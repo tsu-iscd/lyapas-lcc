@@ -1,0 +1,16 @@
+[
+   {
+      "args" : [ "comp", "a", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ "F2", "a" ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2" ],
+      "cmd" : "remove_complex",
+      "type" : "cmd"
+   }
+]

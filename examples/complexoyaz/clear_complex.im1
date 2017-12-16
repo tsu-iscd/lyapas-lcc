@@ -1,0 +1,33 @@
+[
+  {"type": "program"},
+  [
+    {"type": "procedure", "name": "comp"},
+    [
+      {"type": "in_args"},
+      [
+        {"type": "var", "name": "a"}
+      ]
+    ],
+    [
+      {"type": "out_args"}
+    ],
+    [
+      {"type": "preface"},
+      [
+        {"type": "operation", "name": "create_complex"},
+        [
+          {"type": "logic_complex", "number": 1}
+        ],
+        [
+          {"type": "var", "name": "a"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "clear_complex"},
+        [
+          {"type": "logic_complex", "number": 1}
+        ]
+      ]
+    ]
+  ]
+]

@@ -1,0 +1,41 @@
+[
+   {
+      "args" : [ "comp", "a", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ 3, 8, "F2_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[1]", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", 1, "8byte F2_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2_buffer", "8byte F2_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2_buffer" ],
+      "cmd" : "dealloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2_struct" ],
+      "cmd" : "dealloc",
+      "type" : "cmd"
+   }
+]

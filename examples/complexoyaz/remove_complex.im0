@@ -1,0 +1,18 @@
+[
+  {"type": "id", "value": "comp"},
+  {"type": "lpar", "value": null},
+  {"type": "id", "value": "a"},
+  {"type": "slash", "value": null},
+  {"type": "rpar", "value": null},
+  {"type": "at_sign", "value": null},
+  {"type": "plus", "value": null},
+  {"type": "complex", "value": "symbol"},
+  {"type": "int", "value": 2},
+  {"type": "lpar", "value": null},
+  {"type": "id", "value": "a"},
+  {"type": "rpar", "value": null},
+  {"type": "at_sign", "value": null},
+  {"type": "minus", "value": null},
+  {"type": "complex", "value": "symbol"},
+  {"type": "int", "value": 2},
+  {"type": "fret", "value": null}]

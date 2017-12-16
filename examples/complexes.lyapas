@@ -1,0 +1,12 @@
+comp(a,L3/b,k,r,F4)
+    §1  @+L1(a)
+        @+F2(a)
+        @'test_string'>F2
+        10@>F2
+    @#L1F2(a,3,d)
+    L1.5⇒F2i
+    @%L3
+    OF2
+    @-F2
+    @-L1
+**
