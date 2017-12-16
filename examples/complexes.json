@@ -1,0 +1,1 @@
+{"file": "<stdin>", "source": "comp(a,L3/b,k,r,F4)\n    §1  @+L1(a)\n        @+F2(a)\n        @'test_string'>F2\n        10@>F2\n    @#L1F2(a,3,d)\n    L1.5⇒F2i\n    @%L3\n    OF2\n    @-F2\n    @-L1\n**\n"}

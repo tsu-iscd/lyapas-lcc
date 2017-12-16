@@ -1,0 +1,4 @@
+comp(a/)
+    @+F1(a)
+    @'test_string'>F1
+**

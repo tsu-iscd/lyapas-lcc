@@ -1,0 +1,1 @@
+{"file": "<stdin>", "source": "func_create_complex(a/b)\n    @+L1(a)\n    L1.0⇒b\n**\n"}

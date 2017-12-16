@@ -1,0 +1,70 @@
+[
+   {
+      "args" : [ "comp", "a", "L3", "/", "b", "k", "r", "F4" ],
+      "type" : "definition"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "L1", "a" ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2", "a" ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2", "\"test_string\"" ],
+      "cmd" : "insert_string_in_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2", "acc" ],
+      "cmd" : "push_back_element_to_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1", "F2", "a", 3, "d" ],
+      "cmd" : "copy_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", "L1[5]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2[i]", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L3" ],
+      "cmd" : "reduce_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2" ],
+      "cmd" : "clear_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2" ],
+      "cmd" : "remove_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1" ],
+      "cmd" : "remove_complex",
+      "type" : "cmd"
+   }
+]

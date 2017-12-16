@@ -1,0 +1,16 @@
+[
+   {
+      "args" : [ "comp", "a", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ "F1", "a" ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F1", "\"test_string\"" ],
+      "cmd" : "insert_string_in_complex",
+      "type" : "cmd"
+   }
+]
