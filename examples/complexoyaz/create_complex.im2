@@ -1,0 +1,21 @@
+[
+   {
+      "args" : [ "func_create_complex", "a", "/", "b" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ "L1", "a" ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1[0]" ],
+      "cmd" : "load",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "b" ],
+      "cmd" : "store",
+      "type" : "cmd"
+   }
+]

@@ -1,0 +1,132 @@
+[
+  {"type": "program"},
+  [
+    {"type": "procedure", "name": "comp"},
+    [
+      {"type": "in_args"},
+      [
+        {"type": "var", "name": "a"}
+      ],
+      [
+        {"type": "logic_complex", "number": 3}
+      ]
+    ],
+    [
+      {"type": "out_args"},
+      [
+        {"type": "var", "name": "b"}
+      ],
+      [
+        {"type": "var", "name": "k"}
+      ],
+      [
+        {"type": "var", "name": "r"}
+      ],
+      [
+        {"type": "symbol_complex", "number": 4}
+      ]
+    ],
+    [
+      {"type": "par", "number": 1},
+      [
+        {"type": "operation", "name": "create_complex"},
+        [
+          {"type": "logic_complex", "number": 1}
+        ],
+        [
+          {"type": "var", "name": "a"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "create_complex"},
+        [
+          {"type": "symbol_complex", "number": 2}
+        ],
+        [
+          {"type": "var", "name": "a"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "insert_string_in_complex"},
+        [
+          {"type": "symbol_complex", "number": 2}
+        ],
+        [
+          {"type": "string", "value": "test_string"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "const", "value": 10}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "push_back_element_to_complex"},
+        [
+          {"type": "symbol_complex", "number": 2}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "copy_complex"},
+        [
+          {"type": "logic_complex", "number": 1}
+        ],
+        [
+          {"type": "symbol_complex", "number": 2}
+        ],
+        [
+          {"type": "var", "name": "a"}
+        ],
+        [
+          {"type": "const", "value": 3}
+        ],
+        [
+          {"type": "var", "name": "d"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "logic_complex", "number": 1},
+          [
+            {"type": "const", "value": 5}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "var", "name": "i"}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "reduce_complex"},
+        [
+          {"type": "logic_complex", "number": 3}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "clear_complex"},
+        [
+          {"type": "symbol_complex", "number": 2}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "remove_complex"},
+        [
+          {"type": "symbol_complex", "number": 2}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "remove_complex"},
+        [
+          {"type": "logic_complex", "number": 1}
+        ]
+      ]
+    ]
+  ]
+]

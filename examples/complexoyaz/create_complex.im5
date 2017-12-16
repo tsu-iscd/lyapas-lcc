@@ -1,0 +1,41 @@
+[
+   {
+      "args" : [ "func_create_complex", "a", "/", "b" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ 3, 8, "L1_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[1]", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", 8, "8byte L1_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "L1_buffer", "8byte L1_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", "L1[0]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "b", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   }
+]

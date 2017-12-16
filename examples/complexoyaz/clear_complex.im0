@@ -1,0 +1,17 @@
+[
+  {"type": "id", "value": "comp"},
+  {"type": "lpar", "value": null},
+  {"type": "id", "value": "a"},
+  {"type": "slash", "value": null},
+  {"type": "rpar", "value": null},
+  {"type": "at_sign", "value": null},
+  {"type": "plus", "value": null},
+  {"type": "complex", "value": "logic"},
+  {"type": "int", "value": 1},
+  {"type": "lpar", "value": null},
+  {"type": "id", "value": "a"},
+  {"type": "rpar", "value": null},
+  {"type": "set_min", "value": null},
+  {"type": "complex", "value": "logic"},
+  {"type": "int", "value": 1},
+  {"type": "fret", "value": null}]

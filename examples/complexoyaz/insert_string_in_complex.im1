@@ -1,0 +1,36 @@
+[
+  {"type": "program"},
+  [
+    {"type": "procedure", "name": "comp"},
+    [
+      {"type": "in_args"},
+      [
+        {"type": "var", "name": "a"}
+      ]
+    ],
+    [
+      {"type": "out_args"}
+    ],
+    [
+      {"type": "preface"},
+      [
+        {"type": "operation", "name": "create_complex"},
+        [
+          {"type": "symbol_complex", "number": 1}
+        ],
+        [
+          {"type": "var", "name": "a"}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "insert_string_in_complex"},
+        [
+          {"type": "symbol_complex", "number": 1}
+        ],
+        [
+          {"value": "test_string", "type": "string"}
+        ]
+      ]
+    ]
+  ]
+]
