@@ -41,7 +41,7 @@ public:
             index = 1;
         }
 
-        static const std::regex variable("t?([0-9]+)");
+        static const std::regex variable("t([0-9]+)");
         std::smatch match;
         const auto &args = cmd["args"];
         for (; index < args.size(); ++index) {
