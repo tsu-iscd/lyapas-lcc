@@ -90,7 +90,7 @@ create_complex <complex>, <int>
 alloc 3, 8, <complex_struct> 
 move <complex_cardinality>, 0 
 move <complex_capacity>, <int> 
-alloc_at_least <int>, <complex_buffer> 
+alloc_at_least <int>, <complex_element_size>, <complex_buffer> 
 move <complex_buffer_var>, <complex_buffer>
 ```
 
