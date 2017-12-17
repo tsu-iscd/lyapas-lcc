@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <regex>
 #include <set>
 #include <string>
@@ -63,7 +64,7 @@ public:
         }
     }
 
-    unsigned long getFreeVariable(unsigned long index)
+    size_t getFreeVariable(size_t index)
     {
         return counters[currentProcedure] + index;
     }
@@ -72,7 +73,7 @@ private:
     std::set<std::string> fullIgnore;
     std::set<std::string> firstArgIgnore;
 
-    std::map<std::string, unsigned long> counters;
+    std::map<std::string, size_t> counters;
     std::string currentProcedure;
 };
 
@@ -90,7 +91,8 @@ public:
             currentProcedure = args[0].asString();
             counters[currentProcedure] = 0;
         } else if (cmdType == "label") {
-            counters[currentProcedure] = std::max(cmd["number"].asUInt(), counters[currentProcedure]);
+            size_t labelNumber = cmd["number"].asUInt();
+            counters[currentProcedure] = std::max(labelNumber, counters[currentProcedure]);
         }
     }
 
@@ -108,16 +110,16 @@ public:
     }
 
     // используются во время трансляции команды
-    unsigned getFreeLabel(unsigned index)
+    size_t getFreeLabel(size_t index)
     {
         issuedCount = std::max(index, issuedCount);
         return counters[currentProcedure] + index;
     }
 
 private:
-    std::map<std::string, unsigned> counters;
+    std::map<std::string, size_t> counters;
     std::string currentProcedure;
-    unsigned issuedCount = 0;
+    size_t issuedCount = 0;
 };
 
 }  // namespace cyaz
