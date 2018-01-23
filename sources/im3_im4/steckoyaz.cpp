@@ -14,7 +14,9 @@ void Steckoyaz::preprocess(JSON &cmds)
             if(cmd["type"] == "call") {
                 translateCall(cmd, resultCmds);
             }
-            resultCmds.append(std::move(cmd));
+            else {
+                resultCmds.append(std::move(cmd));
+            }
         }
 
     cmds = std::move(resultCmds);
