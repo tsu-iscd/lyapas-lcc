@@ -53,5 +53,62 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     }
 
     std::cout <<  "input " << input << " output " << output << std::endl;
+
+    Json::Value addedCmd;
+    addedCmd.clear();
+
+    //алоцируем стек
+    addedCmd["type"] = "cmd";
+    addedCmd["args"] = input+output;
+    addedCmd["cmd"] = "stack alloc";
+    resultCmds.append(std::move(addedCmd));
+
+
+    for(int i = 1; i <= input; i++) {
+        addedCmd.clear();
+        addedCmd["type"] = "cmd";
+
+        int shift = input+output+i;
+
+        auto first_arg = "[stack-" + std::to_string(shift)+"]";
+        auto second_arg = "[" + cmd["args"].operator[](i).asString() + "]";
+        addedCmd["args"].append(first_arg);
+        addedCmd["args"].append(second_arg);
+
+        addedCmd["cmd"] = "move";
+        resultCmds.append(std::move(addedCmd));
+
+    }
+
+    addedCmd.clear();
+    addedCmd["type"] = "cmd";
+    addedCmd["args"] = function_name;
+    addedCmd["cmd"] = "call";
+    resultCmds.append(std::move(addedCmd));
+
+    for(int i = 1; i <= output; i++) {
+        addedCmd.clear();
+        addedCmd["type"] = "cmd";
+
+        int shift = input+1;
+
+        auto first_arg = "[" + cmd["args"].operator[](input+1+i).asString() + "]";
+        auto second_arg = "[stack-" + std::to_string(shift)+"]";
+        addedCmd["args"].append(first_arg);
+        addedCmd["args"].append(second_arg);
+
+        addedCmd["cmd"] = "move";
+        resultCmds.append(std::move(addedCmd));
+    }
+
+    addedCmd.clear();
+
+    //освобождаем стек
+    addedCmd["type"] = "cmd";
+    addedCmd["args"] = input+output;
+    addedCmd["cmd"] = "stack free";
+    resultCmds.append(std::move(addedCmd));
+
+
 }
 }  // namespace syaz
