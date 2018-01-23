@@ -11,6 +11,8 @@ private:
 
     virtual const trm::Replacers &getReplacers(const JSON &cmds) override;
     virtual std::string getRules() override;
+
+    void translateCall(const JSON &cmd, JSON &resultCmds);
 };
 
 }  // namespace syaz
