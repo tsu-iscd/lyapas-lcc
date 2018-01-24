@@ -126,6 +126,9 @@ void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
         return;
     }
 
+    //TODO посчитать локальные переменные
+    std::map<char, int> locals;
+
     for( auto &&cmd : function) {
         resultCmds.append(std::move(cmd));
     }
