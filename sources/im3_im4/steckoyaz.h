@@ -12,7 +12,9 @@ private:
     virtual const trm::Replacers &getReplacers(const JSON &cmds) override;
     virtual std::string getRules() override;
 
+    // TODO отличать константы от памяти
     void translateCall(const JSON &cmd, JSON &resultCmds);
+    void translateDefinition(const JSON &function, JSON &resultCmds);
 };
 
 }  // namespace syaz

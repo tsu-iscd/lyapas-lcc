@@ -7,19 +7,30 @@ bool Steckoyaz::valid(const JSON &cmds, std::string &errror)
     return true;
 }
 
-void Steckoyaz::preprocess(JSON &cmds) 
+void Steckoyaz::preprocess(JSON &cmds)
 {
     JSON resultCmds;
-    for (auto &&cmd : cmds) {
-            if(cmd["type"] == "call") {
-                translateCall(cmd, resultCmds);
-            }
-            else {
-                resultCmds.append(std::move(cmd));
-            }
-        }
+    JSON function;
+    JSON intermediateCmds;
 
-    cmds = std::move(resultCmds);
+    for (auto &&cmd : cmds) {
+        if(cmd["type"] == "definition") {
+            translateDefinition(function, intermediateCmds);
+            function.clear();
+        }
+        function.append(std::move(cmd));
+    }
+    /*for (auto &&cmd : cmds) {
+        if (cmd["type"] == "call") {
+            translateCall(cmd, resultCmds);
+        } else if (cmd["type"] == "definition"){
+            translateDefinition(cmd, resultCmds);
+        } else {
+            resultCmds.append(std::move(cmd));
+        }
+    }*/
+
+    cmds = std::move(intermediateCmds);
 }
 
 void Steckoyaz::postprocess(JSON &cmds) {}
@@ -35,7 +46,7 @@ std::string Steckoyaz::getRules()
     return std::string("");
 }
 
-void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds) 
+void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 {
     int input, output;
     input = output = 0;
@@ -45,41 +56,39 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     auto function_name = (*i);
     i++;
 
-    for(i;(*i) != "/"; i++) {
+    for (i; (*i) != "/"; i++) {
         input++;
     }
 
     //пропускаем "/"
-    for(i++; i != cmd["args"].end(); i++) {
+    for (i++; i != cmd["args"].end(); i++) {
         output++;
     }
 
-    std::cout <<  "input " << input << " output " << output << std::endl;
+    std::cout << "input " << input << " output " << output << std::endl;
 
     Json::Value addedCmd;
     addedCmd.clear();
 
     //алоцируем стек
     addedCmd["type"] = "cmd";
-    addedCmd["args"] = input+output;
+    addedCmd["args"] = input + output;
     addedCmd["cmd"] = "stack alloc";
     resultCmds.append(std::move(addedCmd));
 
-
-    for(int i = 1; i <= input; i++) {
+    for (int i = 1; i <= input; i++) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
 
-        int shift = input+output+i;
+        int shift = input + output + i;
 
-        auto first_arg = "[stack-" + std::to_string(shift)+"]";
+        auto first_arg = "[stack-" + std::to_string(shift) + "]";
         auto second_arg = "[" + cmd["args"].operator[](i).asString() + "]";
         addedCmd["args"].append(first_arg);
         addedCmd["args"].append(second_arg);
 
         addedCmd["cmd"] = "move";
         resultCmds.append(std::move(addedCmd));
-
     }
 
     addedCmd.clear();
@@ -88,14 +97,14 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     addedCmd["cmd"] = "call";
     resultCmds.append(std::move(addedCmd));
 
-    for(int i = 1; i <= output; i++) {
+    for (int i = 1; i <= output; i++) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
 
-        int shift = input+1;
+        int shift = input + 1;
 
-        auto first_arg = "[" + cmd["args"].operator[](input+1+i).asString() + "]";
-        auto second_arg = "[stack-" + std::to_string(shift)+"]";
+        auto first_arg = "[" + cmd["args"].operator[](input + 1 + i).asString() + "]";
+        auto second_arg = "[stack-" + std::to_string(shift) + "]";
         addedCmd["args"].append(first_arg);
         addedCmd["args"].append(second_arg);
 
@@ -107,10 +116,19 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 
     //освобождаем стек
     addedCmd["type"] = "cmd";
-    addedCmd["args"] = input+output;
+    addedCmd["args"] = input + output;
     addedCmd["cmd"] = "stack free";
     resultCmds.append(std::move(addedCmd));
-
-
 }
+void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
+{
+    if(function.isNull()) {
+        return;
+    }
+
+    for( auto &&cmd : function) {
+        resultCmds.append(std::move(cmd));
+    }
+}
+
 }  // namespace syaz
