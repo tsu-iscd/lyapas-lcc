@@ -167,10 +167,14 @@ void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
         }
 
         //считаем количество локальных, записываем их название
-        //TODO отличать индексы массивов
         for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
             //константы не должны лежать на стеке
             if ((*i).isInt()) {
+                continue;
+            }
+
+            //пропустили обращение по индексу
+            if((*i).asString().find("[") != std::string::npos) {
                 continue;
             }
 
