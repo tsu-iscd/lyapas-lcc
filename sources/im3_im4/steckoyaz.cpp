@@ -149,7 +149,6 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     addedCmd["args"] = function_name;
     resultCmds.append(std::move(addedCmd));
 
-
     for (i; (*i) != "/"; i++) {
         variables[(*i).asString()] = -1;
         input++;
@@ -183,7 +182,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
             }
 
             //пропустили обращение по индексу
-            if((*i).asString().find("[") != std::string::npos) {
+            if ((*i).asString().find("[") != std::string::npos) {
                 continue;
             }
 
@@ -205,28 +204,27 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     addedCmd["cmd"] = "stack alloc";
     resultCmds.append(std::move(addedCmd));
 
-    int shift = variables.size()-1;
-    for(auto i = variables.begin(); i != variables.end(); i++) {
+    int shift = variables.size() - 1;
+    for (auto i = variables.begin(); i != variables.end(); i++) {
         (*i).second = shift;
         shift--;
     }
 
     for (auto &&cmd : function) {
         //:))чтобы пропустить первую команду
-        if(cmd["type"] == "definition") {
+        if (cmd["type"] == "definition") {
             continue;
         }
 
         for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
             auto pos = variables.find((*i).asString());
-            if(pos != variables.end()) {
-                auto address = "[stack-"+std::to_string((*pos).second)+"]";
+            if (pos != variables.end()) {
+                auto address = "[stack-" + std::to_string((*pos).second) + "]";
                 (*i) = address;
             }
         }
         resultCmds.append(std::move(cmd));
     }
-
 
     addedCmd.clear();
     //освобождаем стек
@@ -234,7 +232,6 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     addedCmd["args"] = locals;
     addedCmd["cmd"] = "stack free";
     resultCmds.append(std::move(addedCmd));
-
 }
 
 }  // namespace syaz
