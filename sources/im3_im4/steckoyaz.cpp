@@ -226,6 +226,15 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
         }
         resultCmds.append(std::move(cmd));
     }
+
+
+    addedCmd.clear();
+    //освобождаем стек
+    addedCmd["type"] = "cmd";
+    addedCmd["args"] = locals;
+    addedCmd["cmd"] = "stack free";
+    resultCmds.append(std::move(addedCmd));
+
 }
 
 }  // namespace syaz
