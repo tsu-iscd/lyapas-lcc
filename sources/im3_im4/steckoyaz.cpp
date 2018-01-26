@@ -14,7 +14,7 @@ void Steckoyaz::preprocess(JSON &cmds)
     JSON intermediateCmds;
 
     for (auto &&cmd : cmds) {
-        if(cmd["type"] == "definition") {
+        if (cmd["type"] == "definition") {
             translateDefinition(function, intermediateCmds);
             function.clear();
         }
@@ -122,14 +122,70 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 }
 void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
 {
-    if(function.isNull()) {
+    if (function.isNull()) {
         return;
     }
 
-    //TODO посчитать локальные переменные
-    std::map<char, int> locals;
+    std::cout << "========================" << std::endl;
+    std::cout << function << std::endl;
+    std::cout << "========================" << std::endl;
 
-    for( auto &&cmd : function) {
+    // TODO посчитать локальные переменные
+    int input, output;
+    input = output = 0;
+    //название переменной-сдвиг
+    std::map<std::string, int> variables;
+
+    //считаем количество входных/выходных параметров
+    auto i = function.operator[](0)["args"].begin();
+    auto function_name = (*i);
+    i++;
+
+    for (i; (*i) != "/"; i++) {
+        variables[(*i).asString()] = -1;
+        input++;
+    }
+
+    //пропускаем "/"
+    for (i++; i != function.operator[](0)["args"].end(); i++) {
+        variables[(*i).asString()] = -1;
+        output++;
+    }
+
+    std::cout << "input " << input << " output " << output << std::endl;
+
+    int locals = 0;
+    for (auto &&cmd : function) {
+        //:)для того, чтобы пропустить первый
+        if (cmd["type"] == "definition") {
+            continue;
+        }
+
+        //"call" должны пропускать
+        if (cmd["type"] == "call") {
+            continue;
+        }
+
+        //считаем количество локальных, записываем их название
+        //TODO отличать индексы массивов
+        for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
+            //константы не должны лежать на стеке
+            if ((*i).isInt()) {
+                continue;
+            }
+
+            if (variables.find((*i).asString()) == variables.end()) {
+                variables.insert(variables.end(), std::pair<std::string, int>((*i).asString(), -1));
+                std::cout << (*i) << std::endl;
+                locals++;
+            };
+        }
+
+    }
+
+    std::cout << "locals " << locals << std::endl;
+
+    for (auto &&cmd : function) {
         resultCmds.append(std::move(cmd));
     }
 }
