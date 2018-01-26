@@ -14,7 +14,7 @@ private:
 
     // TODO отличать константы от памяти
     void translateCall(const JSON &cmd, JSON &resultCmds);
-    void translateDefinition(const JSON &function, JSON &resultCmds);
+    void translateDefinition(JSON &function, JSON &resultCmds);
 };
 
 }  // namespace syaz

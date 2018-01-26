@@ -20,6 +20,8 @@ void Steckoyaz::preprocess(JSON &cmds)
         }
         function.append(std::move(cmd));
     }
+
+    translateDefinition(function, intermediateCmds);
     /*for (auto &&cmd : cmds) {
         if (cmd["type"] == "call") {
             translateCall(cmd, resultCmds);
@@ -120,7 +122,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     addedCmd["cmd"] = "stack free";
     resultCmds.append(std::move(addedCmd));
 }
-void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
+void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
 {
     if (function.isNull()) {
         return;
@@ -130,7 +132,6 @@ void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
     std::cout << function << std::endl;
     std::cout << "========================" << std::endl;
 
-    // TODO посчитать локальные переменные
     int input, output;
     input = output = 0;
     //название переменной-сдвиг
@@ -140,6 +141,14 @@ void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
     auto i = function.operator[](0)["args"].begin();
     auto function_name = (*i);
     i++;
+
+    //добавление метки функции!!!!!???????
+    Json::Value addedCmd;
+    addedCmd.clear();
+    addedCmd["type"] = "label";
+    addedCmd["args"] = function_name;
+    resultCmds.append(std::move(addedCmd));
+
 
     for (i; (*i) != "/"; i++) {
         variables[(*i).asString()] = -1;
@@ -184,12 +193,37 @@ void Steckoyaz::translateDefinition(const JSON &function, JSON &resultCmds)
                 locals++;
             };
         }
-
     }
 
     std::cout << "locals " << locals << std::endl;
 
+    addedCmd.clear();
+
+    //алоцируем стек
+    addedCmd["type"] = "cmd";
+    addedCmd["args"] = locals;
+    addedCmd["cmd"] = "stack alloc";
+    resultCmds.append(std::move(addedCmd));
+
+    int shift = variables.size()-1;
+    for(auto i = variables.begin(); i != variables.end(); i++) {
+        (*i).second = shift;
+        shift--;
+    }
+
     for (auto &&cmd : function) {
+        //:))чтобы пропустить первую команду
+        if(cmd["type"] == "definition") {
+            continue;
+        }
+
+        for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
+            auto pos = variables.find((*i).asString());
+            if(pos != variables.end()) {
+                auto address = "[stack-"+std::to_string((*pos).second)+"]";
+                (*i) = address;
+            }
+        }
         resultCmds.append(std::move(cmd));
     }
 }
