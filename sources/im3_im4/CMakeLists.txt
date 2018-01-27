@@ -4,6 +4,7 @@ project(im3_im4)
 set(SOURCE_FILES
     main.cpp
     steckoyaz.cpp
+        FunctionInfo.cpp
 )
 
 add_executable(im3_im4 ${SOURCE_FILES} ${BACKWARD_ENABLE})

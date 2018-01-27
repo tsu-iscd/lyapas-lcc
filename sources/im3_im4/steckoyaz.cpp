@@ -73,7 +73,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     addedCmd.clear();
 
     //алоцируем стек
-    addedCmd = stackAlloc(input+output);
+    addedCmd = stackAlloc(input + output);
     resultCmds.append(std::move(addedCmd));
 
     for (int i = 1; i <= input; i++) {
@@ -114,7 +114,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 
     //освобождаем стек
     addedCmd.clear();
-    addedCmd = stackFree(input+output);
+    addedCmd = stackFree(input + output);
     resultCmds.append(std::move(addedCmd));
 }
 void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
@@ -126,6 +126,14 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     std::cout << "========================" << std::endl;
     std::cout << function << std::endl;
     std::cout << "========================" << std::endl;
+
+    FunctionInfo infFunc(function.operator[](0));
+    std::cout << "*************************" << std::endl;
+    std::cout << infFunc.functionName << std::endl;
+    std::cout << " input " << infFunc.input.size() << std::endl;
+    std::cout << " output " << infFunc.output.size() << std::endl;
+    std::cout << "*************************" << std::endl;
+
 
     int input, output;
     input = output = 0;
@@ -243,6 +251,28 @@ Json::Value Steckoyaz::stackFree(int shift)
     command["cmd"] = "stack free";
 
     return command;
+}
+
+std::tuple<std::string, std::vector<Json::Value>, std::vector<Json::Value>> Steckoyaz::countParameters(
+    const JSON &cmd)
+{
+
+    //считаем количество входных/выходных параметров
+    auto i = cmd["args"].begin();
+    std::string functionName = (*i).asString();
+    i++;
+
+    std::vector<Json::Value> input;
+    for (i; (*i) != "/"; i++) {
+        input.insert(input.end(),(*i));
+    }
+
+    //пропускаем "/"
+    std::vector<Json::Value> output;
+    for (i++; i != cmd["args"].end(); i++) {
+        output.insert(output.end(),(*i));
+    }
+    return std::make_tuple(functionName, input, output);
 }
 
 }  // namespace syaz
