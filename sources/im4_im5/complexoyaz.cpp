@@ -42,45 +42,45 @@ void Complexoyaz::preprocess(JSON &cmds) {}
 
 void Complexoyaz::postprocess(JSON &cmds) {}
 
+#define INSERT_REPLACER(name, type)\
+    replacers.insert({name, std::make_shared<type>(cmds)})
+
+#define INSERT_FUNCTIONAL_REPLACER(name, functionBlock)\
+    do {\
+        auto func = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {\
+            functionBlock\
+        };\
+        replacers.insert({name, std::make_shared<cyaz::FunctionalReplacer>(func)});\
+    } while (false)
+
+
 trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
 
-    replacers.insert({"free_var", std::make_shared<cyaz::FreeVarReplacer>(cmds)});
-    replacers.insert({"free_label", std::make_shared<cyaz::FreeLabelReplacer>(cmds)});
+    INSERT_REPLACER("free_var", cyaz::FreeVarReplacer);
+    INSERT_REPLACER("free_label", cyaz::FreeLabelReplacer);
 
-    auto complexElementSize = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    INSERT_FUNCTIONAL_REPLACER("complex_element_size", {
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
         return calculateElementSize(complexName);
-    };
-    replacers.insert({"complex_element_size", std::make_shared<cyaz::FunctionalReplacer>(complexElementSize)});
-
-    auto complexStruct = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("complex_struct", {
         return "<complex" + patternStringInfo.getGroupAsString() + ">_struct";
-    };
-    replacers.insert({"complex_struct", std::make_shared<cyaz::FunctionalReplacer>(complexStruct)});
-
-    auto complexCardinality = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("complex_cardinality", {
         return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]";
-    };
-    replacers.insert({"complex_cardinality", std::make_shared<cyaz::FunctionalReplacer>(complexCardinality)});
-
-    auto complexCapacity = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("complex_capacity", {
         return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]";
-    };
-    replacers.insert({"complex_capacity", std::make_shared<cyaz::FunctionalReplacer>(complexCapacity)});
-
-    auto complexBuffer = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("complex_buffer", {
         return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]";
-    };
-    replacers.insert({"complex_buffer", std::make_shared<cyaz::FunctionalReplacer>(complexBuffer)});
-
-    auto complexBufferOpt = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("complex_buffer_opt", {
         return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer";
-    };
-    replacers.insert({"complex_buffer_opt", std::make_shared<cyaz::FunctionalReplacer>(complexBufferOpt)});
-
-    auto complexCell = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("complex_cell", {
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
         std::string byteSize = calculateElementSize(complexName) + "byte";
 
@@ -92,14 +92,11 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
         }
 
         return byteSize + " <complex" + group + ">_buffer[" + *param + "]";
-    };
-    replacers.insert({"complex_cell", std::make_shared<cyaz::FunctionalReplacer>(complexCell)});
-
-    auto stringLen = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {
+    });
+    INSERT_FUNCTIONAL_REPLACER("string_len", {
         const std::string &content = tryExtract(patternStringInfo, "string");
         return std::to_string(content.size());
-    };
-    replacers.insert({"string_len", std::make_shared<cyaz::FunctionalReplacer>(stringLen)});
+    });
 
     return replacers;
 }
