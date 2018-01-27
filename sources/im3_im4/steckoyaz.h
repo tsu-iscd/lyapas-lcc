@@ -15,6 +15,8 @@ private:
     // TODO отличать константы от памяти
     void translateCall(const JSON &cmd, JSON &resultCmds);
     void translateDefinition(JSON &function, JSON &resultCmds);
+    Json::Value stackAlloc(int shift);
+    Json::Value stackFree(int shift);
 };
 
 }  // namespace syaz

@@ -73,9 +73,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     addedCmd.clear();
 
     //алоцируем стек
-    addedCmd["type"] = "cmd";
-    addedCmd["args"] = input + output;
-    addedCmd["cmd"] = "stack alloc";
+    addedCmd = stackAlloc(input+output);
     resultCmds.append(std::move(addedCmd));
 
     for (int i = 1; i <= input; i++) {
@@ -114,12 +112,9 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
         resultCmds.append(std::move(addedCmd));
     }
 
-    addedCmd.clear();
-
     //освобождаем стек
-    addedCmd["type"] = "cmd";
-    addedCmd["args"] = input + output;
-    addedCmd["cmd"] = "stack free";
+    addedCmd.clear();
+    addedCmd = stackFree(input+output);
     resultCmds.append(std::move(addedCmd));
 }
 void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
@@ -143,6 +138,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     i++;
 
     //добавление метки функции!!!!!???????
+    // TODO выяснить как в asm называют
     Json::Value addedCmd;
     addedCmd.clear();
     addedCmd["type"] = "label";
@@ -196,12 +192,9 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
 
     std::cout << "locals " << locals << std::endl;
 
-    addedCmd.clear();
-
     //алоцируем стек
-    addedCmd["type"] = "cmd";
-    addedCmd["args"] = locals;
-    addedCmd["cmd"] = "stack alloc";
+    addedCmd.clear();
+    addedCmd = stackAlloc(locals);
     resultCmds.append(std::move(addedCmd));
 
     int shift = variables.size() - 1;
@@ -226,12 +219,30 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
         resultCmds.append(std::move(cmd));
     }
 
-    addedCmd.clear();
     //освобождаем стек
-    addedCmd["type"] = "cmd";
-    addedCmd["args"] = locals;
-    addedCmd["cmd"] = "stack free";
+    addedCmd.clear();
+    addedCmd = stackFree(locals);
     resultCmds.append(std::move(addedCmd));
+}
+
+Json::Value Steckoyaz::stackAlloc(int shift)
+{
+    Json::Value command;
+    command["type"] = "cmd";
+    command["args"] = shift;
+    command["cmd"] = "stack alloc";
+
+    return command;
+}
+
+Json::Value Steckoyaz::stackFree(int shift)
+{
+    Json::Value command;
+    command["type"] = "cmd";
+    command["args"] = shift;
+    command["cmd"] = "stack free";
+
+    return command;
 }
 
 }  // namespace syaz
