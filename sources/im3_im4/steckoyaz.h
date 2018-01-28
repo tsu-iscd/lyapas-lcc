@@ -16,9 +16,9 @@ private:
     // TODO отличать константы от памяти
     void translateCall(const JSON &cmd, JSON &resultCmds);
     void translateDefinition(JSON &function, JSON &resultCmds);
+    int countLocalVariables(JSON &function, std::map<std::string, int> &variables);
     Json::Value stackAlloc(int shift);
     Json::Value stackFree(int shift);
-    std::tuple<std::string, std::vector<Json::Value>, std::vector<Json::Value>> countParameters(const JSON &function);
 };
 
 }  // namespace syaz

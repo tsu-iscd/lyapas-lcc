@@ -123,83 +123,26 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
         return;
     }
 
-    std::cout << "========================" << std::endl;
-    std::cout << function << std::endl;
-    std::cout << "========================" << std::endl;
-
-    FunctionInfo infFunc(function.operator[](0));
-    std::cout << "*************************" << std::endl;
-    std::cout << infFunc.functionName << std::endl;
-    std::cout << " input " << infFunc.input.size() << std::endl;
-    std::cout << " output " << infFunc.output.size() << std::endl;
-    std::cout << "*************************" << std::endl;
-
-
-    int input, output;
-    input = output = 0;
     //название переменной-сдвиг
     std::map<std::string, int> variables;
+    FunctionInfo funcInf(function.operator[](0));
 
-    //считаем количество входных/выходных параметров
-    auto i = function.operator[](0)["args"].begin();
-    auto function_name = (*i);
-    i++;
-
-    //добавление метки функции!!!!!???????
-    // TODO выяснить как в asm называют
     Json::Value addedCmd;
     addedCmd.clear();
     addedCmd["type"] = "label";
-    addedCmd["args"] = function_name;
+    addedCmd["args"] = funcInf.functionName;
     resultCmds.append(std::move(addedCmd));
 
-    for (i; (*i) != "/"; i++) {
+    for (auto i = funcInf.input.begin(); i != funcInf.input.end(); i++) {
         variables[(*i).asString()] = -1;
-        input++;
     }
 
-    //пропускаем "/"
-    for (i++; i != function.operator[](0)["args"].end(); i++) {
+    for (auto i = funcInf.output.begin(); i != funcInf.output.end(); i++) {
         variables[(*i).asString()] = -1;
-        output++;
     }
 
-    std::cout << "input " << input << " output " << output << std::endl;
 
-    int locals = 0;
-    for (auto &&cmd : function) {
-        //:)для того, чтобы пропустить первый
-        if (cmd["type"] == "definition") {
-            continue;
-        }
-
-        //"call" должны пропускать
-        if (cmd["type"] == "call") {
-            continue;
-        }
-
-        //считаем количество локальных, записываем их название
-        for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
-            //константы не должны лежать на стеке
-            if ((*i).isInt()) {
-                continue;
-            }
-
-            //пропустили обращение по индексу
-            if ((*i).asString().find("[") != std::string::npos) {
-                continue;
-            }
-
-            if (variables.find((*i).asString()) == variables.end()) {
-                variables.insert(variables.end(), std::pair<std::string, int>((*i).asString(), -1));
-                std::cout << (*i) << std::endl;
-                locals++;
-            };
-        }
-    }
-
-    std::cout << "locals " << locals << std::endl;
-
+    auto locals = countLocalVariables(function, variables);
     //алоцируем стек
     addedCmd.clear();
     addedCmd = stackAlloc(locals);
@@ -233,6 +176,42 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     resultCmds.append(std::move(addedCmd));
 }
 
+int Steckoyaz::countLocalVariables(JSON &function, std::map<std::string, int> &variables)
+{
+    int locals = 0;
+    for (auto &&cmd : function) {
+        //:)для того, чтобы пропустить первый
+        if (cmd["type"] == "definition") {
+            continue;
+        }
+
+        //"call" должны пропускать
+        if (cmd["type"] == "call") {
+            continue;
+        }
+
+        //считаем количество локальных, записываем их название
+        for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
+            //константы не должны лежать на стеке
+            if ((*i).isInt()) {
+                continue;
+            }
+
+            //пропустили обращение по индексу
+            if ((*i).asString().find("[") != std::string::npos) {
+                continue;
+            }
+
+            if (variables.find((*i).asString()) == variables.end()) {
+                variables.insert(variables.end(), std::pair<std::string, int>((*i).asString(), -1));
+                locals++;
+            };
+        }
+    }
+
+    return locals;
+}
+
 Json::Value Steckoyaz::stackAlloc(int shift)
 {
     Json::Value command;
@@ -251,28 +230,6 @@ Json::Value Steckoyaz::stackFree(int shift)
     command["cmd"] = "stack free";
 
     return command;
-}
-
-std::tuple<std::string, std::vector<Json::Value>, std::vector<Json::Value>> Steckoyaz::countParameters(
-    const JSON &cmd)
-{
-
-    //считаем количество входных/выходных параметров
-    auto i = cmd["args"].begin();
-    std::string functionName = (*i).asString();
-    i++;
-
-    std::vector<Json::Value> input;
-    for (i; (*i) != "/"; i++) {
-        input.insert(input.end(),(*i));
-    }
-
-    //пропускаем "/"
-    std::vector<Json::Value> output;
-    for (i++; i != cmd["args"].end(); i++) {
-        output.insert(output.end(),(*i));
-    }
-    return std::make_tuple(functionName, input, output);
 }
 
 }  // namespace syaz
