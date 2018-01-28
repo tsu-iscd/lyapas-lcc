@@ -13,16 +13,16 @@ void Steckoyaz::preprocess(JSON &cmds)
     JSON function;
     JSON intermediateCmds;
 
-  /*  for (auto &&cmd : cmds) {
+    for (auto &&cmd : cmds) {
         if (cmd["type"] == "definition") {
             translateDefinition(function, intermediateCmds);
             function.clear();
         }
         function.append(std::move(cmd));
     }
+    translateDefinition(function, intermediateCmds);
 
-    translateDefinition(function, intermediateCmds);*/
-    for (auto &&cmd : cmds) {
+    for (auto &&cmd : intermediateCmds) {
         if (cmd["type"] == "call") {
             translateCall(cmd, resultCmds);
         } else {
