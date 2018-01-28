@@ -51,7 +51,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     FunctionInfo funcInf(cmd);
     Json::Value addedCmd;
 
-    for(auto &var : funcInf.input) {
+    for (auto &var : funcInf.input) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
         addedCmd["args"] = var;
@@ -59,7 +59,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
         resultCmds.append(std::move(addedCmd));
     }
 
-    for(auto &var : funcInf.output) {
+    for (auto &var : funcInf.output) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
         addedCmd["args"] = var;
@@ -109,7 +109,6 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     for (auto &var : funcInf.output) {
         variables[var.asString()] = -1;
     }
-
 
     auto locals = countLocalVariables(function, variables);
     //алоцируем стек

@@ -1,8 +1,8 @@
 #pragma once
 
+#include <algorithm>
 #include <translation_module/translation_module.h>
 #include "FunctionInfo.h"
-#include <algorithm>
 
 namespace syaz {
 class Steckoyaz : public trm::TranslationModule {
