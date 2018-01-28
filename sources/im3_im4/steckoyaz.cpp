@@ -20,6 +20,7 @@ void Steckoyaz::preprocess(JSON &cmds)
         }
         function.append(std::move(cmd));
     }
+    //обрабатываем последнюю функцию
     translateDefinition(function, intermediateCmds);
 
     for (auto &&cmd : intermediateCmds) {
@@ -116,12 +117,14 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     addedCmd = stackAlloc(locals);
     resultCmds.append(std::move(addedCmd));
 
+    //высчитываем сдвиг
     int shift = variables.size() - 1;
     for (auto &var : variables) {
         var.second = shift;
         shift--;
     }
 
+    //заменяем имена переменных на сдвиг относительно stack
     for (auto &&cmd : function) {
         //:))чтобы пропустить первую команду
         if (cmd["type"] == "definition") {
