@@ -4,6 +4,8 @@ project(im4_im5)
 set(SOURCE_FILES
     main.cpp
     complexoyaz.cpp
+    labels_counter.cpp
+    variables_counter.cpp
 )
 
 add_executable(im4_im5 ${SOURCE_FILES} ${BACKWARD_ENABLE})

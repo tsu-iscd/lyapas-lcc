@@ -31,7 +31,7 @@ public:
     }
 
 private:
-    VariableCounter counter;
+    VariablesCounter counter;
 };
 
 class FreeLabelReplacer : public trm::Replacer {
@@ -59,7 +59,7 @@ public:
     }
 
 private:
-    LabelCounter counter;
+    LabelsCounter counter;
 };
 
 using ReplaceFunction = std::function<std::string(const trm::PatternStringInfo &patternStringInfo)>;
