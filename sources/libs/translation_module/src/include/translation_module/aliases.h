@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <cstdint>
+#include <json/json.h>
 
 namespace trm {
 
@@ -15,5 +16,6 @@ using IntMap = std::map<std::string, int64_t>;
 template <typename T>
 using Optional = std::experimental::optional<T>;
 using StringView = std::experimental::string_view;
+using JSON = Json::Value;
 
 }  // namespace trm
