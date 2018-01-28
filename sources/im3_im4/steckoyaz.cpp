@@ -133,12 +133,12 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     addedCmd["args"] = funcInf.functionName;
     resultCmds.append(std::move(addedCmd));
 
-    for (auto i = funcInf.input.begin(); i != funcInf.input.end(); i++) {
-        variables[(*i).asString()] = -1;
+    for (auto &var : funcInf.input) {
+        variables[var.asString()] = -1;
     }
 
-    for (auto i = funcInf.output.begin(); i != funcInf.output.end(); i++) {
-        variables[(*i).asString()] = -1;
+    for (auto &var : funcInf.output) {
+        variables[var.asString()] = -1;
     }
 
 
@@ -149,8 +149,8 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     resultCmds.append(std::move(addedCmd));
 
     int shift = variables.size() - 1;
-    for (auto i = variables.begin(); i != variables.end(); i++) {
-        (*i).second = shift;
+    for (auto &var : variables) {
+        var.second = shift;
         shift--;
     }
 
@@ -160,11 +160,11 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
             continue;
         }
 
-        for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
-            auto pos = variables.find((*i).asString());
+        for (auto &var : cmd["args"]) {
+            auto pos = variables.find(var.asString());
             if (pos != variables.end()) {
                 auto address = "[stack-" + std::to_string((*pos).second) + "]";
-                (*i) = address;
+                var = address;
             }
         }
         resultCmds.append(std::move(cmd));
@@ -191,19 +191,19 @@ int Steckoyaz::countLocalVariables(JSON &function, std::map<std::string, int> &v
         }
 
         //считаем количество локальных, записываем их название
-        for (auto i = cmd["args"].begin(); i != cmd["args"].end(); i++) {
+        for (auto &var : cmd["args"]) {
             //константы не должны лежать на стеке
-            if ((*i).isInt()) {
+            if (var.isInt()) {
                 continue;
             }
 
             //пропустили обращение по индексу
-            if ((*i).asString().find("[") != std::string::npos) {
+            if (var.asString().find("[") != std::string::npos) {
                 continue;
             }
 
-            if (variables.find((*i).asString()) == variables.end()) {
-                variables.insert(variables.end(), std::pair<std::string, int>((*i).asString(), -1));
+            if (variables.find(var.asString()) == variables.end()) {
+                variables.insert(variables.end(), std::pair<std::string, int>(var.asString(), -1));
                 locals++;
             };
         }
