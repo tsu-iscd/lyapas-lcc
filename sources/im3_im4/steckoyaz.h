@@ -2,6 +2,7 @@
 
 #include <translation_module/translation_module.h>
 #include "FunctionInfo.h"
+#include <algorithm>
 
 namespace syaz {
 class Steckoyaz : public trm::TranslationModule {
@@ -13,7 +14,6 @@ private:
     virtual const trm::Replacers &getReplacers(const JSON &cmds) override;
     virtual std::string getRules() override;
 
-    // TODO отличать константы от памяти
     void translateCall(const JSON &cmd, JSON &resultCmds);
     void translateDefinition(JSON &function, JSON &resultCmds);
     int countLocalVariables(JSON &function, std::map<std::string, int> &variables);

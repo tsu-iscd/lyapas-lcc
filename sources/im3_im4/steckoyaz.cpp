@@ -13,7 +13,7 @@ void Steckoyaz::preprocess(JSON &cmds)
     JSON function;
     JSON intermediateCmds;
 
-    for (auto &&cmd : cmds) {
+  /*  for (auto &&cmd : cmds) {
         if (cmd["type"] == "definition") {
             translateDefinition(function, intermediateCmds);
             function.clear();
@@ -21,18 +21,16 @@ void Steckoyaz::preprocess(JSON &cmds)
         function.append(std::move(cmd));
     }
 
-    translateDefinition(function, intermediateCmds);
-    /*for (auto &&cmd : cmds) {
+    translateDefinition(function, intermediateCmds);*/
+    for (auto &&cmd : cmds) {
         if (cmd["type"] == "call") {
             translateCall(cmd, resultCmds);
-        } else if (cmd["type"] == "definition"){
-            translateDefinition(cmd, resultCmds);
         } else {
             resultCmds.append(std::move(cmd));
         }
-    }*/
+    }
 
-    cmds = std::move(intermediateCmds);
+    cmds = std::move(resultCmds);
 }
 
 void Steckoyaz::postprocess(JSON &cmds) {}
@@ -50,71 +48,42 @@ std::string Steckoyaz::getRules()
 
 void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 {
-    int input, output;
-    input = output = 0;
-
-    //считаем количество входных/выходных параметров
-    auto i = cmd["args"].begin();
-    auto function_name = (*i);
-    i++;
-
-    for (i; (*i) != "/"; i++) {
-        input++;
-    }
-
-    //пропускаем "/"
-    for (i++; i != cmd["args"].end(); i++) {
-        output++;
-    }
-
-    std::cout << "input " << input << " output " << output << std::endl;
-
+    FunctionInfo funcInf(cmd);
     Json::Value addedCmd;
-    addedCmd.clear();
 
-    //алоцируем стек
-    addedCmd = stackAlloc(input + output);
-    resultCmds.append(std::move(addedCmd));
-
-    for (int i = 1; i <= input; i++) {
+    for(auto &var : funcInf.input) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
+        addedCmd["args"] = var;
+        addedCmd["cmd"] = "push";
+        resultCmds.append(std::move(addedCmd));
+    }
 
-        int shift = input + output + i;
-
-        auto first_arg = "[stack-" + std::to_string(shift) + "]";
-        auto second_arg = "[" + cmd["args"].operator[](i).asString() + "]";
-        addedCmd["args"].append(first_arg);
-        addedCmd["args"].append(second_arg);
-
-        addedCmd["cmd"] = "move";
+    for(auto &var : funcInf.output) {
+        addedCmd.clear();
+        addedCmd["type"] = "cmd";
+        addedCmd["args"] = var;
+        addedCmd["cmd"] = "push";
         resultCmds.append(std::move(addedCmd));
     }
 
     addedCmd.clear();
     addedCmd["type"] = "cmd";
-    addedCmd["args"] = function_name;
+    addedCmd["args"] = funcInf.functionName;
     addedCmd["cmd"] = "call";
     resultCmds.append(std::move(addedCmd));
 
-    for (int i = 1; i <= output; i++) {
+    for (auto i = funcInf.output.rbegin(); i != funcInf.output.rend(); i++) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
-
-        int shift = input + 1;
-
-        auto first_arg = "[" + cmd["args"].operator[](input + 1 + i).asString() + "]";
-        auto second_arg = "[stack-" + std::to_string(shift) + "]";
-        addedCmd["args"].append(first_arg);
-        addedCmd["args"].append(second_arg);
-
-        addedCmd["cmd"] = "move";
+        addedCmd["args"] = (*i);
+        addedCmd["cmd"] = "pop";
         resultCmds.append(std::move(addedCmd));
-    }
+    };
 
     //освобождаем стек
     addedCmd.clear();
-    addedCmd = stackFree(input + output);
+    addedCmd = stackFree(funcInf.input.size());
     resultCmds.append(std::move(addedCmd));
 }
 void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
