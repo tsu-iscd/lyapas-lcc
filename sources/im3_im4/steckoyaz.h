@@ -16,8 +16,6 @@ private:
     void translateCall(const JSON &cmd, JSON &resultCmds);
     void translateDefinition(JSON &function, JSON &resultCmds);
     int countLocalVariables(JSON &function, std::map<std::string, int> &variables);
-    Json::Value stackAlloc(int shift);
-    Json::Value stackFree(int shift);
 };
 
 }  // namespace syaz

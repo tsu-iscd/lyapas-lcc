@@ -1,5 +1,25 @@
 #include "steckoyaz.h"
 
+JSON createStackAllocCmd(int shift)
+{
+    Json::Value command;
+    command["type"] = "cmd";
+    command["args"] = shift;
+    command["cmd"] = "stack alloc";
+
+    return command;
+}
+
+JSON createStackFreeCmd(int shift)
+{
+    JSON command;
+    command["type"] = "cmd";
+    command["args"] = shift;
+    command["cmd"] = "stack free";
+
+    return command;
+}
+
 namespace syaz {
 bool Steckoyaz::valid(const JSON &cmds, std::string &errror)
 {
@@ -79,7 +99,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     };
 
     //освобождаем стек
-    resultCmds.append(stackFree(funcInf.input.size()));
+    resultCmds.append(createStackFreeCmd(funcInf.input.size()));
 }
 void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
 {
@@ -107,7 +127,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     auto locals = countLocalVariables(function, variables);
     //алоцируем стек
     addedCmd.clear();
-    addedCmd = stackAlloc(locals);
+    addedCmd = createStackAllocCmd(locals);
     resultCmds.append(addedCmd);
 
     //высчитываем сдвиг
@@ -135,7 +155,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     }
 
     //освобождаем стек
-    resultCmds.append(stackFree(locals));
+    resultCmds.append(createStackFreeCmd(locals));
 }
 
 int Steckoyaz::countLocalVariables(JSON &function, std::map<std::string, int> &variables)
@@ -173,25 +193,4 @@ int Steckoyaz::countLocalVariables(JSON &function, std::map<std::string, int> &v
 
     return locals;
 }
-
-Json::Value Steckoyaz::stackAlloc(int shift)
-{
-    Json::Value command;
-    command["type"] = "cmd";
-    command["args"] = shift;
-    command["cmd"] = "stack alloc";
-
-    return command;
-}
-
-Json::Value Steckoyaz::stackFree(int shift)
-{
-    Json::Value command;
-    command["type"] = "cmd";
-    command["args"] = shift;
-    command["cmd"] = "stack free";
-
-    return command;
-}
-
 }  // namespace syaz
