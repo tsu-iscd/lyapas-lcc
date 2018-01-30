@@ -1,7 +1,7 @@
 #pragma once
 
 #include <translation_module/translation_module.h>
-#include "FunctionInfo.h"
+#include "function_info.h"
 
 namespace syaz {
 class Steckoyaz : public trm::TranslationModule {
