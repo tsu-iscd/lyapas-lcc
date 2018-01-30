@@ -70,7 +70,7 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 
     addedCmd.clear();
     addedCmd["type"] = "cmd";
-    addedCmd["args"] = funcInf.functionName;
+    addedCmd["args"] = funcInf.name;
     addedCmd["cmd"] = "call";
     resultCmds.append(std::move(addedCmd));
 
@@ -100,7 +100,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     Json::Value addedCmd;
     addedCmd.clear();
     addedCmd["type"] = "label";
-    addedCmd["args"] = funcInf.functionName;
+    addedCmd["args"] = funcInf.name;
     resultCmds.append(std::move(addedCmd));
 
     for (auto &var : funcInf.input) {

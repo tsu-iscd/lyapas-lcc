@@ -1,14 +1,14 @@
-#include "FunctionInfo.h"
+#include "function_info.h"
 
 FunctionInfo::FunctionInfo(const JSON &cmd)
 {
     //считаем количество входных/выходных параметров
     auto i = cmd["args"].begin();
-    functionName = (*i).asString();
+    name = (*i).asString();
     i++;
 
     for (i; (*i) != "/"; i++) {
-        input.insert(input.end(), (*i));
+        input.push_back((*i));
     }
 
     //пропускаем "/"

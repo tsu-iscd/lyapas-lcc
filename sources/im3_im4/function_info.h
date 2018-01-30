@@ -3,7 +3,7 @@
 
 class FunctionInfo {
 public:
-    std::string functionName;
+    std::string name;
     std::vector<Json::Value> input;
     std::vector<Json::Value> output;
 
