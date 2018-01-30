@@ -56,35 +56,30 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
         addedCmd["type"] = "cmd";
         addedCmd["args"] = var;
         addedCmd["cmd"] = "push";
-        resultCmds.append(std::move(addedCmd));
+        resultCmds.append(addedCmd);
     }
 
     for (auto &var : funcInf.output) {
-        addedCmd.clear();
         addedCmd["type"] = "cmd";
         addedCmd["args"] = var;
         addedCmd["cmd"] = "push";
-        resultCmds.append(std::move(addedCmd));
+        resultCmds.append(addedCmd);
     }
 
-    addedCmd.clear();
     addedCmd["type"] = "cmd";
     addedCmd["args"] = funcInf.name;
     addedCmd["cmd"] = "call";
-    resultCmds.append(std::move(addedCmd));
+    resultCmds.append(addedCmd);
 
     for (auto i = funcInf.output.rbegin(); i != funcInf.output.rend(); i++) {
-        addedCmd.clear();
         addedCmd["type"] = "cmd";
         addedCmd["args"] = (*i);
         addedCmd["cmd"] = "pop";
-        resultCmds.append(std::move(addedCmd));
+        resultCmds.append(addedCmd);
     };
 
     //освобождаем стек
-    addedCmd.clear();
-    addedCmd = stackFree(funcInf.input.size());
-    resultCmds.append(std::move(addedCmd));
+    resultCmds.append(stackFree(funcInf.input.size()));
 }
 void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
 {
@@ -97,10 +92,9 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     FunctionInfo funcInf(function.operator[](0));
 
     Json::Value addedCmd;
-    addedCmd.clear();
     addedCmd["type"] = "label";
     addedCmd["args"] = funcInf.name;
-    resultCmds.append(std::move(addedCmd));
+    resultCmds.append(addedCmd);
 
     for (auto &var : funcInf.input) {
         variables[var.asString()] = -1;
@@ -114,7 +108,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     //алоцируем стек
     addedCmd.clear();
     addedCmd = stackAlloc(locals);
-    resultCmds.append(std::move(addedCmd));
+    resultCmds.append(addedCmd);
 
     //высчитываем сдвиг
     int shift = variables.size() - 1;
@@ -137,13 +131,11 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
                 var = address;
             }
         }
-        resultCmds.append(std::move(cmd));
+        resultCmds.append(cmd);
     }
 
     //освобождаем стек
-    addedCmd.clear();
-    addedCmd = stackFree(locals);
-    resultCmds.append(std::move(addedCmd));
+    resultCmds.append(stackFree(locals));
 }
 
 int Steckoyaz::countLocalVariables(JSON &function, std::map<std::string, int> &variables)
