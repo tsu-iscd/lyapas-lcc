@@ -1,5 +1,4 @@
 #include "steckoyaz.h"
-#include <iostream>
 
 namespace syaz {
 bool Steckoyaz::valid(const JSON &cmds, std::string &errror)
