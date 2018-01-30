@@ -2,7 +2,7 @@
 
 JSON createStackAllocCmd(int shift)
 {
-    Json::Value command;
+    JSON command;
     command["type"] = "cmd";
     command["args"] = shift;
     command["cmd"] = "stack alloc";
@@ -69,8 +69,7 @@ std::string Steckoyaz::getRules()
 void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
 {
     FunctionInfo funcInf(cmd);
-    Json::Value addedCmd;
-
+    JSON addedCmd;
     for (auto &var : funcInf.input) {
         addedCmd.clear();
         addedCmd["type"] = "cmd";
@@ -111,7 +110,7 @@ void Steckoyaz::translateDefinition(JSON &function, JSON &resultCmds)
     std::map<std::string, int> variables;
     FunctionInfo funcInf(function.operator[](0));
 
-    Json::Value addedCmd;
+    JSON addedCmd;
     addedCmd["type"] = "label";
     addedCmd["args"] = funcInf.name;
     resultCmds.append(addedCmd);
