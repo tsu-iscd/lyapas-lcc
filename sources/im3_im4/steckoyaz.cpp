@@ -19,6 +19,15 @@ JSON createStackFreeCmd(int shift)
 
     return command;
 }
+JSON createCmd(JSON args, std::string cmd)
+{
+    JSON command;
+    command["type"] = "cmd";
+    command["args"] = args;
+    command["cmd"] = cmd;
+
+    return command;
+}
 
 namespace syaz {
 bool Steckoyaz::valid(const JSON &cmds, std::string &errror)
@@ -37,7 +46,7 @@ void Steckoyaz::preprocess(JSON &cmds)
             translateDefinition(function, intermediateCmds);
             function.clear();
         }
-        function.append(std::move(cmd));
+        function.append(cmd);
     }
     //обрабатываем последнюю функцию
     translateDefinition(function, intermediateCmds);
@@ -46,11 +55,11 @@ void Steckoyaz::preprocess(JSON &cmds)
         if (cmd["type"] == "call") {
             translateCall(cmd, resultCmds);
         } else {
-            resultCmds.append(std::move(cmd));
+            resultCmds.append(cmd);
         }
     }
 
-    cmds = std::move(resultCmds);
+    cmds = resultCmds;
 }
 
 void Steckoyaz::postprocess(JSON &cmds) {}
@@ -71,30 +80,17 @@ void Steckoyaz::translateCall(const JSON &cmd, JSON &resultCmds)
     FunctionInfo funcInf(cmd);
     JSON addedCmd;
     for (auto &var : funcInf.input) {
-        addedCmd.clear();
-        addedCmd["type"] = "cmd";
-        addedCmd["args"] = var;
-        addedCmd["cmd"] = "push";
-        resultCmds.append(addedCmd);
+        resultCmds.append(createCmd(var,"push"));
     }
 
     for (auto &var : funcInf.output) {
-        addedCmd["type"] = "cmd";
-        addedCmd["args"] = var;
-        addedCmd["cmd"] = "push";
-        resultCmds.append(addedCmd);
+        resultCmds.append(createCmd(var,"push"));
     }
 
-    addedCmd["type"] = "cmd";
-    addedCmd["args"] = funcInf.name;
-    addedCmd["cmd"] = "call";
-    resultCmds.append(addedCmd);
+    resultCmds.append(createCmd(funcInf.name, "call"));
 
     for (auto i = funcInf.output.rbegin(); i != funcInf.output.rend(); i++) {
-        addedCmd["type"] = "cmd";
-        addedCmd["args"] = (*i);
-        addedCmd["cmd"] = "pop";
-        resultCmds.append(addedCmd);
+        resultCmds.append(createCmd((*i), "pop"));
     };
 
     //освобождаем стек

@@ -4,8 +4,8 @@
 class FunctionInfo {
 public:
     std::string name;
-    std::vector<Json::Value> input;
-    std::vector<Json::Value> output;
+    std::vector<JSON> input;
+    std::vector<JSON> output;
 
     FunctionInfo(const JSON &cmd);
 };
