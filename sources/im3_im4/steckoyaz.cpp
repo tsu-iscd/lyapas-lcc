@@ -1,3 +1,4 @@
+#include <iostream>
 #include "steckoyaz.h"
 
 JSON createStackAllocCmd(int shift)
@@ -29,8 +30,28 @@ JSON createCmd(JSON args, std::string cmd)
     return command;
 }
 
+std::vector<Function> parseFunctions(const JSON &cmds)
+{
+    JSON func;
+    func.clear();
+    std::vector<Function> program;
+
+    for(auto &&cmd : cmds) {
+        if(cmd["type"] == "definition") {
+            if(!func.isNull()) {
+                program.emplace_back(func);
+                func.clear();
+            }
+        }
+        func.append(cmd);
+    }
+    program.emplace_back(func);
+
+    return program;
+}
+
 namespace syaz {
-bool Steckoyaz::valid(const JSON &cmds, std::string &errror)
+bool Steckoyaz::valid(const JSON &cmds, std::string &error)
 {
     return true;
 }
@@ -38,10 +59,15 @@ bool Steckoyaz::valid(const JSON &cmds, std::string &errror)
 void Steckoyaz::preprocess(JSON &cmds)
 {
     JSON resultCmds;
-    JSON function;
     JSON intermediateCmds;
 
-    for (auto &&cmd : cmds) {
+    auto program = parseFunctions(cmds);
+
+    for(auto &function : program) {
+        translateDefinition(function, intermediateCmds);
+    }
+
+   /* for (auto &&cmd : cmds) {
         if (cmd["type"] == "definition") {
             translateDefinition(function, intermediateCmds);
             function.clear();
@@ -59,7 +85,7 @@ void Steckoyaz::preprocess(JSON &cmds)
         }
     }
 
-    cmds = resultCmds;
+    cmds = resultCmds;*/
 }
 
 void Steckoyaz::postprocess(JSON &cmds) {}

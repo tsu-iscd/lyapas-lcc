@@ -4,6 +4,7 @@ project(im3_im4)
 set(SOURCE_FILES
     main.cpp
     steckoyaz.cpp
+    function.cpp
     function_info.cpp
 )
 

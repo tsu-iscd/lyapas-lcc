@@ -2,6 +2,8 @@
 
 #include <translation_module/translation_module.h>
 #include "function_info.h"
+#include "function.h"
+#include <algorithm>
 
 namespace syaz {
 class Steckoyaz : public trm::TranslationModule {
