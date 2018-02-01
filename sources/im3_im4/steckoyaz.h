@@ -15,9 +15,8 @@ private:
     virtual const trm::Replacers &getReplacers(const JSON &cmds) override;
     virtual std::string getRules() override;
 
-    void translateCall(const JSON &cmd, JSON &resultCmds);
-    void translateDefinition(JSON &function, JSON &resultCmds);
-    int countLocalVariables(JSON &function, std::map<std::string, int> &variables);
+    void translateCall(Function &func);
+    void translateDefinition(Function &func, JSON &resultCmds);
 };
 
 }  // namespace syaz
