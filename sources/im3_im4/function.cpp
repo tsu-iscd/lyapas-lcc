@@ -7,6 +7,7 @@ Function::Function(const JSON &cmd)
     auto l = cmd.begin();
     l++;
     body = std::vector<JSON>(l, cmd.end());
+    //считаем переменные, которые должны лежать на стеке
     countStackVariables();
 }
 
@@ -21,49 +22,40 @@ void Function::countStackVariables()
     }
 
     for (auto &&cmd : body) {
-        //:)для того, чтобы пропустить первый
-        if (cmd["type"] == "definition") {
-            continue;
-        }
-
-        //"call" должны пропускать
         if (cmd["type"] == "call") {
             FunctionInfo funcInf(cmd);
             for (auto &var : funcInf.input) {
-                if (var.isInt())
-                    continue;
-                if (findVariable(var.asString()) == variables.end()) {
-                    variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
-                    locals++;
-                };
+                insertVariable(var);
             }
             for (auto &var : funcInf.output) {
-                if (var.isInt())
-                    continue;
-                if (findVariable(var.asString()) == variables.end()) {
-                    variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
-                    locals++;
-                };
+                insertVariable(var);
             }
             continue;
         }
 
         for (auto &var : cmd["args"]) {
-            //константы не должны лежать на стеке
-            if (var.isInt()) {
-                continue;
-            }
-
-            //пропустили обращение по индексу
-            if (var.asString().find("[") != std::string::npos) {
-                continue;
-            }
-
-            if (findVariable(var.asString()) == variables.end()) {
-                variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
-                locals++;
-            };
+            insertVariable(var);
         }
+    }
+}
+
+void Function::insertVariable(JSON &var)
+{
+    //константы не лежат на стеке
+    if (var.isInt()) {
+        return;
+    }
+
+    /*пропустили обращение по индеку, название комплекса точно уже на стеке
+     * либо объявили в функции, либо комплекс пришел в аргументах
+     * если это не так - то ошибка в программе*/
+    if (var.asString().find("[") != std::string::npos) {
+        return;
+    }
+
+    if (findVariable(var.asString()) == variables.end()) {
+        variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
+        locals++;
     }
 }
 
