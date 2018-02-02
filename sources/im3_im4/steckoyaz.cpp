@@ -134,6 +134,8 @@ void Steckoyaz::translateDefinition(Function &func, JSON &resultCmds)
     }
 
     //освобождаем стек
+    /*FIXME как int кастовать в JSON?
+     *FIXME можно уйти от этих функций с помощью createCmd*/
     resultCmds.append(createStackFreeCmd(func.locals));
 }
 

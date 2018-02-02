@@ -14,11 +14,11 @@ Function::Function(const JSON &cmd)
 void Function::countStackVariables()
 {
     for (auto &var : input) {
-        variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
+        insertVariable(var);
     }
 
     for (auto &var : output) {
-        variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
+        insertVariable(var);
     }
 
     for (auto &&cmd : body) {
@@ -70,19 +70,26 @@ std::vector<std::pair<std::string, std::string>>::iterator Function::findVariabl
 
 JSON Function::getSubstitute(const JSON &nameVariable)
 {
+    //константы не заменяются
     if (nameVariable.isInt()) {
         return nameVariable;
     }
 
+    //если обращение по индексу
     auto bracket = nameVariable.asString().find("[");
     if (bracket != std::string::npos) {
         std::string arrayName = nameVariable.asString().substr(0, 2);
-        std ::string index = nameVariable.asString().substr(bracket);
-        return (*findVariable(arrayName)).second + index;
+        std::string index = nameVariable.asString().substr(bracket);
+
+        auto var = findVariable(arrayName);
+        LCC_ASSERT(var != variables.end());
+        return (*var).second + index;
     }
 
-    auto it = findVariable(nameVariable.asString());
-    if (it == variables.end())
+    auto var = findVariable(nameVariable.asString());
+    //этот if срабатывает, когда аргумент-название функции
+    if (var == variables.end()) {
         return nameVariable;
-    return (*it).second;
+    }
+    return (*var).second;
 }
