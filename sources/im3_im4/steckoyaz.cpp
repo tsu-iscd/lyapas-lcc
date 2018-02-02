@@ -1,5 +1,4 @@
 #include "steckoyaz.h"
-#include <iostream>
 
 JSON createStackAllocCmd(int shift)
 {
