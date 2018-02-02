@@ -2,17 +2,16 @@
 
 FunctionInfo::FunctionInfo(const JSON &cmd)
 {
-    //считаем количество входных/выходных параметров
-    auto i = cmd["args"].begin();
-    name = (*i).asString();
-    i++;
+    const JSON &args = cmd["args"];
+    LCC_ASSERT(args.size() != 0);
 
-    for (i; (*i) != "/"; i++) {
-        input.push_back((*i));
-    }
+    name = args.operator[](0).asString();
 
-    //пропускаем "/"
-    for (i++; i != cmd["args"].end(); i++) {
-        output.insert(output.end(), (*i));
-    }
+    auto slash = std::find(args.begin(), args.end(), "/");
+    LCC_ASSERT(slash != args.end());
+    auto s = args.begin();
+    s++;
+    input = std::vector<JSON>(s, slash);
+    slash++;
+    output = std::vector<JSON>(slash, args.end());
 }

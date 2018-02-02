@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+#include <shared_utils/assertion.h>
 #include <translation_module/translation_module.h>
 
 class FunctionInfo {

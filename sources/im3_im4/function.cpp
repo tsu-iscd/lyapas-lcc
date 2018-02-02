@@ -1,22 +1,9 @@
-#include <shared_utils/assertion.h>
 #include "function.h"
 #include <iostream>
 
 Function::Function(const JSON &cmd)
+    : FunctionInfo(cmd.operator[](0))
 {
-    const JSON &args = cmd[0]["args"];
-    LCC_ASSERT(args.size() != 0);
-
-    name = args.operator[](0).asString();
-
-    auto slash = std::find(args.begin(), args.end(), "/");
-    LCC_ASSERT(slash != args.end());
-    auto s = args.begin();
-    s++;
-    input = std::vector<JSON>(s, slash);
-    slash++;
-    output = std::vector<JSON>(slash, args.end());
-
     auto l = cmd.begin();
     l++;
     body = std::vector<JSON>(l, cmd.end());
@@ -25,12 +12,12 @@ Function::Function(const JSON &cmd)
 
 void Function::countStackVariables()
 {
-    for(auto &var: input) {
-        variables.emplace_back(var.asString(), "l"+std::to_string(variables.size()));
+    for (auto &var : input) {
+        variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
     }
 
-    for(auto &var: output) {
-        variables.emplace_back(var.asString(), "l"+std::to_string(variables.size()));
+    for (auto &var : output) {
+        variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
     }
 
     for (auto &&cmd : body) {
@@ -42,17 +29,19 @@ void Function::countStackVariables()
         //"call" должны пропускать
         if (cmd["type"] == "call") {
             FunctionInfo funcInf(cmd);
-            for(auto &var : funcInf.input) {
-                if (var.isInt()) continue;
+            for (auto &var : funcInf.input) {
+                if (var.isInt())
+                    continue;
                 if (findVariable(var.asString()) == variables.end()) {
-                variables.emplace_back(var.asString(), "l"+std::to_string(variables.size()));
-                locals++;
+                    variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
+                    locals++;
                 };
             }
-            for(auto &var : funcInf.output) {
-                if (var.isInt()) continue;
+            for (auto &var : funcInf.output) {
+                if (var.isInt())
+                    continue;
                 if (findVariable(var.asString()) == variables.end()) {
-                    variables.emplace_back(var.asString(), "l"+std::to_string(variables.size()));
+                    variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
                     locals++;
                 };
             }
@@ -71,36 +60,37 @@ void Function::countStackVariables()
             }
 
             if (findVariable(var.asString()) == variables.end()) {
-                variables.emplace_back(var.asString(), "l"+std::to_string(variables.size()));
+                variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
                 locals++;
             };
         }
     }
 }
 
-std::vector<std::pair<std::string, std::string>>::iterator Function::findVariable(std::string nameVariable) {
-    for(auto var = variables.begin(); var != variables.end(); var++) {
-        if((*var).first == nameVariable) return var;
+std::vector<std::pair<std::string, std::string>>::iterator Function::findVariable(std::string nameVariable)
+{
+    for (auto var = variables.begin(); var != variables.end(); var++) {
+        if ((*var).first == nameVariable)
+            return var;
     }
     return variables.end();
 }
 
 JSON Function::getSubstitute(const JSON &nameVariable)
 {
-    if(nameVariable.isInt()) {
+    if (nameVariable.isInt()) {
         return nameVariable;
     }
 
     auto bracket = nameVariable.asString().find("[");
-    if(bracket != std::string::npos) {
+    if (bracket != std::string::npos) {
         std::string arrayName = nameVariable.asString().substr(0, 2);
-        std :: string index = nameVariable.asString().substr(bracket);
+        std ::string index = nameVariable.asString().substr(bracket);
         return (*findVariable(arrayName)).second + index;
     }
 
     auto it = findVariable(nameVariable.asString());
-    if (it == variables.end()) return nameVariable;
+    if (it == variables.end())
+        return nameVariable;
     return (*it).second;
 }
-
-
