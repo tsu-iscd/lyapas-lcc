@@ -5,6 +5,9 @@
 #include <map>
 #include <string>
 #include <cstdint>
+#include <json/json.h>
+
+using JSON = Json::Value;
 
 namespace trm {
 
