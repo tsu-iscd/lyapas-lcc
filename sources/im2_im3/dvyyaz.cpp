@@ -11,7 +11,7 @@ void Dvyyaz::preprocess(JSON &cmds) {}
 
 void Dvyyaz::postprocess(JSON &cmds) {}
 
-const trm::Replacers &Dvyyaz::getReplacers(const JSON &cmds)
+trm::Replacers &Dvyyaz::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
     return replacers;

@@ -10,7 +10,7 @@ void Steckoyaz::preprocess(JSON &cmds) {}
 
 void Steckoyaz::postprocess(JSON &cmds) {}
 
-const trm::Replacers &Steckoyaz::getReplacers(const JSON &cmds)
+trm::Replacers &Steckoyaz::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
     return replacers;
