@@ -119,18 +119,16 @@ public:
             }
         };
 
-        std::string workString(patternedString);
+        std::string workString{patternedString};
         while (true) {
-            StringView sw(workString.data(), workString.size());
-            auto result = findMostDeepPair(sw, '<', '>');
-
+            auto result = findMostDeepPair(workString, '<', '>');
             if (result.first) {
                 StringView &foundSubstr = result.second;
                 auto replaceFrom = std::distance(workString.data(), foundSubstr.data());
                 auto replaceSize = foundSubstr.size();
 
-                PatternStringInfo patternStringInfo(std::string(foundSubstr.data() + 1, foundSubstr.size() - 2),
-                                                    storage.srcArgString);
+                PatternStringInfo patternStringInfo{std::string(foundSubstr.data() + 1, foundSubstr.size() - 2),
+                                                    storage.srcArgString};
 
                 auto p = storage.srcArgString.find(patternStringInfo.getNameWithGroup());
                 if (p != storage.srcArgString.end()) {
@@ -150,7 +148,7 @@ public:
 
                 throw std::runtime_error("Нет замены для шаблона " + patternStringInfo.getName());
             } else {
-                return packer->pack(std::string(sw.data(), sw.size()));
+                return packer->pack(workString);
             }
         }
     }

@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <json/json.h>
 
+using JSON = Json::Value;
+
 namespace trm {
 
 using JsonMap = std::map<std::string, Json::Value>;
@@ -16,6 +18,5 @@ using IntMap = std::map<std::string, int64_t>;
 template <typename T>
 using Optional = std::experimental::optional<T>;
 using StringView = std::experimental::string_view;
-using JSON = Json::Value;
 
 }  // namespace trm
