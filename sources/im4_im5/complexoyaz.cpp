@@ -42,17 +42,13 @@ void Complexoyaz::preprocess(JSON &cmds) {}
 
 void Complexoyaz::postprocess(JSON &cmds) {}
 
-#define INSERT_REPLACER(name, type)\
-    replacers.insert({name, std::make_shared<type>(cmds)})
+#define INSERT_REPLACER(name, type) replacers.insert({name, std::make_shared<type>(cmds)})
 
-#define INSERT_FUNCTIONAL_REPLACER(name, functionBlock)\
-    do {\
-        auto func = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string {\
-            functionBlock\
-        };\
-        replacers.insert({name, std::make_shared<cyaz::FunctionalReplacer>(func)});\
+#define INSERT_FUNCTIONAL_REPLACER(name, functionBlock)                                                    \
+    do {                                                                                                   \
+        auto func = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string { functionBlock }; \
+        replacers.insert({name, std::make_shared<cyaz::FunctionalReplacer>(func)});                        \
     } while (false)
-
 
 trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
 {
@@ -65,21 +61,16 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
         return calculateElementSize(complexName);
     });
-    INSERT_FUNCTIONAL_REPLACER("complex_struct", {
-        return "<complex" + patternStringInfo.getGroupAsString() + ">_struct";
-    });
-    INSERT_FUNCTIONAL_REPLACER("complex_cardinality", {
-        return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]";
-    });
-    INSERT_FUNCTIONAL_REPLACER("complex_capacity", {
-        return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]";
-    });
-    INSERT_FUNCTIONAL_REPLACER("complex_buffer", {
-        return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]";
-    });
-    INSERT_FUNCTIONAL_REPLACER("complex_buffer_opt", {
-        return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer";
-    });
+    INSERT_FUNCTIONAL_REPLACER("complex_struct",
+                               { return "<complex" + patternStringInfo.getGroupAsString() + ">_struct"; });
+    INSERT_FUNCTIONAL_REPLACER("complex_cardinality",
+                               { return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]"; });
+    INSERT_FUNCTIONAL_REPLACER("complex_capacity",
+                               { return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]"; });
+    INSERT_FUNCTIONAL_REPLACER("complex_buffer",
+                               { return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]"; });
+    INSERT_FUNCTIONAL_REPLACER("complex_buffer_opt",
+                               { return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer"; });
     INSERT_FUNCTIONAL_REPLACER("complex_cell", {
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
         std::string byteSize = calculateElementSize(complexName) + "byte";

@@ -65,4 +65,4 @@ size_t VariablesCounter::getFreeVariable(size_t index)
     return counters[currentProcedure] + index;
 }
 
-}
+}  // namespace cyaz

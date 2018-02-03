@@ -26,4 +26,4 @@ std::string FreeLabelReplacer::resolve(const trm::PatternStringInfo &patternStri
     return std::to_string(counter.getFreeLabel(std::stoul(*param)));
 }
 
-}
+}  // namespace cyaz

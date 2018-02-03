@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cstdint>
 #include <set>
 #include <string>
+#include <cstdint>
 #include <json/json.h>
 
 namespace cyaz {
@@ -29,4 +29,4 @@ private:
     std::string currentProcedure;
 };
 
-}
+}  // namespace cyaz

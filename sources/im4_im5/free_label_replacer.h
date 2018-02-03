@@ -18,4 +18,4 @@ private:
     LabelsCounter counter;
 };
 
-}
+}  // namespace cyaz

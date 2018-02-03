@@ -38,4 +38,4 @@ size_t LabelsCounter::getFreeLabel(size_t index)
     return counters[currentProcedure] + index;
 }
 
-}
+}  // namespace cyaz

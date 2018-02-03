@@ -18,4 +18,4 @@ private:
     VariablesCounter counter;
 };
 
-}
+}  // namespace cyaz

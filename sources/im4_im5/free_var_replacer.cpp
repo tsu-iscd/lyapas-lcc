@@ -26,4 +26,4 @@ std::string FreeVarReplacer::resolve(const trm::PatternStringInfo &patternString
     return 't' + std::to_string(counter.getFreeVariable(std::stoul(*param)));
 }
 
-}
+}  // namespace cyaz
