@@ -86,6 +86,7 @@ JSON Function::getSubstitute(const JSON &nameVariable)
 
     auto var = findVariable(nameVariable.asString());
     //этот if срабатывает, когда аргумент-название функции
+    //FIXME есть случаи, когда название функции совпадет с переменной
     if (var == variables.end()) {
         return nameVariable;
     }
