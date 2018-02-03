@@ -1,5 +1,4 @@
 #include "function.h"
-#include <iostream>
 
 Function::Function(const JSON &cmd)
     : FunctionInfo(cmd.operator[](0))

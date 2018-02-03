@@ -1,4 +1,6 @@
 #include "function_info.h"
+#include <algorithm>
+#include <shared_utils/assertion.h>
 
 FunctionInfo::FunctionInfo(const JSON &cmd)
 {
