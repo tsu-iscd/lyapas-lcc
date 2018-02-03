@@ -9,7 +9,7 @@ public:
     std::vector<std::pair<std::string, std::string>> variables;
 
     Function(const JSON &cmd);
-    void countStackVariables();
+    void calculateStackVariables();
     void insertVariable(JSON &var);
     std::vector<std::pair<std::string, std::string>>::iterator findVariable(std::string nameVariable);
     JSON getSubstitute(const JSON &nameVariable);

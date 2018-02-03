@@ -3,14 +3,14 @@
 Function::Function(const JSON &cmd)
     : FunctionInfo(cmd.operator[](0))
 {
-    auto l = cmd.begin();
-    l++;
+    auto l = ++cmd.begin();
+    //std advance
     body = std::vector<JSON>(l, cmd.end());
     //считаем переменные, которые должны лежать на стеке
-    countStackVariables();
+    calculateStackVariables();
 }
 
-void Function::countStackVariables()
+void Function::calculateStackVariables()
 {
     for (auto &var : input) {
         insertVariable(var);
@@ -77,9 +77,11 @@ JSON Function::getSubstitute(const JSON &nameVariable)
     //если обращение по индексу
     auto bracket = nameVariable.asString().find("[");
     if (bracket != std::string::npos) {
+        //попробовать чз конструктор stdstring
         std::string arrayName = nameVariable.asString().substr(0, 2);
         std::string index = nameVariable.asString().substr(bracket);
 
+        //stdfind
         auto var = findVariable(arrayName);
         LCC_ASSERT(var != variables.end());
         return (*var).second + index;

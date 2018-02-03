@@ -1,24 +1,5 @@
 #include "steckoyaz.h"
 
-JSON createStackAllocCmd(int shift)
-{
-    JSON command;
-    command["type"] = "cmd";
-    command["args"].append(shift);
-    command["cmd"] = "stack alloc";
-
-    return command;
-}
-
-JSON createStackFreeCmd(int shift)
-{
-    JSON command;
-    command["type"] = "cmd";
-    command["args"].append(shift);
-    command["cmd"] = "stack free";
-
-    return command;
-}
 JSON createCmd(JSON args, std::string cmd)
 {
     JSON command;
@@ -107,7 +88,7 @@ void Steckoyaz::translateCall(Function &func)
             };
 
             //освобождаем стек
-            resultCmds.push_back(createStackFreeCmd(funcInf.input.size()));
+            resultCmds.push_back(createCmd(JSON{static_cast<int>(funcInf.input.size())}, "stack free"));
             continue;
         }
         resultCmds.push_back(cmd);
@@ -123,7 +104,7 @@ void Steckoyaz::translateDefinition(Function &func, JSON &resultCmds)
     resultCmds.append(addedCmd);
 
     //алоцируем стек
-    resultCmds.append(createStackAllocCmd(func.locals));
+    resultCmds.append(createCmd(JSON{func.locals}, "stack alloc"));
 
     for (auto &&cmd : func.body) {
         for (auto &var : cmd["args"]) {
@@ -133,9 +114,7 @@ void Steckoyaz::translateDefinition(Function &func, JSON &resultCmds)
     }
 
     //освобождаем стек
-    /*FIXME как int кастовать в JSON?
-     *FIXME можно уйти от этих функций с помощью createCmd*/
-    resultCmds.append(createStackFreeCmd(func.locals));
+    resultCmds.append(createCmd(JSON{func.locals}, "stack free"));
 }
 
 }  // namespace syaz
