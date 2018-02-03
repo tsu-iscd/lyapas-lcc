@@ -93,8 +93,7 @@ CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &repl
         if (line != "=>") {
             throw std::runtime_error("Формат файла с правилами трансляции нарушен, строка: " + std::to_string(lineNo));
         }
-
-        // считываем набор команд
+// считываем набор команд
         std::vector<CmdInfo> dstCmds;
         while (std::getline(rulesStream, line)) {
             sutils::lrstrip(line);
