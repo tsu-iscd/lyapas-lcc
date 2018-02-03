@@ -58,11 +58,9 @@ void Function::insertVariable(JSON &var)
 
 std::vector<std::pair<std::string, std::string>>::iterator Function::findVariable(std::string nameVariable)
 {
-    for (auto var = variables.begin(); var != variables.end(); var++) {
-        if ((*var).first == nameVariable)
-            return var;
-    }
-    return variables.end();
+    return std::find_if(
+        variables.begin(), variables.end(),
+        [&nameVariable](const std::pair<std::string, std::string> &element) { return element.first == nameVariable; });
 }
 
 JSON Function::getSubstitute(const JSON &nameVariable)
@@ -78,8 +76,6 @@ JSON Function::getSubstitute(const JSON &nameVariable)
         //попробовать чз конструктор stdstring
         std::string arrayName = nameVariable.asString().substr(0, 2);
         std::string index = nameVariable.asString().substr(bracket);
-
-        //stdfind
         auto var = findVariable(arrayName);
         LCC_ASSERT(var != variables.end());
         return (*var).second + index;
