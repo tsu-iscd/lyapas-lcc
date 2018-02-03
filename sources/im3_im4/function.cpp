@@ -1,4 +1,5 @@
 #include "function.h"
+#include <iostream>
 
 Function::Function(const JSON &cmd)
     : FunctionInfo(cmd.operator[](0))
@@ -63,6 +64,9 @@ std::vector<std::pair<std::string, std::string>>::iterator Function::findVariabl
         [&nameVariable](const std::pair<std::string, std::string> &element) { return element.first == nameVariable; });
 }
 
+template <class T>
+class Debug;
+
 JSON Function::getSubstitute(const JSON &nameVariable)
 {
     //константы не заменяются
@@ -70,12 +74,12 @@ JSON Function::getSubstitute(const JSON &nameVariable)
         return nameVariable;
     }
 
+    std::string nameVar{nameVariable.asString()};
     //если обращение по индексу
-    auto bracket = nameVariable.asString().find("[");
+    auto bracket = nameVar.find("[");
     if (bracket != std::string::npos) {
-        //попробовать чз конструктор stdstring
-        std::string arrayName = nameVariable.asString().substr(0, 2);
-        std::string index = nameVariable.asString().substr(bracket);
+        std::string arrayName(nameVar.begin(), nameVar.begin() + bracket);
+        std::string index(nameVar.begin() + bracket, nameVar.end());
         auto var = findVariable(arrayName);
         LCC_ASSERT(var != variables.end());
         return (*var).second + index;
