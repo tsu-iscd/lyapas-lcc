@@ -10,10 +10,6 @@ FunctionInfo::FunctionInfo(const JSON &cmd)
     auto slash = std::find(args.begin(), args.end(), "/");
     LCC_ASSERT(slash != args.end());
 
-    // FIXME как от этого уйти?
-    auto s = args.begin();
-    s++;
-    input = std::vector<JSON>(s, slash);
-    slash++;
-    output = std::vector<JSON>(slash, args.end());
+    input = std::vector<JSON>(++args.begin(), slash);
+    output = std::vector<JSON>(++slash, args.end());
 }

@@ -3,9 +3,7 @@
 Function::Function(const JSON &cmd)
     : FunctionInfo(cmd.operator[](0))
 {
-    auto l = ++cmd.begin();
-    //std advance
-    body = std::vector<JSON>(l, cmd.end());
+    body = std::vector<JSON>(++cmd.begin(), cmd.end());
     //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
 }
