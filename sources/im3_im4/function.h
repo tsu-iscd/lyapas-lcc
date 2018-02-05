@@ -2,10 +2,12 @@
 #include <translation_module/translation_module.h>
 #include "function_info.h"
 
-class Function : public FunctionInfo {
+class Function {
 private:
     std::vector<std::pair<std::string, std::string>> variables;
+
 public:
+    FunctionInfo info;
     std::vector<JSON> body;
     int locals;
 

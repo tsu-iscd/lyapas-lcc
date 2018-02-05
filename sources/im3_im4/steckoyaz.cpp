@@ -111,7 +111,7 @@ void Steckoyaz::translateDefinition(Function &func)
     JSON addedCmd;
 
     addedCmd["type"] = "label";
-    addedCmd["args"] = func.name;
+    addedCmd["args"] = func.info.name;
     resultCmds.push_back(addedCmd);
 
     //алоцируем стек

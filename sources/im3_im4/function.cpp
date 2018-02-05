@@ -3,8 +3,8 @@
 #include <shared_utils/assertion.h>
 
 Function::Function(const JSON &cmd)
-    : FunctionInfo(cmd.operator[](0))
 {
+    info = FunctionInfo(cmd[0]);
     body = std::vector<JSON>(++cmd.begin(), cmd.end());
     //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
@@ -12,11 +12,11 @@ Function::Function(const JSON &cmd)
 
 void Function::calculateStackVariables()
 {
-    for (auto &var : input) {
+    for (auto &var : info.input) {
         insertVariable(var);
     }
 
-    for (auto &var : output) {
+    for (auto &var : info.output) {
         insertVariable(var);
     }
 
