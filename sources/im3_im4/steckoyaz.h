@@ -15,7 +15,7 @@ private:
     virtual std::string getRules() override;
 
     void translateCall(Function &func);
-    void translateDefinition(Function &func, JSON &resultCmds);
+    void translateDefinition(Function &func);
 };
 
 }  // namespace syaz

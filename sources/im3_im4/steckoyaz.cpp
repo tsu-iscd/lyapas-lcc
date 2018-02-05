@@ -49,9 +49,16 @@ void Steckoyaz::preprocess(JSON &cmds)
     }
 
     //транслируем definitions
+    for (auto &function : program) {
+        translateDefinition(function);
+    }
+
+    //записываем результат трансляции
     cmds.clear();
     for (auto &function : program) {
-        translateDefinition(function, cmds);
+        for (auto &cmd : function.body) {
+            cmds.append(cmd);
+        }
     }
 }
 
@@ -98,25 +105,28 @@ void Steckoyaz::translateCall(Function &func)
     func.body = resultCmds;
 }
 
-void Steckoyaz::translateDefinition(Function &func, JSON &resultCmds)
+void Steckoyaz::translateDefinition(Function &func)
 {
+    std::vector<JSON> resultCmds;
     JSON addedCmd;
+
     addedCmd["type"] = "label";
     addedCmd["args"] = func.name;
-    resultCmds.append(addedCmd);
+    resultCmds.push_back(addedCmd);
 
     //алоцируем стек
-    resultCmds.append(createCmd(JSON{func.locals}, "stack alloc"));
+    resultCmds.push_back(createCmd(JSON{func.locals}, "stack alloc"));
 
     for (auto &&cmd : func.body) {
         for (auto &var : cmd["args"]) {
             var = func.getSubstitute(var);
         }
-        resultCmds.append(cmd);
+        resultCmds.push_back(cmd);
     }
 
     //освобождаем стек
-    resultCmds.append(createCmd(JSON{func.locals}, "stack free"));
+    resultCmds.push_back(createCmd(JSON{func.locals}, "stack free"));
+    func.body = resultCmds;
 }
 
 }  // namespace syaz
