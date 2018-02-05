@@ -65,9 +65,6 @@ std::vector<std::pair<std::string, std::string>>::iterator Function::findVariabl
         [&nameVariable](const std::pair<std::string, std::string> &element) { return element.first == nameVariable; });
 }
 
-template <class T>
-class Debug;
-
 JSON Function::getSubstitute(const JSON &nameVariable)
 {
     //константы не заменяются
