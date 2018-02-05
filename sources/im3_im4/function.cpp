@@ -5,7 +5,7 @@
 Function::Function(const JSON &cmd)
 {
     info = FunctionInfo(cmd[0]);
-    body = std::vector<JSON>(++cmd.begin(), cmd.end());
+    body = std::vector<JSON>{++cmd.begin(), cmd.end()};
     //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
 }
