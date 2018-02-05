@@ -1,4 +1,6 @@
 #include "function.h"
+#include <algorithm>
+#include <shared_utils/assertion.h>
 
 Function::Function(const JSON &cmd)
     : FunctionInfo(cmd.operator[](0))
@@ -86,7 +88,7 @@ JSON Function::getSubstitute(const JSON &nameVariable)
 
     auto var = findVariable(nameVariable.asString());
     //этот if срабатывает, когда аргумент-название функции
-    //FIXME есть случаи, когда название функции совпадет с переменной
+    // FIXME есть случаи, когда название функции совпадет с переменной
     if (var == variables.end()) {
         return nameVariable;
     }

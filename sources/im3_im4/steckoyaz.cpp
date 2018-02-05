@@ -1,4 +1,6 @@
 #include "steckoyaz.h"
+#include <iostream>
+#include <shared_utils/assertion.h>
 
 JSON createCmd(JSON args, std::string cmd)
 {
@@ -12,20 +14,20 @@ JSON createCmd(JSON args, std::string cmd)
 
 std::vector<Function> parseFunctions(const JSON &cmds)
 {
-    JSON func;
-    func.clear();
     std::vector<Function> program;
+    auto isDefinition = [](const JSON &cmd) { return cmd["type"] == "definition"; };
 
-    for (auto &&cmd : cmds) {
-        if (cmd["type"] == "definition") {
-            if (!func.isNull()) {
-                program.emplace_back(func);
-                func.clear();
-            }
-        }
-        func.append(cmd);
+    auto current = cmds.begin();
+    auto end = cmds.end();
+    while (current != end) {
+        LCC_ASSERT(isDefinition(*current));
+        auto begin = current;
+        current = std::find_if(++current, end, isDefinition);
+
+        JSON function;
+        std::for_each(begin, current, [&function](const JSON &cmd) { function.append(cmd); });
+        program.emplace_back(function);
     }
-    program.emplace_back(func);
 
     return program;
 }
