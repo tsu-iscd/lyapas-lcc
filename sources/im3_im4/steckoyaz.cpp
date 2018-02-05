@@ -1,5 +1,4 @@
 #include "steckoyaz.h"
-#include <iostream>
 #include <shared_utils/assertion.h>
 
 JSON createCmd(JSON args, std::string cmd)
