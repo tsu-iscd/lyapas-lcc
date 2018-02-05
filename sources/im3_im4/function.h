@@ -3,10 +3,11 @@
 #include "function_info.h"
 
 class Function : public FunctionInfo {
+private:
+    std::vector<std::pair<std::string, std::string>> variables;
 public:
     std::vector<JSON> body;
     int locals;
-    std::vector<std::pair<std::string, std::string>> variables;
 
     Function(const JSON &cmd);
     void calculateStackVariables();
