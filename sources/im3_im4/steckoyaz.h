@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <translation_module/translation_module.h>
 #include "function.h"
 
