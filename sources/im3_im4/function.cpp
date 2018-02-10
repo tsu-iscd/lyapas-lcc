@@ -3,9 +3,9 @@
 #include <shared_utils/assertion.h>
 
 Function::Function(const JSON &cmd)
+    : info{cmd[0]}
+    , body{++cmd.begin(), cmd.end()}
 {
-    info = FunctionInfo(cmd[0]);
-    body = std::vector<JSON>{++cmd.begin(), cmd.end()};
     //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
 }

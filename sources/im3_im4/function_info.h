@@ -7,6 +7,5 @@ public:
     std::vector<JSON> input;
     std::vector<JSON> output;
 
-    FunctionInfo();
     FunctionInfo(const JSON &cmd);
 };

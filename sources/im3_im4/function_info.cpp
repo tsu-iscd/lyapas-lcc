@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <shared_utils/assertion.h>
 
-FunctionInfo::FunctionInfo(){};
 FunctionInfo::FunctionInfo(const JSON &cmd)
 {
     const JSON &args = cmd["args"];
