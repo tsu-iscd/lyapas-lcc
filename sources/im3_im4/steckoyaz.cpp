@@ -92,8 +92,8 @@ void Steckoyaz::translateCall(Function &func)
 
             resultCmds.push_back(createCmd("call", funcInf.name));
 
-            for (auto i = funcInf.output.rbegin(); i != funcInf.output.rend(); i++) {
-                resultCmds.push_back(createCmd("pop", (*i)));
+            for (auto it = funcInf.output.rbegin(); it != funcInf.output.rend(); it++) {
+                resultCmds.push_back(createCmd("pop", (*it)));
             };
 
             //освобождаем стек
