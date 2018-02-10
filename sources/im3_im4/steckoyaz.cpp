@@ -90,7 +90,7 @@ void Steckoyaz::translateCall(Function &func)
                 resultCmds.push_back(createCmd("push", var));
             }
 
-            resultCmds.push_back(createCmd("call", funcInf.name);
+            resultCmds.push_back(createCmd("call", funcInf.name));
 
             for (auto i = funcInf.output.rbegin(); i != funcInf.output.rend(); i++) {
                 resultCmds.push_back(createCmd("pop", (*i)));
