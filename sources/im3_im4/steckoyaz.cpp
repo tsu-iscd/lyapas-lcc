@@ -1,7 +1,7 @@
 #include "steckoyaz.h"
 #include <shared_utils/assertion.h>
 
-JSON createCmd(JSON args, std::string cmd)
+JSON createCmd(std::string cmd, JSON args)
 {
     JSON command;
     command["type"] = "cmd";
@@ -82,21 +82,21 @@ void Steckoyaz::translateCall(Function &func)
             FunctionInfo funcInf(cmd);
             JSON addedCmd;
             for (auto &var : funcInf.input) {
-                resultCmds.push_back(createCmd(var, "push"));
+                resultCmds.push_back(createCmd("push", var));
             }
 
             for (auto &var : funcInf.output) {
-                resultCmds.push_back(createCmd(var, "push"));
+                resultCmds.push_back(createCmd("push", var));
             }
 
             resultCmds.push_back(createCmd(funcInf.name, "call"));
 
             for (auto i = funcInf.output.rbegin(); i != funcInf.output.rend(); i++) {
-                resultCmds.push_back(createCmd((*i), "pop"));
+                resultCmds.push_back(createCmd("pop", (*i)));
             };
 
             //освобождаем стек
-            resultCmds.push_back(createCmd(JSON{static_cast<int>(funcInf.input.size())}, "stack free"));
+            resultCmds.push_back(createCmd("stack free", JSON{static_cast<int>(funcInf.input.size())}));
             continue;
         }
         resultCmds.push_back(cmd);
@@ -114,7 +114,7 @@ void Steckoyaz::translateDefinition(Function &func)
     resultCmds.push_back(addedCmd);
 
     //алоцируем стек
-    resultCmds.push_back(createCmd(JSON{func.locals}, "stack alloc"));
+    resultCmds.push_back(createCmd("stack alloc", JSON{func.locals}));
 
     for (auto &&cmd : func.body) {
         for (auto &var : cmd["args"]) {
@@ -124,7 +124,7 @@ void Steckoyaz::translateDefinition(Function &func)
     }
 
     //освобождаем стек
-    resultCmds.push_back(createCmd(JSON{func.locals}, "stack free"));
+    resultCmds.push_back(createCmd("stack free", JSON{func.locals}));
     func.body = resultCmds;
 }
 
