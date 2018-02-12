@@ -108,8 +108,8 @@ void Steckoyaz::translateCall(Function &func)
 void Steckoyaz::translateDefinition(Function &func)
 {
     std::vector<JSON> resultCmds;
-    JSON addedCmd;
 
+    JSON addedCmd;
     addedCmd["type"] = "label";
     addedCmd["name"] = func.info.name;
     resultCmds.push_back(addedCmd);
