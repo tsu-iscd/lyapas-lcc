@@ -7,6 +7,7 @@ Function::Function(const JSON &cmd)
     , body{++cmd.begin(), cmd.end()}
 {
     //считаем переменные, которые должны лежать на стеке
+    locals = 0;
     calculateStackVariables();
 }
 
