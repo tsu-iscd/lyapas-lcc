@@ -6,7 +6,6 @@ Function::Function(const JSON &cmd)
     : info{cmd[0]}
     , body{++cmd.begin(), cmd.end()}
 {
-    locals = 0;
     //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
 }
@@ -26,9 +25,9 @@ void Function::setBody(std::vector<JSON> &newBody)
     body = newBody;
 }
 
-int Function::getLocals()
+int Function::getVariablesCount()
 {
-    return locals;
+    return variables.size();
 }
 
 void Function::calculateStackVariables()
@@ -75,7 +74,6 @@ void Function::insertVariable(JSON &var)
 
     if (findVariable(var.asString()) == variables.end()) {
         variables.emplace_back(Variable{var.asString(), "l" + std::to_string(variables.size())});
-        locals++;
     }
 }
 

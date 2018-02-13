@@ -115,7 +115,7 @@ void Steckoyaz::translateDefinition(Function &func)
     resultCmds.push_back(addedCmd);
 
     //алоцируем стек
-    resultCmds.push_back(createCmd("stack_alloc", JSON{func.getLocals()}));
+    resultCmds.push_back(createCmd("stack_alloc", JSON{func.getVariablesCount()}));
 
     auto body = func.getBody();
     for (auto &&cmd : body) {
@@ -126,7 +126,7 @@ void Steckoyaz::translateDefinition(Function &func)
     }
 
     //освобождаем стек
-    resultCmds.push_back(createCmd("stack_free", JSON{func.getLocals()}));
+    resultCmds.push_back(createCmd("stack_free", JSON{func.getVariablesCount()}));
     func.setBody(resultCmds);
 }
 

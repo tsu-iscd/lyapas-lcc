@@ -14,7 +14,7 @@ public:
     const FunctionInfo getInfo();
     const std::vector<JSON> getBody();
     void setBody(std::vector<JSON> &newBody);
-    int getLocals();
+    int getVariablesCount();
 
     Function(const JSON &cmd);
     void calculateStackVariables();
@@ -26,5 +26,4 @@ private:
     Variables variables;
     FunctionInfo info;
     std::vector<JSON> body;
-    int locals;
 };
