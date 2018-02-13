@@ -6,9 +6,29 @@ Function::Function(const JSON &cmd)
     : info{cmd[0]}
     , body{++cmd.begin(), cmd.end()}
 {
-    //считаем переменные, которые должны лежать на стеке
     locals = 0;
+    //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
+}
+
+const FunctionInfo Function::getInfo()
+{
+    return info;
+}
+
+const std::vector<JSON> Function::getBody()
+{
+    return body;
+}
+
+void Function::setBody(std::vector<JSON> &newBody)
+{
+    body = newBody;
+}
+
+int Function::getLocals()
+{
+    return locals;
 }
 
 void Function::calculateStackVariables()
