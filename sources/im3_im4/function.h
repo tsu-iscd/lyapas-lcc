@@ -1,11 +1,7 @@
 #pragma once
 #include <translation_module/translation_module.h>
 #include "function_info.h"
-
-struct Variable {
-    std::string name;
-    std::string alias;
-};
+#include "variable.h"
 
 using Variables = std::vector<Variable>;
 
