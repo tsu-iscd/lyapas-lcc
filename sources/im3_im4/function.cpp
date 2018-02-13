@@ -74,16 +74,15 @@ void Function::insertVariable(JSON &var)
     }
 
     if (findVariable(var.asString()) == variables.end()) {
-        variables.emplace_back(var.asString(), "l" + std::to_string(variables.size()));
+        variables.emplace_back(Variable{var.asString(), "l" + std::to_string(variables.size())});
         locals++;
     }
 }
 
 Variables::iterator Function::findVariable(std::string nameVariable)
 {
-    return std::find_if(
-        variables.begin(), variables.end(),
-        [&nameVariable](const std::pair<std::string, std::string> &element) { return element.first == nameVariable; });
+    return std::find_if(variables.begin(), variables.end(),
+                        [&nameVariable](const Variable &element) { return element.name == nameVariable; });
 }
 
 JSON Function::getSubstitute(const JSON &nameVariable)
@@ -101,7 +100,7 @@ JSON Function::getSubstitute(const JSON &nameVariable)
         std::string index(nameVar.begin() + bracket, nameVar.end());
         auto var = findVariable(arrayName);
         LCC_ASSERT(var != variables.end());
-        return (*var).second + index;
+        return (*var).alias + index;
     }
 
     auto var = findVariable(nameVariable.asString());
@@ -110,5 +109,5 @@ JSON Function::getSubstitute(const JSON &nameVariable)
     if (var == variables.end()) {
         return nameVariable;
     }
-    return (*var).second;
+    return (*var).alias;
 }

@@ -2,7 +2,13 @@
 #include <translation_module/translation_module.h>
 #include "function_info.h"
 
-using Variables = std::vector<std::pair<std::string, std::string>>;
+struct Variable {
+    std::string name;
+    std::string alias;
+};
+
+using Variables = std::vector<Variable>;
+
 class Function {
 public:
     const FunctionInfo getInfo();
