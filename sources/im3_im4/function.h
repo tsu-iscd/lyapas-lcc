@@ -11,18 +11,18 @@ using Variables = std::vector<Variable>;
 
 class Function {
 public:
+    Function(const JSON &cmd);
     const FunctionInfo getInfo();
     const std::vector<JSON> getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
-
-    Function(const JSON &cmd);
-    void calculateStackVariables();
-    void insertVariable(JSON &var);
-    Variables::iterator findVariable(std::string nameVariable);
     JSON getSubstitute(const JSON &nameVariable);
 
 private:
+    void calculateStackVariables();
+    void insertVariable(JSON &var);
+    Variables::iterator findVariable(std::string nameVariable);
+
     Variables variables;
     FunctionInfo info;
     std::vector<JSON> body;

@@ -30,6 +30,33 @@ int Function::getVariablesCount()
     return variables.size();
 }
 
+JSON Function::getSubstitute(const JSON &nameVariable)
+{
+    //константы не заменяются
+    if (nameVariable.isInt()) {
+        return nameVariable;
+    }
+
+    std::string nameVar{nameVariable.asString()};
+    //если обращение по индексу
+    auto bracket = nameVar.find("[");
+    if (bracket != std::string::npos) {
+        std::string arrayName(nameVar.begin(), nameVar.begin() + bracket);
+        std::string index(nameVar.begin() + bracket, nameVar.end());
+        auto var = findVariable(arrayName);
+        LCC_ASSERT(var != variables.end());
+        return (*var).alias + index;
+    }
+
+    auto var = findVariable(nameVariable.asString());
+    //этот if срабатывает, когда аргумент-название функции
+    // FIXME есть случаи, когда название функции совпадет с переменной
+    if (var == variables.end()) {
+        return nameVariable;
+    }
+    return (*var).alias;
+}
+
 void Function::calculateStackVariables()
 {
     for (auto &var : info.input) {
@@ -81,31 +108,4 @@ Variables::iterator Function::findVariable(std::string nameVariable)
 {
     return std::find_if(variables.begin(), variables.end(),
                         [&nameVariable](const Variable &element) { return element.name == nameVariable; });
-}
-
-JSON Function::getSubstitute(const JSON &nameVariable)
-{
-    //константы не заменяются
-    if (nameVariable.isInt()) {
-        return nameVariable;
-    }
-
-    std::string nameVar{nameVariable.asString()};
-    //если обращение по индексу
-    auto bracket = nameVar.find("[");
-    if (bracket != std::string::npos) {
-        std::string arrayName(nameVar.begin(), nameVar.begin() + bracket);
-        std::string index(nameVar.begin() + bracket, nameVar.end());
-        auto var = findVariable(arrayName);
-        LCC_ASSERT(var != variables.end());
-        return (*var).alias + index;
-    }
-
-    auto var = findVariable(nameVariable.asString());
-    //этот if срабатывает, когда аргумент-название функции
-    // FIXME есть случаи, когда название функции совпадет с переменной
-    if (var == variables.end()) {
-        return nameVariable;
-    }
-    return (*var).alias;
 }
