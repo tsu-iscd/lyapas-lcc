@@ -79,7 +79,7 @@ void Function::insertVariable(JSON &var)
     }
 }
 
-std::vector<std::pair<std::string, std::string>>::iterator Function::findVariable(std::string nameVariable)
+Variables::iterator Function::findVariable(std::string nameVariable)
 {
     return std::find_if(
         variables.begin(), variables.end(),

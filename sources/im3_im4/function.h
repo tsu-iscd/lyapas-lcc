@@ -2,6 +2,7 @@
 #include <translation_module/translation_module.h>
 #include "function_info.h"
 
+using Variables = std::vector<std::pair<std::string, std::string>>;
 class Function {
 public:
     const FunctionInfo getInfo();
@@ -12,11 +13,11 @@ public:
     Function(const JSON &cmd);
     void calculateStackVariables();
     void insertVariable(JSON &var);
-    std::vector<std::pair<std::string, std::string>>::iterator findVariable(std::string nameVariable);
+    Variables::iterator findVariable(std::string nameVariable);
     JSON getSubstitute(const JSON &nameVariable);
 
 private:
-    std::vector<std::pair<std::string, std::string>> variables;
+    Variables variables;
     FunctionInfo info;
     std::vector<JSON> body;
     int locals;
