@@ -3,9 +3,9 @@
 #include "function_info.h"
 #include "variable.h"
 
-using Variables = std::vector<Variable>;
-
 class Function {
+    using Variables = std::vector<Variable>;
+
 public:
     Function(const JSON &cmd);
     const FunctionInfo getInfo();

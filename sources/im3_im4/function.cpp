@@ -104,7 +104,7 @@ void Function::insertVariable(JSON &var)
     }
 }
 
-Variables::iterator Function::findVariable(std::string nameVariable)
+Function::Variables::iterator Function::findVariable(std::string nameVariable)
 {
     return std::find_if(variables.begin(), variables.end(),
                         [&nameVariable](const Variable &element) { return element.name == nameVariable; });
