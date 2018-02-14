@@ -119,9 +119,7 @@ void Steckoyaz::translateDefinition(Function &func)
 
     auto body = func.getBody();
     for (auto &&cmd : body) {
-        for (auto &var : cmd["args"]) {
-            var = func.getSubstitute(var);
-        }
+        func.replacer(cmd);
         resultCmds.push_back(cmd);
     }
 

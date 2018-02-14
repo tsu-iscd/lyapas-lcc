@@ -1,5 +1,6 @@
 #include "function.h"
 #include <algorithm>
+#include <iostream>
 #include <shared_utils/assertion.h>
 
 Function::Function(const JSON &cmd)
@@ -30,6 +31,20 @@ int Function::getVariablesCount()
     return variables.size();
 }
 
+void Function::replacer(JSON &cmd)
+{
+    auto var = cmd["args"].begin();
+
+    //пропустили название функции
+    if (cmd["cmd"] == "call") {
+        var++;
+    }
+
+    for (var; var != cmd["args"].end(); var++) {
+        *var = getSubstitute(*var);
+    }
+}
+
 JSON Function::getSubstitute(const JSON &nameVariable)
 {
     //константы не заменяются
@@ -38,23 +53,40 @@ JSON Function::getSubstitute(const JSON &nameVariable)
     }
 
     std::string nameVar{nameVariable.asString()};
+
     //если обращение по индексу
-    auto bracket = nameVar.find("[");
-    if (bracket != std::string::npos) {
-        std::string arrayName(nameVar.begin(), nameVar.begin() + bracket);
-        std::string index(nameVar.begin() + bracket, nameVar.end());
-        auto var = findVariable(arrayName);
-        LCC_ASSERT(var != variables.end());
-        return (*var).alias + index;
+    if (isArrayIndex(nameVar)) {
+        return getSubstituteArrayIndex(nameVar);
     }
 
     auto var = findVariable(nameVariable.asString());
-    //этот if срабатывает, когда аргумент-название функции
-    // FIXME есть случаи, когда название функции совпадет с переменной
-    if (var == variables.end()) {
-        return nameVariable;
-    }
+    LCC_ASSERT(var != variables.end());
     return (*var).alias;
+}
+
+JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
+{
+    //если обращение по индексу
+    auto bracket = nameVariable.find("[");
+    if (bracket != std::string::npos) {
+        std::string arrayName(nameVariable.begin(), nameVariable.begin() + bracket);
+        std::string index(nameVariable.begin() + bracket + 1, nameVariable.end() - 1);
+
+        auto var = findVariable(arrayName);
+        LCC_ASSERT(var != variables.end());
+
+        auto indexAlias = findVariable(index);
+        LCC_ASSERT(indexAlias != variables.end());
+        return (*var).alias + "[" + (*indexAlias).alias + "]";
+    }
+}
+
+bool Function::isArrayIndex(const std::string &var)
+{
+    if (var.find("[") == std::string::npos) {
+        return false;
+    }
+    return true;
 }
 
 void Function::calculateStackVariables()

@@ -12,7 +12,10 @@ public:
     const std::vector<JSON> getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
+    void replacer(JSON &cmd);
     JSON getSubstitute(const JSON &nameVariable);
+    JSON getSubstituteArrayIndex(const std::string &nameVariable);
+    bool isArrayIndex(const std::string &var);
 
 private:
     void calculateStackVariables();
