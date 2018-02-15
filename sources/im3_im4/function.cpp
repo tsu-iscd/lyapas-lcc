@@ -1,6 +1,7 @@
 #include "function.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
+#include "array_index.h"
 
 Function::Function(const JSON &cmd)
     : info{cmd[0]}
@@ -92,10 +93,8 @@ void Function::insertVariable(JSON &var)
      * если это не так - то ошибка в программе. индекc не факт, что лежит на стеке*/
     auto nameVar = var.asString();
     if (isArrayIndex(nameVar)) {
-        auto bracket = nameVar.find("[");
-        LCC_ASSERT(bracket != std::string::npos);
-        std::string index(nameVar.begin() + bracket + 1, nameVar.end() - 1);
-        nameVar = index;
+        ArrayIndex arrayIndex(nameVar);
+        nameVar = arrayIndex.index;
     }
 
     if (findVariable(nameVar) == variables.end()) {
@@ -124,18 +123,13 @@ JSON Function::getSubstitute(const JSON &nameVariable)
 
 JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
 {
-    auto bracket = nameVariable.find("[");
-    if (bracket != std::string::npos) {
-        std::string arrayName(nameVariable.begin(), nameVariable.begin() + bracket);
-        std::string index(nameVariable.begin() + bracket + 1, nameVariable.end() - 1);
+    ArrayIndex arrayIndex(nameVariable);
+    auto var = findVariable(arrayIndex.arrayName);
+    LCC_ASSERT(var != variables.end());
 
-        auto var = findVariable(arrayName);
-        LCC_ASSERT(var != variables.end());
-
-        auto indexAlias = findVariable(index);
-        LCC_ASSERT(indexAlias != variables.end());
-        return (*var).alias + "[" + (*indexAlias).alias + "]";
-    }
+    auto indexAlias = findVariable(arrayIndex.index);
+    LCC_ASSERT(indexAlias != variables.end());
+    return (*var).alias + "[" + (*indexAlias).alias + "]";
 }
 
 Function::Variables::iterator Function::findVariable(std::string nameVariable)
