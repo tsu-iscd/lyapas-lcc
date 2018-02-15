@@ -12,7 +12,7 @@ public:
     const std::vector<JSON> getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
-    void replacer(JSON &cmd);
+    void replacerArgs(JSON &cmd);
     bool isArrayIndex(const std::string &var);
 
 private:
