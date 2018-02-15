@@ -5,7 +5,7 @@ set(SOURCE_FILES
     main.cpp
     steckoyaz.cpp
     function.cpp
-    function_info.cpp
+    function_signature.cpp
 )
 
 add_executable(im3_im4 ${SOURCE_FILES} ${BACKWARD_ENABLE})

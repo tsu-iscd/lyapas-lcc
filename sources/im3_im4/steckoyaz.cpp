@@ -80,7 +80,7 @@ void Steckoyaz::translateCall(Function &func)
     std::vector<JSON> resultCmds;
     for (auto &&cmd : func.getBody()) {
         if (cmd["type"] == "call") {
-            FunctionInfo funcInf(cmd);
+            FunctionSignature funcInf(cmd);
             JSON addedCmd;
             for (auto &var : funcInf.input) {
                 resultCmds.push_back(createCmd("push", var));

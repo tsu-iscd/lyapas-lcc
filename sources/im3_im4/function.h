@@ -1,6 +1,6 @@
 #pragma once
 #include <translation_module/translation_module.h>
-#include "function_info.h"
+#include "function_signature.h"
 #include "variable.h"
 
 class Function {
@@ -8,7 +8,7 @@ class Function {
 
 public:
     Function(const JSON &cmd);
-    const FunctionInfo getInfo();
+    const FunctionSignature getInfo();
     const std::vector<JSON> getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
@@ -23,6 +23,6 @@ private:
     Variables::iterator findVariable(std::string nameVariable);
 
     Variables variables;
-    FunctionInfo info;
+    FunctionSignature info;
     std::vector<JSON> body;
 };

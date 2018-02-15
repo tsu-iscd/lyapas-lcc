@@ -1,8 +1,8 @@
-#include "function_info.h"
+#include "function_signature.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
 
-FunctionInfo::FunctionInfo(const JSON &cmd)
+FunctionSignature::FunctionSignature(const JSON &cmd)
 {
     const JSON &args = cmd["args"];
     LCC_ASSERT(args.size() != 0);

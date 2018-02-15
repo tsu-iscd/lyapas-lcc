@@ -11,7 +11,7 @@ Function::Function(const JSON &cmd)
     calculateStackVariables();
 }
 
-const FunctionInfo Function::getInfo()
+const FunctionSignature Function::getInfo()
 {
     return info;
 }
@@ -65,7 +65,7 @@ void Function::calculateStackVariables()
 
     for (auto &&cmd : body) {
         if (cmd["type"] == "call") {
-            FunctionInfo funcInf(cmd);
+            FunctionSignature funcInf(cmd);
             for (auto &var : funcInf.input) {
                 insertVariable(var);
             }
