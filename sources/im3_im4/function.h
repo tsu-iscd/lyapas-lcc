@@ -9,7 +9,7 @@ class Function {
 public:
     Function(const JSON &cmd);
     const FunctionSignature getInfo();
-    const std::vector<JSON> getBody();
+    const std::vector<JSON> &getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
     void replacerArgs(JSON &cmd);

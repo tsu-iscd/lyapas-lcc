@@ -16,7 +16,7 @@ const FunctionSignature Function::getInfo()
     return info;
 }
 
-const std::vector<JSON> Function::getBody()
+const std::vector<JSON> &Function::getBody()
 {
     return body;
 }
