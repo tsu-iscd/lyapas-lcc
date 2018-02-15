@@ -45,42 +45,6 @@ void Function::replacer(JSON &cmd)
     }
 }
 
-JSON Function::getSubstitute(const JSON &nameVariable)
-{
-    //константы не заменяются
-    if (nameVariable.isInt()) {
-        return nameVariable;
-    }
-
-    std::string nameVar{nameVariable.asString()};
-
-    //если обращение по индексу
-    if (isArrayIndex(nameVar)) {
-        return getSubstituteArrayIndex(nameVar);
-    }
-
-    auto var = findVariable(nameVariable.asString());
-    LCC_ASSERT(var != variables.end());
-    return (*var).alias;
-}
-
-JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
-{
-    //если обращение по индексу
-    auto bracket = nameVariable.find("[");
-    if (bracket != std::string::npos) {
-        std::string arrayName(nameVariable.begin(), nameVariable.begin() + bracket);
-        std::string index(nameVariable.begin() + bracket + 1, nameVariable.end() - 1);
-
-        auto var = findVariable(arrayName);
-        LCC_ASSERT(var != variables.end());
-
-        auto indexAlias = findVariable(index);
-        LCC_ASSERT(indexAlias != variables.end());
-        return (*var).alias + "[" + (*indexAlias).alias + "]";
-    }
-}
-
 bool Function::isArrayIndex(const std::string &var)
 {
     if (var.find("[") == std::string::npos) {
@@ -127,12 +91,48 @@ void Function::insertVariable(JSON &var)
     /*пропустили обращение по индеку, название комплекса точно уже на стеке
      * либо объявили в функции, либо комплекс пришел в аргументах
      * если это не так - то ошибка в программе*/
-    if (var.asString().find("[") != std::string::npos) {
+    if (isArrayIndex(var.asString())) {
         return;
     }
 
     if (findVariable(var.asString()) == variables.end()) {
         variables.emplace_back(Variable{var.asString(), "l" + std::to_string(variables.size())});
+    }
+}
+
+JSON Function::getSubstitute(const JSON &nameVariable)
+{
+    //константы не заменяются
+    if (nameVariable.isInt()) {
+        return nameVariable;
+    }
+
+    std::string nameVar{nameVariable.asString()};
+
+    //если обращение по индексу
+    if (isArrayIndex(nameVar)) {
+        return getSubstituteArrayIndex(nameVar);
+    }
+
+    auto var = findVariable(nameVar);
+    LCC_ASSERT(var != variables.end());
+    return (*var).alias;
+}
+
+JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
+{
+    //если обращение по индексу
+    auto bracket = nameVariable.find("[");
+    if (bracket != std::string::npos) {
+        std::string arrayName(nameVariable.begin(), nameVariable.begin() + bracket);
+        std::string index(nameVariable.begin() + bracket + 1, nameVariable.end() - 1);
+
+        auto var = findVariable(arrayName);
+        LCC_ASSERT(var != variables.end());
+
+        auto indexAlias = findVariable(index);
+        LCC_ASSERT(indexAlias != variables.end());
+        return (*var).alias + "[" + (*indexAlias).alias + "]";
     }
 }
 
