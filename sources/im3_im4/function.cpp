@@ -1,6 +1,5 @@
 #include "function.h"
 #include <algorithm>
-#include <iostream>
 #include <shared_utils/assertion.h>
 
 Function::Function(const JSON &cmd)
@@ -121,7 +120,6 @@ JSON Function::getSubstitute(const JSON &nameVariable)
 
 JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
 {
-    //если обращение по индексу
     auto bracket = nameVariable.find("[");
     if (bracket != std::string::npos) {
         std::string arrayName(nameVariable.begin(), nameVariable.begin() + bracket);
