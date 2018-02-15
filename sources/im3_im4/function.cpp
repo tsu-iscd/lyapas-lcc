@@ -89,13 +89,17 @@ void Function::insertVariable(JSON &var)
 
     /*пропустили обращение по индеку, название комплекса точно уже на стеке
      * либо объявили в функции, либо комплекс пришел в аргументах
-     * если это не так - то ошибка в программе*/
-    if (isArrayIndex(var.asString())) {
-        return;
+     * если это не так - то ошибка в программе, индек считаем локальной переменной*/
+    auto nameVar = var.asString();
+    if (isArrayIndex(nameVar)) {
+        auto bracket = nameVar.find("[");
+        LCC_ASSERT(bracket != std::string::npos);
+        std::string index(nameVar.begin() + bracket + 1, nameVar.end() - 1);
+        nameVar = index;
     }
 
-    if (findVariable(var.asString()) == variables.end()) {
-        variables.emplace_back(Variable{var.asString(), "l" + std::to_string(variables.size())});
+    if (findVariable(nameVar) == variables.end()) {
+        variables.emplace_back(Variable{nameVar, "l" + std::to_string(variables.size())});
     }
 }
 
