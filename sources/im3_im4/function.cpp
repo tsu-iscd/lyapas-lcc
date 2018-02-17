@@ -5,16 +5,16 @@
 #include "array_index.h"
 
 Function::Function(const JSON &cmd)
-    : info{cmd[0]}
+    : signature{cmd[0]}
     , body{++cmd.begin(), cmd.end()}
 {
     //считаем переменные, которые должны лежать на стеке
     calculateStackVariables();
 }
 
-const FunctionSignature Function::getInfo()
+const FunctionSignature Function::getSignature()
 {
-    return info;
+    return signature;
 }
 
 std::vector<JSON> &Function::getBody()
@@ -48,11 +48,11 @@ void Function::replacerArgs(JSON &cmd)
 
 void Function::calculateStackVariables()
 {
-    for (auto &var : info.input) {
+    for (auto &var : signature.input) {
         insertVariable(var);
     }
 
-    for (auto &var : info.output) {
+    for (auto &var : signature.output) {
         insertVariable(var);
     }
 

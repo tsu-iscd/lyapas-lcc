@@ -8,7 +8,7 @@ class Function {
 
 public:
     Function(const JSON &cmd);
-    const FunctionSignature getInfo();
+    const FunctionSignature getSignature();
     std::vector<JSON> &getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
@@ -23,6 +23,6 @@ private:
     bool isArrayIndex(const std::string &var);
 
     Variables variables;
-    FunctionSignature info;
+    FunctionSignature signature;
     std::vector<JSON> body;
 };
