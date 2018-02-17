@@ -32,7 +32,7 @@ int Function::getVariablesCount()
     return variables.size();
 }
 
-void Function::replacerArgs(JSON &cmd)
+void Function::substituteCmdArgs(JSON &cmd)
 {
     auto var = cmd["args"].begin();
 

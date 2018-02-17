@@ -12,7 +12,7 @@ public:
     std::vector<JSON> &getBody();
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
-    void replacerArgs(JSON &cmd);
+    void substituteCmdArgs(JSON &cmd);
 
 private:
     void calculateStackVariables();

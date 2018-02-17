@@ -118,7 +118,7 @@ void Steckoyaz::translateDefinition(Function &func)
     resultCmds.push_back(createCmd("stack_alloc", JSON{func.getVariablesCount()}));
 
     for (auto &&cmd : func.getBody()) {
-        func.replacerArgs(cmd);
+        func.substituteCmdArgs(cmd);
         resultCmds.push_back(cmd);
     }
 
