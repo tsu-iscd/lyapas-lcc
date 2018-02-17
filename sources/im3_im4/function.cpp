@@ -141,7 +141,7 @@ bool Function::isArrayIndex(const std::string &var)
         throw std::runtime_error("Повторяющийся символ '[':" + var);
     }
 
-    if (var.find(']') != var.size() - 1) {
+    if (var.back() != ']') {
         throw std::runtime_error("']' не последний символ в имени переменной:" + var);
     }
 
