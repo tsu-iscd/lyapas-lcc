@@ -1,5 +1,6 @@
 #include "function.h"
 #include <algorithm>
+#include <iostream>
 #include <shared_utils/assertion.h>
 #include "array_index.h"
 
@@ -43,14 +44,6 @@ void Function::replacerArgs(JSON &cmd)
     for (var; var != cmd["args"].end(); var++) {
         *var = getSubstitute(*var);
     }
-}
-
-bool Function::isArrayIndex(const std::string &var)
-{
-    if (var.find("[") == std::string::npos) {
-        return false;
-    }
-    return true;
 }
 
 void Function::calculateStackVariables()
@@ -136,4 +129,25 @@ Function::Variables::iterator Function::findVariable(std::string nameVariable)
 {
     return std::find_if(variables.begin(), variables.end(),
                         [&nameVariable](const Variable &element) { return element.name == nameVariable; });
+}
+
+bool Function::isArrayIndex(const std::string &var)
+{
+    if (var.find('[') == std::string::npos) {
+        return false;
+    }
+
+    if (std::count(var.begin(), var.end(), '[') > static_cast<size_t>(1)) {
+        throw std::runtime_error("Повторяющийся символ '[':" + var);
+    }
+
+    if (var.find(']') != var.size() - 1) {
+        throw std::runtime_error("']' не последний символ в имени переменной:" + var);
+    }
+
+    if (std::count(var.begin(), var.end(), ']') > 1) {
+        throw std::runtime_error("Повторяющийся символ ']':" + var);
+    }
+
+    return true;
 }

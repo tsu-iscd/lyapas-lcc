@@ -13,7 +13,6 @@ public:
     void setBody(std::vector<JSON> &newBody);
     int getVariablesCount();
     void replacerArgs(JSON &cmd);
-    bool isArrayIndex(const std::string &var);
 
 private:
     void calculateStackVariables();
@@ -21,6 +20,7 @@ private:
     JSON getSubstitute(const JSON &nameVariable);
     JSON getSubstituteArrayIndex(const std::string &nameVariable);
     Variables::iterator findVariable(std::string nameVariable);
+    bool isArrayIndex(const std::string &var);
 
     Variables variables;
     FunctionSignature info;
