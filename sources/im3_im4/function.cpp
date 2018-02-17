@@ -1,6 +1,5 @@
 #include "function.h"
 #include <algorithm>
-#include <iostream>
 #include <shared_utils/assertion.h>
 #include "array_index.h"
 
