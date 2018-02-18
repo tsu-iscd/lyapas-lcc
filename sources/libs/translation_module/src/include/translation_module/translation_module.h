@@ -3,9 +3,8 @@
 #include <stdexcept>
 #include <string>
 #include <json/json.h>
+#include "aliases.h"
 #include "replacers.h"
-
-typedef Json::Value JSON;
 
 namespace trm {
 
