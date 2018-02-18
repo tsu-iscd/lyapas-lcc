@@ -16,7 +16,7 @@ void TranslatorFixture::preprocess(JSON &cmds) {}
 
 void TranslatorFixture::postprocess(JSON &cmds) {}
 
-const trm::Replacers &TranslatorFixture::getReplacers(const JSON &cmds)
+trm::Replacers &TranslatorFixture::getReplacers(const JSON &cmds)
 {
     static trm::Replacers replacers;
     return replacers;

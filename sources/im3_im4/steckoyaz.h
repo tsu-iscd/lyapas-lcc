@@ -9,7 +9,7 @@ private:
     virtual void preprocess(JSON &cmds) override;
     virtual void postprocess(JSON &cmds) override;
 
-    virtual const trm::Replacers &getReplacers(const JSON &cmds) override;
+    virtual trm::Replacers &getReplacers(const JSON &cmds) override;
     virtual std::string getRules() override;
 };
 
