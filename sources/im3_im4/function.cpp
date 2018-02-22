@@ -121,7 +121,7 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
 
     auto index = findVariable(arrayIndex.index);
     LCC_ASSERT(index != variables.end());
-    return var->alias + "[" + var->alias + "]";
+    return var->alias + "[" + index->alias + "]";
 }
 
 Function::Variables::iterator Function::findVariable(std::string nameVariable)
