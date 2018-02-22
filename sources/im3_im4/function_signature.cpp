@@ -9,7 +9,7 @@ FunctionSignature::FunctionSignature(const JSON &cmd)
 
     name = args[0].asString();
 
-    auto slash = std::find(args.begin(), args.end(), "/");
+    auto slash = std::find(++args.begin(), args.end(), "/");
     LCC_ASSERT(slash != args.end());
 
     input = std::vector<JSON>{++args.begin(), slash};
