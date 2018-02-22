@@ -35,9 +35,9 @@ void Function::substituteCmdArgs(JSON &cmd)
 {
     auto var = cmd["args"].begin();
 
-    //пропустили название функции
+    //название функции не транслируем
     if (cmd["cmd"] == "call") {
-        var++;
+        return;
     }
 
     for (var; var != cmd["args"].end(); var++) {
