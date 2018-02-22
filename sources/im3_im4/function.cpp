@@ -26,7 +26,7 @@ void Function::setBody(std::vector<JSON> &newBody)
     body = newBody;
 }
 
-int Function::getVariablesCount()
+size_t Function::getVariablesCount()
 {
     return variables.size();
 }
