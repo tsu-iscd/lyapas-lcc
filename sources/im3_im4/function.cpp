@@ -80,12 +80,14 @@ void Function::insertVariable(JSON &var)
         return;
     }
 
-    /*пропустили обращение по индеку, название комплекса точно уже на стеке
-     * либо объявили в функции, либо комплекс пришел в аргументах
-     * если это не так - то ошибка в программе. индекc не факт, что лежит на стеке*/
     auto nameVar = var.asString();
+
+    /*ТРАНЛЯЦИЯ F1[t1]
+     * имя комплекса ТОЧНО в списке локальных переменных
+     * индекс может не быть в списке локальных переменных*/
     if (isArrayIndex(nameVar)) {
         ArrayIndex arrayIndex(nameVar);
+        LCC_ASSERT(findVariable(arrayIndex.name) != variables.end());
         nameVar = arrayIndex.index;
     }
 
@@ -116,7 +118,7 @@ JSON Function::getSubstitute(const JSON &nameVariable)
 JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
 {
     ArrayIndex arrayIndex(nameVariable);
-    auto var = findVariable(arrayIndex.arrayName);
+    auto var = findVariable(arrayIndex.name);
     LCC_ASSERT(var != variables.end());
 
     auto index = findVariable(arrayIndex.index);
