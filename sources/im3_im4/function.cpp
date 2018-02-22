@@ -136,7 +136,7 @@ bool Function::isArrayIndex(const std::string &var)
         return false;
     }
 
-    if (std::count(var.begin(), var.end(), '[') > static_cast<size_t>(1)) {
+    if (std::count(var.begin(), var.end(), '[') > 1) {
         throw std::runtime_error("Повторяющийся символ '[':" + var);
     }
 
