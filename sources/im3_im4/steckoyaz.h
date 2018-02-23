@@ -1,6 +1,7 @@
 #pragma once
 
 #include <translation_module/translation_module.h>
+#include "function.h"
 
 namespace syaz {
 class Steckoyaz : public trm::TranslationModule {
@@ -11,6 +12,9 @@ private:
 
     virtual trm::Replacers &getReplacers(const JSON &cmds) override;
     virtual std::string getRules() override;
+
+    void translateCall(Function &func);
+    void translateDefinition(Function &func);
 };
 
 }  // namespace syaz
