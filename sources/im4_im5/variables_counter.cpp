@@ -31,7 +31,7 @@ void VariablesCounter::process(const Json::Value &program)
         }
 
         if (fullIgnore.find(cmdName) != fullIgnore.end()) {
-            return;
+            continue;
         }
 
         unsigned index = 0;
@@ -64,6 +64,7 @@ void VariablesCounter::updateState(const Json::Value &nextCmd)
 
 size_t VariablesCounter::getFree(size_t index)
 {
+    LCC_ASSERT(index >= 1);
     return counters[currentProcedure] + index;
 }
 

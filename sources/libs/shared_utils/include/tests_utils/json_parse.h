@@ -6,7 +6,7 @@
 
 namespace tests {
 
-Json::Value parse(trm::StringView json)
+inline Json::Value parse(trm::StringView json)
 {
     Json::Value root;
     Json::Reader reader;
