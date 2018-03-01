@@ -23,7 +23,7 @@ std::string FreeLabelReplacer::resolve(const trm::PatternStringInfo &patternStri
         throw std::runtime_error("Паттерн " + patternStringInfo.getName() + " указан без параметра");
     }
 
-    return std::to_string(counter.getFreeLabel(std::stoul(*param)));
+    return std::to_string(counter.getFree(std::stoul(*param)));
 }
 
 }  // namespace cyaz

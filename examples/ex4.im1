@@ -25,13 +25,13 @@
       [
         {"type": "operation", "name": "xor"},
         [
-          {"value": 224, "type": "const"}
+          {"type": "const", "value": 224}
         ]
       ],
       [
         {"type": "operation", "name": "jump_z"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
@@ -43,19 +43,19 @@
       [
         {"type": "operation", "name": "xor"},
         [
-          {"value": 240, "type": "const"}
+          {"type": "const", "value": 240}
         ]
       ],
       [
         {"type": "operation", "name": "jump_z"},
         [
-          {"value": 2, "type": "const"}
+          {"type": "const", "value": 2}
         ]
       ],
       [
         {"type": "operation", "name": "jump"},
         [
-          {"value": 3, "type": "const"}
+          {"type": "const", "value": 3}
         ]
       ]
     ],
@@ -70,13 +70,13 @@
       [
         {"type": "operation", "name": "xor"},
         [
-          {"value": 240, "type": "const"}
+          {"type": "const", "value": 240}
         ]
       ],
       [
         {"type": "operation", "name": "jump_nz"},
         [
-          {"value": 3, "type": "const"}
+          {"type": "const", "value": 3}
         ]
       ]
     ],
@@ -100,13 +100,13 @@
       [
         {"type": "operation", "name": "compare"},
         [
-          {"value": 2, "type": "const"}
+          {"type": "const", "value": 2}
         ]
       ],
       [
         {"type": "operation", "name": "jump_lt"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
@@ -118,13 +118,13 @@
       [
         {"type": "operation", "name": "compare"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
         {"type": "operation", "name": "jump_gt"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
@@ -132,14 +132,14 @@
         [
           {"type": "global_complex_4"},
           [
-            {"value": 65540, "type": "const"}
+            {"type": "const", "value": 65540}
           ]
         ]
       ],
       [
         {"type": "operation", "name": "add"},
         [
-          {"value": 6, "type": "const"}
+          {"type": "const", "value": 6}
         ]
       ],
       [
@@ -184,13 +184,13 @@
       [
         {"type": "operation", "name": "and"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
         {"type": "operation", "name": "jump_z"},
         [
-          {"value": 31, "type": "const"}
+          {"type": "const", "value": 31}
         ]
       ],
       [
@@ -211,7 +211,7 @@
       [
         {"type": "operation", "name": "and"},
         [
-          {"value": 254, "type": "const"}
+          {"type": "const", "value": 254}
         ]
       ],
       [
@@ -226,7 +226,7 @@
       [
         {"type": "operation", "name": "jump"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ]
     ],
@@ -250,7 +250,7 @@
       [
         {"type": "operation", "name": "or"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [

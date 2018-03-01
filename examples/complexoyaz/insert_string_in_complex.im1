@@ -1,11 +1,11 @@
 [
   {"type": "program"},
   [
-    {"type": "procedure", "name": "comp"},
+    {"name": "comp", "type": "procedure"},
     [
       {"type": "in_args"},
       [
-        {"type": "var", "name": "a"}
+        {"name": "a", "type": "var"}
       ]
     ],
     [
@@ -14,21 +14,21 @@
     [
       {"type": "preface"},
       [
-        {"type": "operation", "name": "create_complex"},
+        {"name": "create_complex", "type": "operation"},
         [
           {"type": "symbol_complex", "number": 1}
         ],
         [
-          {"type": "var", "name": "a"}
+          {"name": "a", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "insert_string_in_complex"},
+        {"name": "insert_string_in_complex", "type": "operation"},
         [
           {"type": "symbol_complex", "number": 1}
         ],
         [
-          {"value": "test_string", "type": "string"}
+          {"type": "string", "value": "test_string"}
         ]
       ]
     ]

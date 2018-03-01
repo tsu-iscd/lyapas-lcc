@@ -18,7 +18,7 @@
         [
           {"type": "global_complex_4"},
           [
-            {"value": 65536, "type": "const"}
+            {"type": "const", "value": 65536}
           ]
         ]
       ],
@@ -52,7 +52,7 @@
       [
         {"type": "operation", "name": "jump_z"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
@@ -79,13 +79,13 @@
       [
         {"type": "operation", "name": "compare"},
         [
-          {"value": 32, "type": "const"}
+          {"type": "const", "value": 32}
         ]
       ],
       [
         {"type": "operation", "name": "jump_geq"},
         [
-          {"value": 2, "type": "const"}
+          {"type": "const", "value": 2}
         ]
       ],
       [
@@ -100,13 +100,13 @@
       [
         {"type": "operation", "name": "xor"},
         [
-          {"value": 10, "type": "const"}
+          {"type": "const", "value": 10}
         ]
       ],
       [
         {"type": "operation", "name": "jump_nz"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
@@ -118,7 +118,7 @@
       [
         {"type": "operation", "name": "mod"},
         [
-          {"value": 160, "type": "const"}
+          {"type": "const", "value": 160}
         ]
       ],
       [
@@ -136,13 +136,13 @@
       [
         {"type": "operation", "name": "compare"},
         [
-          {"value": 3840, "type": "const"}
+          {"type": "const", "value": 3840}
         ]
       ],
       [
         {"type": "operation", "name": "jump_geq"},
         [
-          {"value": 11, "type": "const"}
+          {"type": "const", "value": 11}
         ]
       ],
       [
@@ -154,7 +154,7 @@
       [
         {"type": "operation", "name": "add"},
         [
-          {"value": 160, "type": "const"}
+          {"type": "const", "value": 160}
         ]
       ],
       [
@@ -172,7 +172,7 @@
       [
         {"type": "operation", "name": "jump"},
         [
-          {"value": 5, "type": "const"}
+          {"type": "const", "value": 5}
         ]
       ]
     ],
@@ -193,13 +193,13 @@
       [
         {"type": "operation", "name": "xor"},
         [
-          {"value": 160, "type": "const"}
+          {"type": "const", "value": 160}
         ]
       ],
       [
         {"type": "operation", "name": "jump_z"},
         [
-          {"value": 5, "type": "const"}
+          {"type": "const", "value": 5}
         ]
       ],
       [
@@ -211,7 +211,7 @@
       [
         {"type": "operation", "name": "add"},
         [
-          {"value": 753664, "type": "const"}
+          {"type": "const", "value": 753664}
         ]
       ],
       [
@@ -232,7 +232,7 @@
       [
         {"type": "operation", "name": "jump"},
         [
-          {"value": 11, "type": "const"}
+          {"type": "const", "value": 11}
         ]
       ]
     ],
@@ -247,7 +247,7 @@
       [
         {"type": "operation", "name": "add"},
         [
-          {"value": 753664, "type": "const"}
+          {"type": "const", "value": 753664}
         ]
       ],
       [
@@ -289,7 +289,7 @@
       [
         {"type": "operation", "name": "load"},
         [
-          {"value": 7, "type": "const"}
+          {"type": "const", "value": 7}
         ]
       ],
       [
@@ -325,19 +325,19 @@
       [
         {"type": "operation", "name": "compare"},
         [
-          {"value": 4000, "type": "const"}
+          {"type": "const", "value": 4000}
         ]
       ],
       [
         {"type": "operation", "name": "jump_lt"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
         {"type": "operation", "name": "load"},
         [
-          {"value": 753664, "type": "const"}
+          {"type": "const", "value": 753664}
         ]
       ],
       [
@@ -349,7 +349,7 @@
       [
         {"type": "operation", "name": "add"},
         [
-          {"value": 160, "type": "const"}
+          {"type": "const", "value": 160}
         ]
       ],
       [
@@ -367,7 +367,7 @@
       [
         {"type": "operation", "name": "load"},
         [
-          {"value": 3840, "type": "const"}
+          {"type": "const", "value": 3840}
         ]
       ],
       [
@@ -388,13 +388,13 @@
       [
         {"type": "operation", "name": "xor"},
         [
-          {"value": 3840, "type": "const"}
+          {"type": "const", "value": 3840}
         ]
       ],
       [
         {"type": "operation", "name": "jump_z"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
@@ -430,7 +430,7 @@
       [
         {"type": "operation", "name": "jump"},
         [
-          {"value": 3, "type": "const"}
+          {"type": "const", "value": 3}
         ]
       ]
     ],
@@ -447,7 +447,7 @@
         [
           {"type": "global_complex_4"},
           [
-            {"value": 65536, "type": "const"}
+            {"type": "const", "value": 65536}
           ]
         ]
       ]

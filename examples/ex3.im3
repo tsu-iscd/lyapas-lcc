@@ -4,103 +4,103 @@
       "type" : "definition"
    },
    {
-      "args" : [ "G4[65540]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G4[65540]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "s" ],
-      "cmd" : "store",
+      "args" : [ "s", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G4[s]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G4[s]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "p" ],
-      "cmd" : "store",
+      "args" : [ "p", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "s" ],
-      "cmd" : "load",
+      "args" : [ "acc", "s" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 4 ],
+      "args" : [ "acc", 4 ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "n" ],
-      "cmd" : "store",
+      "args" : [ "n", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 1 ],
+      "args" : [ "acc", 1 ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "i" ],
-      "cmd" : "store",
+      "args" : [ "i", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 1 ],
+      "args" : [ "acc", 1 ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "a" ],
-      "cmd" : "store",
+      "args" : [ "a", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 1 ],
+      "args" : [ "acc", 1 ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "c" ],
-      "cmd" : "store",
+      "args" : [ "c", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G1[i]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G1[i]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "j" ],
-      "cmd" : "store",
+      "args" : [ "j", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 4 ],
+      "args" : [ "acc", 4, "Z" ],
       "cmd" : "mul",
       "type" : "cmd"
    },
    {
-      "args" : [ "p" ],
+      "args" : [ "acc", "p" ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "q" ],
-      "cmd" : "store",
+      "args" : [ "q", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G4[65624]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G4[65624]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G4[q]" ],
-      "cmd" : "store",
+      "args" : [ "G4[q]", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
@@ -113,7 +113,12 @@
       "type" : "cmd"
    },
    {
-      "args" : [ "G1[n]" ],
+      "args" : [ "acc", "j" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", "G1[n]" ],
       "cmd" : "xor",
       "type" : "cmd"
    },
@@ -132,23 +137,23 @@
       "type" : "label"
    },
    {
-      "args" : [ "c" ],
-      "cmd" : "load",
+      "args" : [ "acc", "c" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "j" ],
+      "args" : [ "acc", "j" ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "s" ],
-      "cmd" : "store",
+      "args" : [ "s", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G1[a]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G1[a]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
@@ -157,12 +162,12 @@
       "type" : "cmd"
    },
    {
-      "args" : [ "G1[s]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G1[s]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 4 ],
+      "args" : [ "acc", 4 ],
       "cmd" : "right_shift",
       "type" : "cmd"
    },
@@ -176,12 +181,12 @@
       "type" : "label"
    },
    {
-      "args" : [ "G1[s]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G1[s]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 1 ],
+      "args" : [ "acc", 1 ],
       "cmd" : "and",
       "type" : "cmd"
    },
@@ -191,43 +196,43 @@
       "type" : "cmd"
    },
    {
-      "args" : [ "j" ],
-      "cmd" : "load",
+      "args" : [ "acc", "j" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ 4 ],
+      "args" : [ "acc", 4, "Z" ],
       "cmd" : "mul",
       "type" : "cmd"
    },
    {
-      "args" : [ "p" ],
+      "args" : [ "acc", "p" ],
       "cmd" : "add",
       "type" : "cmd"
    },
    {
-      "args" : [ "p" ],
-      "cmd" : "store",
+      "args" : [ "p", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G4[p]" ],
-      "cmd" : "load",
+      "args" : [ "acc", "G4[p]" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G4[65624]" ],
-      "cmd" : "store",
+      "args" : [ "G4[65624]", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "j" ],
-      "cmd" : "load",
+      "args" : [ "acc", "j" ],
+      "cmd" : "move",
       "type" : "cmd"
    },
    {
-      "args" : [ "G1[i]" ],
-      "cmd" : "store",
+      "args" : [ "G1[i]", "acc" ],
+      "cmd" : "move",
       "type" : "cmd"
    }
 ]

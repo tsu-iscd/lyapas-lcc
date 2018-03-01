@@ -23,7 +23,7 @@ std::string FreeVarReplacer::resolve(const trm::PatternStringInfo &patternString
         throw std::runtime_error("Паттерн " + patternStringInfo.getName() + " указан без параметра");
     }
 
-    return 't' + std::to_string(counter.getFreeVariable(std::stoul(*param)));
+    return 't' + std::to_string(counter.getFree(std::stoul(*param)));
 }
 
 }  // namespace cyaz

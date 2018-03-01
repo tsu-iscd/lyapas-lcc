@@ -1,0 +1,1 @@
+{"file": "<stdin>", "source": "handle_scancode(/)\n    {xor eax, eax} {in al, 0x60} ⇒k⊕E0h ↪1 k⊕F0h ↪2 →3\n    §1 {xor eax, eax} {in al, 0x60} ⊕F0h ↦3\n    §2 {xor eax, eax} {in al, 0x60}\n    §3  ↑(k<2)4 ↑(k>4)4 K[10004h]+6⇒a+k⇒s ∇k  Ks⇒c & 1 ↪31 ∇Ka  c & FEh⇒Ks →4\n    §31 ∆Ka  c ∨ 1⇒Ks\n    §4\n**\n"}
