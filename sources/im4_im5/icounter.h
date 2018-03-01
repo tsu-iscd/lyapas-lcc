@@ -12,7 +12,7 @@ public:
     virtual void process(const Json::Value &program) = 0;
 
     // метод вызывается перед трансляцией очередной команды
-    virtual void updateState(const Json::Value &nextCmd) = 0 ;
+    virtual void updateState(const Json::Value &nextCmd) = 0;
 
     // метод используются во время трансляции команды
     virtual size_t getFree(size_t index) = 0;

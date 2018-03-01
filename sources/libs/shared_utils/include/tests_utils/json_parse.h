@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdexcept>
-#include <translation_module/aliases.h>
 #include <json/json.h>
+#include <translation_module/aliases.h>
 
 namespace tests {
 
@@ -19,4 +19,4 @@ inline Json::Value parse(trm::StringView json)
     return root;
 }
 
-}
+}  // namespace tests

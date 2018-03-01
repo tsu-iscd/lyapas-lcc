@@ -112,4 +112,4 @@ TEST(LabelsCounter, usage)
     ASSERT_EQ(program.end(), ++currentCmd);
 }
 
-}
+}  // namespace cyaz

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include <variables_counter.h>
 #include <tests_utils/json_parse.h>
+#include <variables_counter.h>
 
 namespace cyaz {
 
@@ -105,7 +105,6 @@ TEST(VariablesCounter, usage)
     // 4 == 3 + 1
     ASSERT_EQ(4, counter.getFree(1));
 
-
     //
     // definition f2
     //
@@ -134,4 +133,4 @@ TEST(VariablesCounter, usage)
     ASSERT_EQ(program.end(), ++currentCmd);
 }
 
-}
+}  // namespace cyaz
