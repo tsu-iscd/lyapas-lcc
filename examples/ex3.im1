@@ -1,7 +1,7 @@
 [
   {"type": "program"},
   [
-    {"type": "procedure", "name": "scheduler"},
+    {"name": "scheduler", "type": "procedure"},
     [
       {"type": "in_args"}
     ],
@@ -11,137 +11,137 @@
     [
       {"type": "preface"},
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_4"},
           [
-            {"value": 65540, "type": "const"}
+            {"type": "const", "value": 65540}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "s"}
+          {"name": "s", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_4"},
           [
-            {"type": "var", "name": "s"}
+            {"name": "s", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "p"}
+          {"name": "p", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
-          {"type": "var", "name": "s"}
+          {"name": "s", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "n"}
+          {"name": "n", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "i"}
+          {"name": "i", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "a"}
+          {"name": "a", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "c"}
+          {"name": "c", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_1"},
           [
-            {"type": "var", "name": "i"}
+            {"name": "i", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "j"}
+          {"name": "j", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "mul"},
+        {"name": "mul", "type": "operation"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"type": "var", "name": "p"}
+          {"name": "p", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "q"}
+          {"name": "q", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_4"},
           [
-            {"value": 65624, "type": "const"}
+            {"type": "const", "value": 65624}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
           {"type": "global_complex_4"},
           [
-            {"type": "var", "name": "q"}
+            {"name": "q", "type": "var"}
           ]
         ]
       ]
@@ -149,167 +149,167 @@
     [
       {"type": "par", "number": 1},
       [
-        {"type": "operation", "name": "inc"},
+        {"name": "inc", "type": "operation"},
         [
-          {"type": "var", "name": "j"}
+          {"name": "j", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "xor"},
+        {"name": "xor", "type": "operation"},
         [
           {"type": "global_complex_1"},
           [
-            {"type": "var", "name": "n"}
+            {"name": "n", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "jump_nz"},
+        {"name": "jump_nz", "type": "operation"},
         [
-          {"value": 2, "type": "const"}
+          {"type": "const", "value": 2}
         ]
       ],
       [
-        {"type": "operation", "name": "set_min"},
+        {"name": "set_min", "type": "operation"},
         [
-          {"type": "var", "name": "j"}
+          {"name": "j", "type": "var"}
         ]
       ]
     ],
     [
       {"type": "par", "number": 2},
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
-          {"type": "var", "name": "c"}
+          {"name": "c", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"type": "var", "name": "j"}
+          {"name": "j", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "s"}
+          {"name": "s", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_1"},
           [
-            {"type": "var", "name": "a"}
+            {"name": "a", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "jump_z"},
+        {"name": "jump_z", "type": "operation"},
         [
-          {"value": 3, "type": "const"}
+          {"type": "const", "value": 3}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_1"},
           [
-            {"type": "var", "name": "s"}
+            {"name": "s", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "right_shift"},
+        {"name": "right_shift", "type": "operation"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
-        {"type": "operation", "name": "jump_nz"},
+        {"name": "jump_nz", "type": "operation"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ]
     ],
     [
       {"type": "par", "number": 3},
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_1"},
           [
-            {"type": "var", "name": "s"}
+            {"name": "s", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "and"},
+        {"name": "and", "type": "operation"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
-        {"type": "operation", "name": "jump_z"},
+        {"name": "jump_z", "type": "operation"},
         [
-          {"value": 1, "type": "const"}
+          {"type": "const", "value": 1}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
-          {"type": "var", "name": "j"}
+          {"name": "j", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "mul"},
+        {"name": "mul", "type": "operation"},
         [
-          {"value": 4, "type": "const"}
+          {"type": "const", "value": 4}
         ]
       ],
       [
-        {"type": "operation", "name": "add"},
+        {"name": "add", "type": "operation"},
         [
-          {"type": "var", "name": "p"}
+          {"name": "p", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
-          {"type": "var", "name": "p"}
+          {"name": "p", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
           {"type": "global_complex_4"},
           [
-            {"type": "var", "name": "p"}
+            {"name": "p", "type": "var"}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
           {"type": "global_complex_4"},
           [
-            {"value": 65624, "type": "const"}
+            {"type": "const", "value": 65624}
           ]
         ]
       ],
       [
-        {"type": "operation", "name": "load"},
+        {"name": "load", "type": "operation"},
         [
-          {"type": "var", "name": "j"}
+          {"name": "j", "type": "var"}
         ]
       ],
       [
-        {"type": "operation", "name": "store"},
+        {"name": "store", "type": "operation"},
         [
           {"type": "global_complex_1"},
           [
-            {"type": "var", "name": "i"}
+            {"name": "i", "type": "var"}
           ]
         ]
       ]
