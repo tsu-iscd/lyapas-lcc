@@ -117,7 +117,8 @@ CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &repl
 
 void trm::TranslationModule::process(JSON &cmds)
 {
-    static CmdTranslators cmdTranslators = getCmdTranslators(getRules(), getReplacers(cmds));
+    Replacers &replacers = getReplacers(cmds);
+    static CmdTranslators cmdTranslators = getCmdTranslators(getRules(), replacers);
 
     if (!cmds.isArray()) {
         throw std::runtime_error("JSON with commands is not array");
@@ -128,6 +129,10 @@ void trm::TranslationModule::process(JSON &cmds)
     // 2) пропускать команды, которые не требуют трансляции.
     JSON resultCmds;
     for (auto &&cmd : cmds) {
+        for (auto &replacer : replacers) {
+            replacer.second->updateState(cmd);
+        }
+
         auto p = cmdTranslators.find(createCmdInfo(cmd));
         if (p != cmdTranslators.end()) {
             for (auto &&resultCmd : p->second.translate(cmd)) {
