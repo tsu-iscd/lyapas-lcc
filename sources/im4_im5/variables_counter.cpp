@@ -23,7 +23,6 @@ void VariablesCounter::process(const Json::Value &program)
         std::string cmdName = cmd["cmd"].asString();
         const Json::Value &args = cmd["args"];
 
-        // переключатель между счетчиками
         if (cmdName == "definition") {
             LCC_ENSURE(args.size() >= 1, "args are too small");
             currentProcedure = args[0].asString();
@@ -39,15 +38,18 @@ void VariablesCounter::process(const Json::Value &program)
             index = 1;
         }
 
-        static const std::regex variable("t([0-9]+)");
-        std::smatch match;
         for (; index < args.size(); ++index) {
             const auto &arg = args[index];
-            if (arg.isString()) {
-                std::string argStr(arg.asString());
-                if (std::regex_match(argStr, match, variable) && match.size() == 2) {
-                    counters[currentProcedure] = std::max(std::stoul(match[1].str()), counters[currentProcedure]);
-                }
+            if (!arg.isString()) {
+                break;
+            }
+            std::string argStr = arg.asString();
+
+            static const std::regex variable("t([0-9]+)");
+            std::smatch match;
+            if (std::regex_match(argStr, match, variable) && match.size() == 2) {
+                auto variableIndex = std::stoul(match[1].str());
+                counters[currentProcedure] = std::max(variableIndex, counters[currentProcedure]);
             }
         }
     }

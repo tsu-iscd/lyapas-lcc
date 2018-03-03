@@ -7,15 +7,14 @@ namespace cyaz {
 void LabelsCounter::process(const Json::Value &program)
 {
     for (const auto &cmd : program) {
-        const std::string &cmdType = cmd["type"].asString();
+        const std::string &type = cmd["type"].asString();
 
-        // переключение между счетчиками
-        if (cmdType == "cmd" && cmd["cmd"].asString() == "definition") {
+        if (type == "cmd" && cmd["cmd"].asString() == "definition") {
             const Json::Value &args = cmd["args"];
             LCC_ENSURE(args.size() >= 1, "args are too small");
             currentProcedure = args[0].asString();
             counters[currentProcedure] = 0;
-        } else if (cmdType == "label") {
+        } else if (type == "label") {
             size_t labelNumber = cmd["number"].asUInt();
             counters[currentProcedure] = std::max(labelNumber, counters[currentProcedure]);
         }
@@ -24,9 +23,11 @@ void LabelsCounter::process(const Json::Value &program)
 
 void LabelsCounter::updateState(const Json::Value &nextCmd)
 {
-    if (issuedCount) {
-        counters[currentProcedure] += issuedCount;
-        issuedCount = 0;
+    // все метки, которые были выданы во время
+    // обработки предыдущей команды, считаются занятыми
+    if (givenLabel) {
+        counters[currentProcedure] += *givenLabel;
+        givenLabel = trm::nullOpt;
     }
 
     if (nextCmd["type"].asString() == "cmd" && nextCmd["cmd"].asString() == "definition") {
@@ -37,7 +38,7 @@ void LabelsCounter::updateState(const Json::Value &nextCmd)
 size_t LabelsCounter::getFree(size_t index)
 {
     LCC_ASSERT(index >= 1);
-    issuedCount = std::max(index, issuedCount);
+    givenLabel = givenLabel ? std::max(index, *givenLabel) : index;
     return counters[currentProcedure] + index;
 }
 

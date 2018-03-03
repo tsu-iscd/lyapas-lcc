@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <translation_module/aliases.h>
 #include "icounter.h"
 
 namespace cyaz {
@@ -42,7 +43,7 @@ public:
 private:
     std::unordered_map<std::string, size_t> counters;
     std::string currentProcedure;
-    size_t issuedCount = 0;
+    trm::Optional<size_t> givenLabel;
 };
 
 }  // namespace cyaz
