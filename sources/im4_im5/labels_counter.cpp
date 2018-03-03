@@ -38,8 +38,7 @@ void LabelsCounter::updateState(const Json::Value &nextCmd)
 size_t LabelsCounter::getFree(size_t index)
 {
     LCC_ASSERT(index >= 1);
-    givenLabel = givenLabel ? std::max(index, *givenLabel)
-                            : index;
+    givenLabel = givenLabel ? std::max(index, *givenLabel) : index;
     return counters[currentProcedure] + index;
 }
 
