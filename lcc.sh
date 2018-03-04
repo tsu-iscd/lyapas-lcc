@@ -10,8 +10,8 @@ program_to_run=($path_to_lyapas_dir"/lyapas_to_json.py"
                 $path_to_lyapas_dir"/build/im0_im1" 
                 $path_to_lyapas_dir"/build/im1_im2" 
                 $path_to_lyapas_dir"/build/im2_im3"
-                $path_to_lyapas_dir"/build/im3_im4"
-                $path_to_lyapas_dir"/build/im4_im5")
+                $path_to_lyapas_dir"/build/im4_im5"
+                $path_to_lyapas_dir"/build/im3_im4")
 suffix=("" ".json" ".im0" ".im1" ".im2" ".im3" ".im4" ".im5")
 
 function translate()
