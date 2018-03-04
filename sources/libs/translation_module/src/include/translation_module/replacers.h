@@ -74,7 +74,7 @@ private:
     Optional<unsigned long> group;
     Optional<std::string> param;
 
-    // FIXME(vsafonov): это поле тут не к месту
+    // FIXME: вынести это поле из класса
     const StringMap &stringMap;
 };
 

@@ -4,16 +4,14 @@
 
 namespace cyaz {
 
-FreeLabelReplacer::FreeLabelReplacer(const Json::Value &cmds)
+FreeLabelReplacer::FreeLabelReplacer(const Json::Value &program)
 {
-    for (const auto &cmd : cmds) {
-        counter.process(cmd);
-    }
+    counter.process(program);
 }
 
-void FreeLabelReplacer::updateState(const Json::Value &cmd)
+void FreeLabelReplacer::updateState(const Json::Value &nextCmd)
 {
-    counter.updateState(cmd);
+    counter.updateState(nextCmd);
 }
 
 std::string FreeLabelReplacer::resolve(const trm::PatternStringInfo &patternStringInfo)

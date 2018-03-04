@@ -9,9 +9,9 @@ namespace cyaz {
 
 class FreeLabelReplacer : public trm::Replacer {
 public:
-    FreeLabelReplacer(const Json::Value &cmds);
+    explicit FreeLabelReplacer(const Json::Value &program);
 
-    void updateState(const Json::Value &cmd) override;
+    void updateState(const Json::Value &nextCmd) override;
     std::string resolve(const trm::PatternStringInfo &patternStringInfo) override;
 
 private:

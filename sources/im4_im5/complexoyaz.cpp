@@ -1,4 +1,5 @@
 #include "complexoyaz.h"
+#include <memory>
 #include "replacers.h"
 
 namespace cyaz {

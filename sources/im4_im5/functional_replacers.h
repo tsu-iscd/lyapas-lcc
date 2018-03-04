@@ -10,7 +10,7 @@ using ReplaceFunction = std::function<std::string(const trm::PatternStringInfo &
 
 class FunctionalReplacer : public trm::Replacer {
 public:
-    FunctionalReplacer(ReplaceFunction function);
+    explicit FunctionalReplacer(ReplaceFunction function);
 
     std::string resolve(const trm::PatternStringInfo &patternStringInfo) override;
 
