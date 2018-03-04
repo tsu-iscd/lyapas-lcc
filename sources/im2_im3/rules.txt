@@ -8,19 +8,17 @@ cmd/load {arg}
 =>
 cmd/move "acc", {arg}
 
-# TODO: "swaptemp" -> "<free_var=1>"
 cmd/swap {variable:1}, {variable:2}
 =>
-cmd/move "swaptemp", {variable:1}
+cmd/move "<free_var=1>", {variable:1}
 cmd/move {variable:1}, {variable:2}
-cmd/move {variable:2}, "swaptemp"
+cmd/move {variable:2}, "<free_var=1>"
 
-# TODO: "swaptemp" -> "<free_var=1>"
 cmd/swap_comp_el "<complex>", "<int:1>", "<int:2>"
 =>
-cmd/move "swaptemp", "<complex>[<int:1>]"
+cmd/move "<free_var=1>", "<complex>[<int:1>]"
 cmd/move "<complex>[<int:1>]", "<complex>[<int:2>]"
-cmd/move "<complex>[<int:2>]", "swaptemp"
+cmd/move "<complex>[<int:2>]", "<free_var=1>"
 
 cmd/get_time
 =>
