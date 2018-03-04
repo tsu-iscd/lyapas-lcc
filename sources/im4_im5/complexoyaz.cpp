@@ -28,7 +28,7 @@ std::string calculateElementSize(const std::string &complex)
     } else if (firstChar == 'F') {
         return "1";
     } else {
-        throw std::logic_error("Обработчик не установлен");
+        throw std::logic_error("Обработчик для " + complex + " не установлен");
     }
 }
 
