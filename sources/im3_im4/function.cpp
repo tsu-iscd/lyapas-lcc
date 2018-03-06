@@ -87,6 +87,7 @@ void Function::insertVariable(JSON &var)
     /*ТРАНЛЯЦИЯ F1[t1]
      * имя комплекса ТОЧНО в списке локальных переменных
      * индекс может не быть в списке локальных переменных*/
+
     if (isArrayIndex(nameVar)) {
         ArrayIndex arrayIndex(nameVar);
         LCC_ASSERT(findVariable(arrayIndex.name) != variables.end());
@@ -125,7 +126,7 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
 
     auto index = findVariable(arrayIndex.index);
     LCC_ASSERT(index != variables.end());
-    return var->alias + "[" + index->alias + "]";
+    return arrayIndex.prefix + var->alias + "[" + index->alias + "]";
 }
 
 Function::Variables::iterator Function::findVariable(std::string nameVariable)
