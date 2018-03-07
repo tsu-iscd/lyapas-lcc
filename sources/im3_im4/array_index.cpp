@@ -7,10 +7,10 @@ ArrayIndex::ArrayIndex(const std::string &var)
 
     index = std::string{var.begin() + var.find("[") + 1, var.end() - 1};
 
-    //если есть префикс
+    //если нет префикса
     if (var.find(" ") == std::string::npos) {
         name = std::string{var.begin(), var.begin() + var.find("[")};
-        prefix = std::string{""};
+        prefix = "";
         return;
     }
 
