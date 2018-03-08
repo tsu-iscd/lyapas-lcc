@@ -1,0 +1,54 @@
+[
+   {
+      "args" : [ "main", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ "acc", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", "k" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "acc", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_z",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "dec",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   }
+]

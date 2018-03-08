@@ -1,0 +1,68 @@
+[
+   {
+      "name" : "main",
+      "type" : "label"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "stack_alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l0", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", "l0" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l0", "l1" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l2", "l0" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : null,
+      "cmd" : null,
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "l0", "l2" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_z",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l2" ],
+      "cmd" : "dec",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l0", "l2" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : null,
+      "cmd" : null,
+      "number" : 2,
+      "type" : "label"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "stack_free",
+      "type" : "cmd"
+   }
+]

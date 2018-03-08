@@ -1,0 +1,49 @@
+[
+   {
+      "args" : [ "main", "/" ],
+      "type" : "definition"
+   },
+   {
+      "args" : [ 10 ],
+      "cmd" : "load",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "store",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "k" ],
+      "cmd" : "load",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "store",
+      "type" : "cmd"
+   },
+   {
+      "number" : 1,
+      "type" : "label"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "load",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 3 ],
+      "cmd" : "jump_z",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "a" ],
+      "cmd" : "dec",
+      "type" : "cmd"
+   },
+   {
+      "number" : 2,
+      "type" : "label"
+   }
+]

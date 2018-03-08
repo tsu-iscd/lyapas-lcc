@@ -1,0 +1,63 @@
+[
+  {"type": "program"},
+  [
+    {"name": "main", "type": "procedure"},
+    [
+      {"type": "in_args"}
+    ],
+    [
+      {"type": "out_args"}
+    ],
+    [
+      {"type": "preface"},
+      [
+        {"name": "load", "type": "operation"},
+        [
+          {"type": "const", "value": 10}
+        ]
+      ],
+      [
+        {"name": "store", "type": "operation"},
+        [
+          {"name": "k", "type": "var"}
+        ]
+      ],
+      [
+        {"name": "load", "type": "operation"},
+        [
+          {"name": "k", "type": "var"}
+        ]
+      ],
+      [
+        {"name": "store", "type": "operation"},
+        [
+          {"name": "a", "type": "var"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 1},
+      [
+        {"name": "load", "type": "operation"},
+        [
+          {"name": "a", "type": "var"}
+        ]
+      ],
+      [
+        {"name": "jump_z", "type": "operation"},
+        [
+          {"type": "const", "value": 3}
+        ]
+      ],
+      [
+        {"name": "dec", "type": "operation"},
+        [
+          {"name": "a", "type": "var"}
+        ]
+      ]
+    ],
+    [
+      {"type": "par", "number": 2}
+    ]
+  ]
+]
