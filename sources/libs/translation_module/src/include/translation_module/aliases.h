@@ -17,6 +17,8 @@ using IntMap = std::map<std::string, int64_t>;
 
 template <typename T>
 using Optional = std::experimental::optional<T>;
+constexpr auto nullOpt = std::experimental::nullopt;
+
 using StringView = std::experimental::string_view;
 
 }  // namespace trm
