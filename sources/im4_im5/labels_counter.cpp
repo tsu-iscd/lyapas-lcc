@@ -1,5 +1,4 @@
 #include "labels_counter.h"
-#include <regex>
 #include <shared_utils/assertion.h>
 
 namespace cyaz {
