@@ -51,9 +51,9 @@ alloc_at_least <readable_int>, <writable_int>
 
 ### Перезахват памяти
 ```
-realloc <readable_int>, <readable_int>, <writable_int>
+realloc <readable_int>, <writable_int>
 ```
-Первый и второй операнды --- текущий и новый размеры захваченой памяти, а третий операнд --- адрес захваченной памяти. Если новый размер больше, чем текущий, то адрес захваченной памяти может измениться. В таком случае память полностью копируется из старого местоположения в новое. Если новый размер равен нулю, то адрес захваченной памяти приравнивается к нулю. Приложение завершается аварийной остановкой, если захватить память не удалось.
+Первый операнд --- требуемый размеры захваченной памяти, а второй операнд --- адрес захваченной памяти. Если требуемый размер больше, чем текущий, то адрес захваченной памяти может измениться. В таком случае память полностью копируется из старого местоположения в новое, а во второй операнд записывается адрес захваченной памяти. Если новый размер равен нулю, то адрес захваченной памяти приравнивается к нулю. Приложение завершается аварийной остановкой, если захватить память не удалось.
 
 ### Освобождение памяти
 ```
@@ -66,15 +66,17 @@ dealloc <readable_int>
 Введем обознчения для описания трансляции операций в комплексояз:
 `<complex_struct>` ::= `<complex>_struct`
 
-`<complex_cardinality>` ::= `4byte <complex>_struct[0]`
+`<complex_cardinality>` ::= `8byte <complex>_struct[0]`
 
-`<complex_capacity>` ::= `4byte <complex>_struct[1]`
+`<complex_capacity>` ::= `8byte <complex>_struct[1]`
 
-`<complex_buffer>` ::= `4byte <complex>_struct[2]`
+`<complex_buffer>` ::= `8byte <complex>_struct[2]`
 
-`<complex_buffer_var>` ::= `<complex>_buffer`
+`<complex_buffer_var>` ::= вспомогательная переменная, в которой лежит значение `<complex_buffer>`
 
-`<complex_cell>(i)` ::= `<bytes> <complex_buffer_var>[i]`, где `<bytes>` равен `1byte` для символьных комплексов и `4byte` для логических.
+`<complex_element_size>` ::= `1byte` для символьных комплексов и `8byte` для логических.
+
+`<complex_cell>(i)` ::= `<complex_element_size> <complex_buffer_var>[i]`.
 
 `<string_len>` --- длина строки `<string>`.
 
@@ -88,7 +90,9 @@ create_complex <complex>, <int>
 alloc 24, <complex_struct> 
 move <complex_cardinality>, 0 
 move <complex_capacity>, <int> 
-alloc_at_least <int>, <complex_buffer> 
+move cyaz_t1, <int>
+mul cyaz_t1, <complex_element_size>
+alloc_at_least cyaz_t1, <complex_buffer> 
 move <complex_buffer_var>, <complex_buffer>
 ```
 
@@ -104,7 +108,10 @@ dealloc <complex_struct>
 ```
 reduce_complex <complex>
 =>
-realloc <complex_capacity>, <complex_cardinality>, <complex_buffer> 
+move cyaz_t1, <complex_cardinality>
+mul cyaz_t1, <complex_element_size>
+realloc cyaz_t1, <complex_buffer> 
+move <complex_buffer_var>, <complex_buffer>
 move <complex_capacity>, <complex_cardinality>
 ```
 

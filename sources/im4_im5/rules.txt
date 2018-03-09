@@ -1,11 +1,31 @@
 R"(
 
+# TODO: подумать о руссификации ошибок
+# TODO: обновлять <complex_buffer_opt> после definition и call
+# TODO: транслировать L1[*] => L1_buffer[*]
+# TODO: bug: <free_label> записывается как команда
+
+#
+# TODO: транслировать можность и ёмкость
+# Q1 => L1_buffer[0]
+# S1 => L1_buffer[1]
+# FIX: мы не должны привязываться к L*_buffer, F*_buffer
+#
+
+#
+# TODO: alloc_at_least должен возвращать
+# кол-во памяти, которое было выделено
+#
+
+# 24 == 3 * 8, где 3 -- кол-во элементов, а 8 -- размер элемента в байтах
 cmd/create_complex "<complex>", {int}
 =>
-cmd/alloc 3, "<complex_struct>"
+cmd/alloc 24, "<complex_struct>"
 cmd/move "<complex_cardinality>", 0
 cmd/move "<complex_capacity>", {int}
-cmd/alloc_at_least {int}, "<complex_buffer>"
+cmd/move "<free_var=1>", {int}
+cmd/mul "<free_var=1>", <complex_element_size>
+cmd/alloc_at_least "<free_var=1>", "<complex_buffer>"
 cmd/move "<complex_buffer_opt>", "<complex_buffer>"
 
 cmd/remove_complex "<complex>"
@@ -15,9 +35,11 @@ cmd/dealloc "<complex_struct>"
 
 cmd/reduce_complex "<complex>"
 =>
-cmd/realloc "<complex_capacity>", "<complex_cardinality>", "<complex_buffer>"
-cmd/move "<complex_capacity>", "<complex_cardinality>"
+cmd/move "<free_var=1>", "<complex_cardinality>"
+cmd/mul "<free_var=1>", <complex_element_size>
+cmd/realloc "<free_var=1>", "<complex_buffer>"
 cmd/move "<complex_buffer_opt>", "<complex_buffer>"
+cmd/move "<complex_capacity>", "<complex_cardinality>"
 
 cmd/clear_complex "<complex>"
 =>
@@ -30,7 +52,8 @@ cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
 
-cmd/insert_string_in_complex "<symbol_complex>", "<string>"
+# нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+cmd/insert_string_in_complex "<complex>", "<string>"
 =>
 cmd/definition_string "<string>", "<free_var=1>"
 cmd/compare "<complex_capacity>", <string_len>
@@ -47,6 +70,7 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=2>
 label <free_label=3>
 
+# TODO: добавить push_back_element_to_complex
 cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
@@ -118,7 +142,7 @@ cmd/jump <free_label=5>
 label <free_label=3>
 cmd/move "<free_var=3>", "<complex_cardinality:2>"
 cmd/sub "<free_var=3>", "<free_var=2>"
-cmd/compare <int:1>, "<free_var=3>"
+cmd/compare {int:1}, "<free_var=3>"
 cmd/jump_leq <free_label=5>
 cmd/error "Cardinality of second complex is too small"
 label <free_label=5>
@@ -130,7 +154,8 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=5>
 label <free_label=6>
 
-cmd/write_complex "<symbol_complex>"
+# TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+cmd/write_complex "<complex>"
 =>
 cmd/move "<free_var=1>", 0
 label <free_label=1>
@@ -153,14 +178,16 @@ cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
 label <free_label=2>
 
-cmd/read_complex "<symbol_complex>"
+# TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
+# 10 - код символа перевода строки
+cmd/read_complex "<complex>"
 =>
 cmd/move "<free_var=1>", "<complex_cardinality>"
 label <free_label=1>
 cmd/compare "<free_var=1>", "<complex_capacity>"
 cmd/jump_geq <free_label=3>
 cmd/read_char "<complex_cell=<free_var=1>>"
-cmd/compare "<complex_cell=<free_var=1>>", 13
+cmd/compare "<complex_cell=<free_var=1>>", 10
 cmd/jump_eq <free_label=2>
 cmd/inc "<free_var=1>"
 cmd/jump <free_label=1>
