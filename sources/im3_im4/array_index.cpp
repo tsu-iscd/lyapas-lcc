@@ -5,10 +5,9 @@ ArrayIndex::ArrayIndex(const std::string &var)
 {
     LCC_ASSERT(var.back() == ']');
 
-    auto leftBracket = var.find('[');
-    auto rightBracket = var.find(']');
+    auto leftBracket = var.rfind('[');
+    auto rightBracket = var.rfind(']');
     index = var.substr(leftBracket + 1, rightBracket - 1);
-    prefix = "";
 
     auto content = var.substr(0, leftBracket);
     auto space = content.find(' ');
