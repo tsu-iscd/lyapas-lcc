@@ -51,11 +51,7 @@ public:
 
     std::string getGroupAsString() const
     {
-        if (group) {
-            return ":" + std::to_string(*group);
-        } else {
-            return "";
-        }
+        return group ? ":" + std::to_string(*group) : "";
     }
 
     const Optional<std::string> &getParam() const

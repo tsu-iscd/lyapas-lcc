@@ -1,6 +1,7 @@
 #include "complexoyaz.h"
-#include "replacers.h"
 #include <memory>
+#include <stdexcept>
+#include "replacers.h"
 
 namespace cyaz {
 
@@ -74,7 +75,7 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
                                { return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer"; });
     INSERT_FUNCTIONAL_REPLACER("complex_cell", {
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
-        std::string byteSize = calculateElementSize(complexName) + "byte";
+        std::string prefix = calculateElementSize(complexName) + "byte";
 
         const std::string &group = patternStringInfo.getGroupAsString();
 
@@ -83,7 +84,7 @@ trm::Replacers &Complexoyaz::getReplacers(const JSON &cmds)
             throw std::runtime_error("Не указан параметр");
         }
 
-        return byteSize + " <complex" + group + ">_buffer[" + *param + "]";
+        return prefix + " <complex" + group + ">_buffer[" + *param + "]";
     });
     INSERT_FUNCTIONAL_REPLACER("string_len", {
         const std::string &content = tryExtract(patternStringInfo, "string");
