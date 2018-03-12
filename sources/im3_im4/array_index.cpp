@@ -5,15 +5,18 @@ ArrayIndex::ArrayIndex(const std::string &var)
 {
     LCC_ASSERT(var.back() == ']');
 
-    index = std::string{var.begin() + var.find("[") + 1, var.end() - 1};
+    auto leftBracket = var.find('[');
+    auto rightBracket = var.find(']');
+    index = var.substr(leftBracket + 1, rightBracket - 1);
+    prefix = "";
 
-    //если нет префикса
-    if (var.find(" ") == std::string::npos) {
-        name = std::string{var.begin(), var.begin() + var.find("[")};
-        prefix = "";
-        return;
+    auto content = var.substr(0, leftBracket);
+    auto space = content.find(' ');
+
+    if (space != std::string::npos) {
+        prefix = content.substr(0, space + 1);
+        content = content.substr(space + 1);
     }
 
-    name = std::string{var.begin() + var.find(" ") + 1, var.begin() + var.find("[")};
-    prefix = std::string{var.begin(), var.begin() + var.find(" ") + 1};
+    name = content;
 }
