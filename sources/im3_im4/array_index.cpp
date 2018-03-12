@@ -4,7 +4,7 @@
 
 ArrayIndex::ArrayIndex(const std::string &var)
 {
-    isArrayIndex(var);
+    LCC_ASSERT(isArrayIndex(var));
 
     auto leftBracket = var.rfind('[');
     auto rightBracket = var.rfind(']');
