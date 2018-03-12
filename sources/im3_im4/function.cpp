@@ -88,7 +88,7 @@ void Function::insertVariable(JSON &var)
      * имя комплекса ТОЧНО в списке локальных переменных
      * индекс может не быть в списке локальных переменных*/
 
-    if (isArrayIndex(nameVar)) {
+    if (ArrayIndex::isArrayIndex(nameVar)) {
         ArrayIndex arrayIndex(nameVar);
         LCC_ASSERT(findVariable(arrayIndex.name) != variables.end());
         nameVar = arrayIndex.index;
@@ -109,7 +109,7 @@ JSON Function::getSubstitute(const JSON &nameVariable)
     std::string nameVar{nameVariable.asString()};
 
     //если обращение по индексу
-    if (isArrayIndex(nameVar)) {
+    if (ArrayIndex::isArrayIndex(nameVar)) {
         return getSubstituteArrayIndex(nameVar);
     }
 
@@ -133,25 +133,4 @@ Function::Variables::iterator Function::findVariable(std::string nameVariable)
 {
     return std::find_if(variables.begin(), variables.end(),
                         [&nameVariable](const Variable &element) { return element.name == nameVariable; });
-}
-
-bool Function::isArrayIndex(const std::string &var)
-{
-    if (var.find('[') == std::string::npos) {
-        return false;
-    }
-
-    if (std::count(var.begin(), var.end(), '[') > 1) {
-        throw std::runtime_error("Повторяющийся символ '[':" + var);
-    }
-
-    if (var.back() != ']') {
-        throw std::runtime_error("']' не последний символ в имени переменной:" + var);
-    }
-
-    if (std::count(var.begin(), var.end(), ']') > 1) {
-        throw std::runtime_error("Повторяющийся символ ']':" + var);
-    }
-
-    return true;
 }
