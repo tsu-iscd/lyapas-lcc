@@ -20,7 +20,6 @@ private:
     JSON getSubstitute(const JSON &nameVariable);
     JSON getSubstituteArrayIndex(const std::string &nameVariable);
     Variables::iterator findVariable(std::string nameVariable);
-    bool isArrayIndex(const std::string &var);
 
     Variables variables;
     FunctionSignature signature;
