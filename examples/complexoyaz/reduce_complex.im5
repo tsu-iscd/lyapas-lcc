@@ -4,7 +4,7 @@
       "type" : "definition"
    },
    {
-      "args" : [ 3, 8, "L1_struct" ],
+      "args" : [ 24, "L1_struct" ],
       "cmd" : "alloc",
       "type" : "cmd"
    },
@@ -19,7 +19,17 @@
       "type" : "cmd"
    },
    {
-      "args" : [ "a", 8, "8byte L1_struct[2]" ],
+      "args" : [ "t1", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 8 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", "8byte L1_struct[2]" ],
       "cmd" : "alloc_at_least",
       "type" : "cmd"
    },
@@ -29,17 +39,27 @@
       "type" : "cmd"
    },
    {
-      "args" : [ "8byte L1_struct[1]", "8byte L1_struct[0]", 8, "8byte L1_struct[2]" ],
-      "cmd" : "realloc",
-      "type" : "cmd"
-   },
-   {
-      "args" : [ "8byte L1_struct[1]", "8byte L1_struct[0]" ],
+      "args" : [ "t1", "8byte L1_struct[0]" ],
       "cmd" : "move",
       "type" : "cmd"
    },
    {
+      "args" : [ "t1", 8 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", "8byte L1_struct[2]" ],
+      "cmd" : "realloc",
+      "type" : "cmd"
+   },
+   {
       "args" : [ "L1_buffer", "8byte L1_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte L1_struct[1]", "8byte L1_struct[0]" ],
       "cmd" : "move",
       "type" : "cmd"
    }

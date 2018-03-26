@@ -4,7 +4,7 @@
       "type" : "definition"
    },
    {
-      "args" : [ 3, 8, "F2_struct" ],
+      "args" : [ 24, "F2_struct" ],
       "cmd" : "alloc",
       "type" : "cmd"
    },
@@ -19,7 +19,17 @@
       "type" : "cmd"
    },
    {
-      "args" : [ "a", 1, "8byte F2_struct[2]" ],
+      "args" : [ "t1", "a" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 1 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", "8byte F2_struct[2]" ],
       "cmd" : "alloc_at_least",
       "type" : "cmd"
    },
