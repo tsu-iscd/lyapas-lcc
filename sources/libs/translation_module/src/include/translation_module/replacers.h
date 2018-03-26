@@ -2,7 +2,9 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <string>
+#include <json/json.h>
 #include "aliases.h"
 
 namespace trm {
@@ -10,7 +12,8 @@ namespace trm {
 class PatternStringInfo {
 public:
     // name[:group][=param]
-    PatternStringInfo(std::string pattern)
+    PatternStringInfo(std::string pattern, const StringMap &stringMap)
+        : stringMap(stringMap)
     {
         auto equals = pattern.rfind('=');
         if (equals != std::string::npos) {
@@ -31,19 +34,34 @@ public:
         }
     }
 
-    const std::string &getName()
+    const std::string &getName() const
     {
         return name;
     }
 
-    const std::string &getNameWithGroup()
+    const std::string &getNameWithGroup() const
     {
         return nameWithGroup;
     }
 
-    const Optional<std::string> &getParam()
+    const Optional<unsigned long> &getGroup() const
+    {
+        return group;
+    }
+
+    std::string getGroupAsString() const
+    {
+        return group ? ":" + std::to_string(*group) : "";
+    }
+
+    const Optional<std::string> &getParam() const
     {
         return param;
+    }
+
+    const StringMap &getStringMap() const
+    {
+        return stringMap;
     }
 
 private:
@@ -51,9 +69,17 @@ private:
     std::string nameWithGroup;
     Optional<unsigned long> group;
     Optional<std::string> param;
+
+    // FIXME: вынести это поле из класса
+    const StringMap &stringMap;
 };
 
-using ReplaceFunction = std::function<std::string(const PatternStringInfo &patternStringInfo)>;
-using Replacers = std::map<std::string, ReplaceFunction>;
+class Replacer {
+public:
+    virtual void updateState(const Json::Value &cmd) {}
+    virtual std::string resolve(const PatternStringInfo &patternStringInfo) = 0;
+};
+using ReplacerPtr = std::shared_ptr<Replacer>;
+using Replacers = std::map<std::string, ReplacerPtr>;
 
 }  // namespace trm
