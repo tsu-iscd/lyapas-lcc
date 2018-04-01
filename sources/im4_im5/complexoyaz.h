@@ -12,6 +12,8 @@ private:
 
     virtual trm::Replacers makeReplacers() override;
     virtual std::string getRules() override;
+
+    JSON processFunctions(JSON &cmds);
 };
 
 }  // namespace cyaz
