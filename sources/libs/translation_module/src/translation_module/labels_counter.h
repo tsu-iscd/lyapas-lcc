@@ -2,10 +2,10 @@
 
 #include <string>
 #include <unordered_map>
-#include <translation_module/aliases.h>
+#include "aliases.h"
 #include "icounter.h"
 
-namespace cyaz {
+namespace trm {
 
 //
 // Класс используется для подсчёта меток.
@@ -42,7 +42,7 @@ public:
 private:
     std::unordered_map<std::string, size_t> counters;
     std::string currentProcedure;
-    trm::Optional<size_t> givenLabel;
+    Optional<size_t> givenLabel;
 };
 
-}  // namespace cyaz
+}  // namespace trm

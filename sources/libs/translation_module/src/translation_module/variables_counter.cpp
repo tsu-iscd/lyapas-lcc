@@ -2,7 +2,7 @@
 #include <regex>
 #include <shared_utils/assertion.h>
 
-namespace cyaz {
+namespace trm {
 
 VariablesCounter::VariablesCounter()
 {
@@ -70,4 +70,4 @@ size_t VariablesCounter::getFree(size_t index)
     return counters[currentProcedure] + index;
 }
 
-}  // namespace cyaz
+}  // namespace trm

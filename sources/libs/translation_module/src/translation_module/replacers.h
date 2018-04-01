@@ -82,4 +82,15 @@ public:
 using ReplacerPtr = std::shared_ptr<Replacer>;
 using Replacers = std::map<std::string, ReplacerPtr>;
 
+//
+//  Вспомогательные макросы для заполнения Replacer'ов.
+//
+#define INSERT_REPLACER(replacers, name, type) (replacers).insert({name, std::make_shared<type>(cmds)})
+
+#define INSERT_FUNCTIONAL_REPLACER(replacers, name, functionBlock)                                         \
+    do {                                                                                                   \
+        auto func = [&](const trm::PatternStringInfo &patternStringInfo) -> std::string { functionBlock }; \
+        (replacers).insert({name, std::make_shared<cyaz::FunctionalReplacer>(func)});                      \
+    } while (false)
+
 }  // namespace trm

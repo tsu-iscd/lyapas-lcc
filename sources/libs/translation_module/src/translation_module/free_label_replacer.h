@@ -2,20 +2,20 @@
 
 #include <string>
 #include <json/json.h>
-#include <translation_module/replacers.h>
 #include "labels_counter.h"
+#include "replacers.h"
 
-namespace cyaz {
+namespace trm {
 
-class FreeLabelReplacer : public trm::Replacer {
+class FreeLabelReplacer : public Replacer {
 public:
     explicit FreeLabelReplacer(const Json::Value &program);
 
     void updateState(const Json::Value &nextCmd) override;
-    std::string resolve(const trm::PatternStringInfo &patternStringInfo) override;
+    std::string resolve(const PatternStringInfo &patternStringInfo) override;
 
 private:
     LabelsCounter counter;
 };
 
-}  // namespace cyaz
+}  // namespace trm

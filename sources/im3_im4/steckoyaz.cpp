@@ -64,10 +64,9 @@ void Steckoyaz::preprocess(JSON &cmds)
 
 void Steckoyaz::postprocess(JSON &cmds) {}
 
-trm::Replacers &Steckoyaz::getReplacers(const JSON &cmds)
+trm::Replacers Steckoyaz::makeReplacers()
 {
-    static trm::Replacers replacers;
-    return replacers;
+    return {};
 }
 
 std::string Steckoyaz::getRules()

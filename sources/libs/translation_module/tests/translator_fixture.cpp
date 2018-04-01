@@ -16,10 +16,9 @@ void TranslatorFixture::preprocess(JSON &cmds) {}
 
 void TranslatorFixture::postprocess(JSON &cmds) {}
 
-trm::Replacers &TranslatorFixture::getReplacers(const JSON &cmds)
+Replacers TranslatorFixture::makeReplacers()
 {
-    static trm::Replacers replacers;
-    return replacers;
+    return {};
 }
 
 std::string TranslatorFixture::getRules()
