@@ -6,6 +6,7 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(ROOT translation_module)
 
 set(SOURCES
+    ${ROOT}/args_range.cpp
     ${ROOT}/cmd_info.cpp
     ${ROOT}/free_label_replacer.cpp
     ${ROOT}/free_var_replacer.cpp
