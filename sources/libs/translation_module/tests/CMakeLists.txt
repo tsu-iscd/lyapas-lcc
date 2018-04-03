@@ -6,6 +6,8 @@ add_executable(${PROJECT_NAME}
     main.cpp
     example.cpp
     translator_fixture.cpp
+    labels_counter.cpp
+    variables_counter.cpp
 )
 target_link_libraries(${PROJECT_NAME}
     ${LIB_NAME}

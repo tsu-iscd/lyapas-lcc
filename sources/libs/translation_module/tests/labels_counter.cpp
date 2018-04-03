@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include <labels_counter.h>
 #include <tests_utils/json_parse.h>
+#include <translation_module/labels_counter.h>
 
-namespace cyaz {
+namespace trm {
 
 TEST(LabelsCounter, usage)
 {
@@ -112,4 +112,4 @@ TEST(LabelsCounter, usage)
     ASSERT_EQ(program.end(), ++currentCmd);
 }
 
-}  // namespace cyaz
+}  // namespace trm

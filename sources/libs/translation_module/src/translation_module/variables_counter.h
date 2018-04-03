@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include "icounter.h"
 
-namespace cyaz {
+namespace trm {
 
 //
 // Класс используется для подсчёта переменных
@@ -47,4 +47,4 @@ private:
     std::string currentProcedure;
 };
 
-}  // namespace cyaz
+}  // namespace trm

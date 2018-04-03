@@ -6,6 +6,8 @@
 #include <shared_utils/string_helper.h>
 #include "cmd_info.h"
 #include "cmd_translator.h"
+#include "free_label_replacer.h"
+#include "free_var_replacer.h"
 
 namespace trm {
 
@@ -144,6 +146,17 @@ void trm::TranslationModule::process(JSON &cmds)
     }
 
     cmds = std::move(resultCmds);
+}
+
+Replacers &trm::TranslationModule::getReplacers(const JSON &cmds)
+{
+    if (!replacers) {
+        replacers = makeReplacers();
+        INSERT_REPLACER(*replacers, "free_var", FreeVarReplacer);
+        INSERT_REPLACER(*replacers, "free_label", FreeLabelReplacer);
+    }
+
+    return *replacers;
 }
 
 }  // namespace trm

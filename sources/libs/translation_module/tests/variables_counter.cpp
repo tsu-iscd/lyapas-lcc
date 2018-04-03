@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <tests_utils/json_parse.h>
-#include <variables_counter.h>
+#include <translation_module/variables_counter.h>
 
-namespace cyaz {
+namespace trm {
 
 TEST(VariablesCounter, usage)
 {
@@ -133,4 +133,4 @@ TEST(VariablesCounter, usage)
     ASSERT_EQ(program.end(), ++currentCmd);
 }
 
-}  // namespace cyaz
+}  // namespace trm
