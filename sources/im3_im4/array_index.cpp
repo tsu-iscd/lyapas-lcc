@@ -8,7 +8,7 @@ ArrayIndex::ArrayIndex(const std::string &var)
 
     auto leftBracket = var.rfind('[');
     auto rightBracket = var.rfind(']');
-    index = var.substr(leftBracket + 1, rightBracket - 1);
+    index = var.substr(leftBracket + 1, rightBracket - leftBracket - 1);
 
     auto content = var.substr(0, leftBracket);
     auto space = content.find(' ');

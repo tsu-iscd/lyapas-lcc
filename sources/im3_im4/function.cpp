@@ -77,11 +77,6 @@ void Function::calculateStackVariables()
 
 void Function::insertVariable(JSON &var)
 {
-    //константы не лежат на стеке
-    if (var.isInt()) {
-        return;
-    }
-
     auto nameVar = var.asString();
 
     /*ТРАНЛЯЦИЯ F1[t1]
@@ -92,6 +87,11 @@ void Function::insertVariable(JSON &var)
         ArrayIndex arrayIndex(nameVar);
         LCC_ASSERT(findVariable(arrayIndex.name) != variables.end());
         nameVar = arrayIndex.index;
+    }
+
+    //константы не лежат на стеке
+    if (isInt(nameVar)) {
+        return;
     }
 
     if (findVariable(nameVar) == variables.end()) {
@@ -125,7 +125,10 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
     LCC_ASSERT(var != variables.end());
 
     auto index = findVariable(arrayIndex.index);
-    LCC_ASSERT(index != variables.end());
+    if (index == variables.end()) {
+        LCC_ASSERT(isInt(arrayIndex.index));
+        return var->alias + "[" + arrayIndex.index + "]";
+    };
     return arrayIndex.prefix + var->alias + "[" + index->alias + "]";
 }
 
