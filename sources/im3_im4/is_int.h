@@ -1,6 +1,6 @@
 #include <cctype>
 
-bool isInt(std::string nameVar)
+bool isInt(const std::string &nameVar)
 {
     for (auto &letter : nameVar) {
         if (!isdigit(letter)) {
