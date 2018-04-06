@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <shared_utils/assertion.h>
 #include "array_index.h"
+#include "is_int.h"
 
 Function::Function(const JSON &cmd)
     : signature{cmd[0]}
