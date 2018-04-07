@@ -62,15 +62,11 @@ void Complexoyaz::postprocess(JSON &cmds)
                 const std::string argStr = arg->asString();
 
                 //
-                // замена L1 => L1_buffer
-                //        F1 => F1_buffer
+                // проверка, что комплексы в чистом виде остутствуют
                 //
-                static const std::regex isComplex("[LF][0-9]+");
                 std::smatch match;
-                if (std::regex_match(argStr, match, isComplex) && match.size() == 1) {
-                    *arg = argStr + "_buffer";
-                    break;
-                }
+                static const std::regex isComplex("[LF][0-9]+");
+                LCC_ASSERT(!std::regex_match(argStr, match, isComplex));
 
                 //
                 // замена L1[i] => L1_buffer[i]
