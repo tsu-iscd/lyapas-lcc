@@ -58,49 +58,50 @@ void Complexoyaz::postprocess(JSON &cmds)
     for (JSON &cmd : cmds) {
         trm::ArgsRange range{filters, cmd};
         for (auto &arg : range) {
-            if (arg->isString()) {
-                const std::string argStr = arg->asString();
+            if (!arg->isString()) {
+                continue;
+            }
+            const std::string argStr = arg->asString();
 
-                //
-                // проверка, что комплексы в чистом виде остутствуют
-                //
-                std::smatch match;
-                static const std::regex isComplex("[LF][0-9]+");
-                LCC_ASSERT(!std::regex_match(argStr, match, isComplex));
+            //
+            // проверка, что комплексы в чистом виде отсутствуют
+            //
+            std::smatch match;
+            static const std::regex isComplex("[LF][0-9]+");
+            LCC_ASSERT(!std::regex_match(argStr, match, isComplex));
 
-                //
-                // замена L1[i] => L1_buffer[i]
-                //        F1[i] => F1_buffer[i]
-                //
-                static const std::regex isComplexWithIndex(R"(([LF][0-9]+)(\[[^\]]*\]))");
-                if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
-                    std::string prefix = calculateElementSize(argStr) + "byte";
-                    *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
-                    break;
-                }
+            //
+            // замена L1[i] => L1_buffer[i]
+            //        F1[i] => F1_buffer[i]
+            //
+            static const std::regex isComplexWithIndex(R"(([LF][0-9]+)(\[[^\]]*\]))");
+            if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
+                std::string prefix = calculateElementSize(argStr) + "byte";
+                *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
+                break;
+            }
 
-                //
-                // FIXME: Q<N> и S<N> транслируются
-                // с ошибкой для комплексов F<N>
-                //
+            //
+            // FIXME: Q<N> и S<N> транслируются
+            // с ошибкой для комплексов F<N>
+            //
 
-                //
-                // замена Q1 => 8byte L1_struct[0]
-                //
-                static const std::regex isCardinality("Q[0-9]+");
-                if (std::regex_match(argStr, match, isCardinality) && match.size() == 1) {
-                    *arg = "8byte " + argStr + "_struct[0]";
-                    break;
-                }
+            //
+            // замена Q1 => 8byte L1_struct[0]
+            //
+            static const std::regex isCardinality("Q[0-9]+");
+            if (std::regex_match(argStr, match, isCardinality) && match.size() == 1) {
+                *arg = "8byte " + argStr + "_struct[0]";
+                break;
+            }
 
-                //
-                // замена S1 => 8byte L1_struct[1]
-                //
-                static const std::regex isCapacity("S[0-9]+");
-                if (std::regex_match(argStr, match, isCapacity) && match.size() == 1) {
-                    *arg = "8byte " + argStr + "_struct[1]";
-                    break;
-                }
+            //
+            // замена S1 => 8byte L1_struct[1]
+            //
+            static const std::regex isCapacity("S[0-9]+");
+            if (std::regex_match(argStr, match, isCapacity) && match.size() == 1) {
+                *arg = "8byte " + argStr + "_struct[1]";
+                break;
             }
         }
     }
