@@ -78,7 +78,7 @@ void Complexoyaz::postprocess(JSON &cmds)
             if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
                 std::string prefix = calculateElementSize(argStr) + "byte";
                 *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
-                break;
+                continue;
             }
 
             //
@@ -89,19 +89,19 @@ void Complexoyaz::postprocess(JSON &cmds)
             //
             // замена Q1 => 8byte L1_struct[0]
             //
-            static const std::regex isCardinality("Q[0-9]+");
-            if (std::regex_match(argStr, match, isCardinality) && match.size() == 1) {
-                *arg = "8byte " + argStr + "_struct[0]";
-                break;
+            static const std::regex isCardinality("Q([0-9]+)");
+            if (std::regex_match(argStr, match, isCardinality) && match.size() == 2) {
+                *arg = "8byte L" + match[1].str() + "_struct[0]";
+                continue;
             }
 
             //
             // замена S1 => 8byte L1_struct[1]
             //
-            static const std::regex isCapacity("S[0-9]+");
-            if (std::regex_match(argStr, match, isCapacity) && match.size() == 1) {
-                *arg = "8byte " + argStr + "_struct[1]";
-                break;
+            static const std::regex isCapacity("S([0-9]+)");
+            if (std::regex_match(argStr, match, isCapacity) && match.size() == 2) {
+                *arg = "8byte L" + match[1].str() + "_struct[1]";
+                continue;
             }
         }
     }

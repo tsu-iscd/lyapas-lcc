@@ -14,6 +14,8 @@ private:
     virtual std::string getRules() override;
 
     JSON processFunctions(JSON &cmds);
+
+    friend class ComplexoyazFixture;
 };
 
 }  // namespace cyaz
