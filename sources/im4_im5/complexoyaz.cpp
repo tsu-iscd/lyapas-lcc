@@ -89,7 +89,7 @@ void Complexoyaz::postprocess(JSON &cmds)
                 //
 
                 //
-                // замена Q1[i] => 8byte L1_struct[0]
+                // замена Q1 => 8byte L1_struct[0]
                 //
                 static const std::regex isCardinality("Q[0-9]+");
                 if (std::regex_match(argStr, match, isCardinality) && match.size() == 1) {
@@ -98,7 +98,7 @@ void Complexoyaz::postprocess(JSON &cmds)
                 }
 
                 //
-                // замена S1[i] => 8byte L1_struct[1]
+                // замена S1 => 8byte L1_struct[1]
                 //
                 static const std::regex isCapacity("S[0-9]+");
                 if (std::regex_match(argStr, match, isCapacity) && match.size() == 1) {
