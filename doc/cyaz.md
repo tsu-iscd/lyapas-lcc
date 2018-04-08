@@ -153,7 +153,7 @@ label 3
 
 ### Вставка в комплекс
 ```
-insert_in_complex <complex>, <int>, <readable_int>
+insert_element_in_complex <complex>, <int>, <readable_int>
 =>
 compare <complex_cardinality>, <complex_capacity> 
 jump_neq 1 
@@ -162,8 +162,31 @@ label 1
 move cyaz_t1, <int> 
 compare cyaz_t1, <complex_cardinality> 
 jump_leq 2 
-move cyaz_t1, <complex_cardinality> 
+error "Index out of range" 
 label 2 
+inc <complex_cardinality> 
+# копирование
+move cyaz_t2, cyaz_t1 
+inc cyaz_t2 
+label 3 
+compare <complex_cardinality>, cyaz_t2 
+jump_geq 4 
+move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t2-1) 
+inc cyaz_t2 
+jump 3 
+label 4 
+move <complex_cell>(cyaz_t1), <readable_int>
+```
+
+### Вставка в конец комплекса
+```
+push_back_element_to_complex <complex>, <readable_int>
+=>
+compare <complex_cardinality>, <complex_capacity> 
+jump_neq 1 
+error "Capacity is too small for inserting" 
+label 1 
+move cyaz_t1, <complex_cardinality> 
 inc <complex_cardinality> 
 # копирование
 move cyaz_t2, cyaz_t1 
@@ -180,7 +203,7 @@ move <complex_cell>(cyaz_t1), <readable_int>
 
 ### Удаление элемента из комплекса
 ```
-rmv_from_complex <complex>, <int>, <writable_int>
+remove_element_from_complex <complex>, <int>, <writable_int>
 =>
 compare <complex_cardinality>, 0 
 jump_neq 1 
@@ -189,9 +212,30 @@ label 1
 move cyaz_t1, <int> 
 compare cyaz_t1, <complex_cardinality> 
 jump_lt 2 
+error "Index out of range" 
+label 2 
+move <writable_int>, <complex_cell>(cyaz_t1) 
+%% копирование
+label 3 
+inc cyaz_t1 
+compare <complex_cardinality>, cyaz_t1 
+jump_geq 4 
+move <complex_cell>(cyaz_t1-1), <complex_cell>(cyaz_t1) 
+jump 3 
+label 4 
+dec <complex_cardinality>
+```
+
+### Удаление элемента из конца комплекса
+```
+pop_back_element_from_complex <complex>, <writable_int>
+=>
+compare <complex_cardinality>, 0 
+jump_neq 1 
+error "Cardinality is too small for removing" 
+label 1 
 move cyaz_t1, <complex_cardinality> 
 dec cyaz_t1 
-label 2 
 move <writable_int>, <complex_cell>(cyaz_t1) 
 %% копирование
 label 3 
