@@ -96,17 +96,17 @@ TEST_F(ComplexoyazFixture, postprocessIgnoreStrings)
     {
         "type" : "cmd",
         "cmd" : "asm",
-        "args" : ["L1"]
+        "args" : ["L1[t1]"]
     },
     {
         "type": "cmd",
         "cmd": "definition_string",
-        "args": ["L1", "t1"]
+        "args": ["L1[t1]", "t1"]
     },
     {
         "type": "cmd",
         "cmd": "error",
-        "args": ["L1"]
+        "args": ["L1[t1]"]
     }
 ]
     )");
