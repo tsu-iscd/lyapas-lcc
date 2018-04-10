@@ -7,6 +7,7 @@ set(SOURCE_FILES
     function.cpp
     function_signature.cpp
     array_index.cpp
+    is_int.cpp
 )
 
 add_executable(im3_im4 ${SOURCE_FILES} ${BACKWARD_ENABLE})
