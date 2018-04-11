@@ -51,11 +51,11 @@ void Function::substituteCmdArgs(JSON &cmd)
 void Function::calculateStackVariables()
 {
     for (auto &var : signature.input) {
-        insertVariable(var);
+        insertArg(var);
     }
 
     for (auto &var : signature.output) {
-        insertVariable(var);
+        insertArg(var);
     }
 
     for (auto &&cmd : body) {
@@ -74,6 +74,14 @@ void Function::calculateStackVariables()
             insertVariable(var);
         }
     }
+}
+
+void Function::insertArg(JSON &var)
+{
+    auto nameVar = var.asString();
+
+    LCC_ASSERT(findVariable(nameVar) == variables.end());
+    variables.emplace_back(Variable{nameVar, "p" + std::to_string(variables.size())});
 }
 
 void Function::insertVariable(JSON &var)
@@ -96,7 +104,7 @@ void Function::insertVariable(JSON &var)
     }
 
     if (findVariable(nameVar) == variables.end()) {
-        variables.emplace_back(Variable{nameVar, "l" + std::to_string(variables.size())});
+        variables.emplace_back(Variable{nameVar, "l" + std::to_string(variables.size() - signature.getNumberOfArgs())});
     }
 }
 
