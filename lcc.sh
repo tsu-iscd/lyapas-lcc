@@ -11,8 +11,9 @@ program_to_run=($path_to_lyapas_dir"/lyapas_to_json.py"
                 $path_to_lyapas_dir"/build/im1_im2" 
                 $path_to_lyapas_dir"/build/im2_im3"
                 $path_to_lyapas_dir"/build/im4_im5"
-                $path_to_lyapas_dir"/build/im3_im4")
-suffix=("" ".json" ".im0" ".im1" ".im2" ".im3" ".im4" ".im5")
+                $path_to_lyapas_dir"/build/im3_im4"
+                $path_to_lyapas_dir"/build/im7_im8")
+suffix=("" ".json" ".im0" ".im1" ".im2" ".im3" ".im4" ".im5" ".im8")
 
 function translate()
 {
@@ -33,7 +34,8 @@ function translate()
       | "${program_to_run[3]}" \
       | "${program_to_run[4]}" \
       | "${program_to_run[5]}" \
-      | "${program_to_run[6]}" > $name
+      | "${program_to_run[6]}" \
+      | "${program_to_run[7]}" > $name
   fi
   TXTCOLOR_DEFAULT="\033[0;m"
   TXTCOLOR_GREEN="\033[0;32m"

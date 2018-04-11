@@ -148,26 +148,12 @@ label <free_label=6>
 # TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 cmd/write_complex "<complex>"
 =>
-cmd/move "<free_var=1>", 0
-label <free_label=1>
-cmd/compare "<free_var=1>", "<complex_cardinality>"
-cmd/jump_geq <free_label=2>
-cmd/write_char "<complex_cell=<free_var=1>>"
-cmd/inc "<free_var=1>"
-cmd/jump <free_label=1>
-label <free_label=2>
+cmd/write_string "<complex_buffer_opt>", "<complex_cardinality>"
 
 cmd/write_string "<string>"
 =>
-cmd/move "<free_var=1>", 0
-cmd/definition_string "<string>", "<free_var=2>"
-label <free_label=1>
-cmd/compare "<free_var=1>", <string_len>
-cmd/jump_geq <free_label=2>
-cmd/write_char "1byte <free_var=2>[<free_var=1>]"
-cmd/inc "<free_var=1>"
-cmd/jump <free_label=1>
-label <free_label=2>
+cmd/definition_string "<string>", "<free_var=1>"
+cmd/write_string "<free_var=1>", <string_len>
 
 # TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 # 10 - код символа перевода строки
