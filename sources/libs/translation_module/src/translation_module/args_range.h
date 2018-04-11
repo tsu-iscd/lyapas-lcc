@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <shared_utils/assertion.h>
 #include "aliases.h"
 
 namespace trm {

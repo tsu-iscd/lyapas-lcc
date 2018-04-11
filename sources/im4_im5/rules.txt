@@ -1,16 +1,7 @@
 R"(
 
 # TODO: подумать о руссификации ошибок
-# TODO: обновлять <complex_buffer_opt> после definition и call
-# TODO: транслировать L1[*] => L1_buffer[*]
 # TODO: bug: <free_label> записывается как команда
-
-#
-# TODO: транслировать можность и ёмкость
-# Q1 => L1_buffer[0]
-# S1 => L1_buffer[1]
-# FIX: мы не должны привязываться к L*_buffer, F*_buffer
-#
 
 #
 # TODO: alloc_at_least должен возвращать

@@ -1,6 +1,8 @@
 #include "complexoyaz.h"
 #include <memory>
+#include <regex>
 #include <stdexcept>
+#include <translation_module/args_range.h>
 #include <translation_module/replacers.h>
 #include "functional_replacers.h"
 
@@ -43,7 +45,67 @@ bool Complexoyaz::valid(const JSON &cmds, std::string &error)
 
 void Complexoyaz::preprocess(JSON &cmds) {}
 
-void Complexoyaz::postprocess(JSON &cmds) {}
+void Complexoyaz::postprocess(JSON &cmds)
+{
+    cmds = processFunctions(cmds);
+
+    trm::Filters filters{
+        {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+        {"asm", {trm::ArgsFilter::Ignore::ALL}},
+        {"error", {trm::ArgsFilter::Ignore::ALL}},
+    };
+
+    for (JSON &cmd : cmds) {
+        trm::ArgsRange range{filters, cmd};
+        for (auto &arg : range) {
+            if (!arg->isString()) {
+                continue;
+            }
+            const std::string argStr = arg->asString();
+
+            //
+            // проверка, что комплексы в чистом виде отсутствуют
+            //
+            std::smatch match;
+            static const std::regex isComplex("[LF][0-9]+");
+            LCC_ASSERT(!std::regex_match(argStr, match, isComplex));
+
+            //
+            // замена L1[i] => L1_buffer[i]
+            //        F1[i] => F1_buffer[i]
+            //
+            static const std::regex isComplexWithIndex(R"(([LF][0-9]+)(\[[^\]]*\]))");
+            if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
+                std::string prefix = calculateElementSize(argStr) + "byte";
+                *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
+                continue;
+            }
+
+            //
+            // FIXME: Q<N> и S<N> транслируются
+            // с ошибкой для комплексов F<N>
+            //
+
+            //
+            // замена Q1 => 8byte L1_struct[0]
+            //
+            static const std::regex isCardinality("Q([0-9]+)");
+            if (std::regex_match(argStr, match, isCardinality) && match.size() == 2) {
+                *arg = "8byte L" + match[1].str() + "_struct[0]";
+                continue;
+            }
+
+            //
+            // замена S1 => 8byte L1_struct[1]
+            //
+            static const std::regex isCapacity("S([0-9]+)");
+            if (std::regex_match(argStr, match, isCapacity) && match.size() == 2) {
+                *arg = "8byte L" + match[1].str() + "_struct[1]";
+                continue;
+            }
+        }
+    }
+}
 
 trm::Replacers Complexoyaz::makeReplacers()
 {
@@ -89,6 +151,72 @@ std::string Complexoyaz::getRules()
     return std::string(
 #include "rules.txt"
     );
+}
+
+JSON Complexoyaz::processFunctions(JSON &cmds)
+{
+    // definition func(a,L1/c,F2)
+    // =>
+    // definition func(a,L1_struct/c,F2_struct)
+    // move L1_buffer, L1_struct[2]
+    // move F2_buffer, F2_struct[2]
+
+    // call func(a,L1/c,F2)
+    // =>
+    // call func(a,L1_struct/c,F2_struct)
+    // move L1_buffer, L1_struct[2]
+    // move F2_buffer, F2_struct[2]
+
+    JSON result;
+
+    for (JSON &cmd : cmds) {
+        LCC_ASSERT(cmd.isMember("type"));
+        std::string type = cmd["type"].asString();
+
+        if (!cmd.isMember("args")) {
+            result.append(cmd);
+            continue;
+        }
+        JSON &args = cmd["args"];
+
+        std::vector<JSON> postCmds;
+        auto processor = [&postCmds](const JSON &arg) -> JSON {
+            if (!arg.isString()) {
+                return arg;
+            }
+            const std::string &argStr = arg.asString();
+
+            static const std::regex isComplex("[LF][0-9]+");
+            std::smatch match;
+            if (std::regex_match(argStr, match, isComplex) && match.size() == 1) {
+                JSON args;
+                args.append(argStr + "_buffer");
+                args.append("8byte " + argStr + "_struct[2]");
+
+                JSON moveCmd;
+                moveCmd["type"] = "cmd";
+                moveCmd["cmd"] = "move";
+                moveCmd["args"] = std::move(args);
+
+                postCmds.push_back(std::move(moveCmd));
+
+                return argStr + "_struct";
+            }
+
+            return arg;
+        };
+
+        if (type == "definition" || type == "call") {
+            std::transform(std::begin(args), std::end(args), std::begin(args), processor);
+        }
+
+        result.append(cmd);
+        for (auto &c : postCmds) {
+            result.append(c);
+        }
+    }
+
+    return result;
 }
 
 }  // namespace cyaz

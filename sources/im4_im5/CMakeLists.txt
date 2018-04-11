@@ -3,6 +3,12 @@ project(im4_im5)
 
 set(LIB_NAME "${PROJECT_NAME}_lib")
 set(BIN_NAME "${PROJECT_NAME}")
+set(TEST_NAME "${PROJECT_NAME}_test")
+
+#
+# тесты
+#
+add_subdirectory(tests)
 
 #
 # библиотека
