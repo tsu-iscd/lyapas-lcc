@@ -1,4 +1,5 @@
 #include "is_int.h"
+#include <cctype>
 
 bool isInt(const std::string &nameVar)
 {
