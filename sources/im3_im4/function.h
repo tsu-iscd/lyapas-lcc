@@ -17,7 +17,7 @@ public:
 private:
     void calculateStackVariables();
     void insertArg(JSON &var);
-    void insertVariable(JSON &var);
+    void insertVariable(std::string nameVar);
     JSON getSubstitute(const JSON &nameVariable);
     JSON getSubstituteArrayIndex(const std::string &nameVariable);
     Variables::iterator findVariable(std::string nameVariable);

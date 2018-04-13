@@ -1,6 +1,7 @@
 #include "function.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
+#include <translation_module/args_range.h>
 #include "array_index.h"
 
 Function::Function(const JSON &cmd)
@@ -49,6 +50,12 @@ void Function::substituteCmdArgs(JSON &cmd)
 
 void Function::calculateStackVariables()
 {
+    trm::Filters filters{
+        {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+        {"asm", {trm::ArgsFilter::Ignore::ALL}},
+        {"error", {trm::ArgsFilter::Ignore::ALL}},
+    };
+
     for (auto &var : signature.input) {
         insertArg(var);
     }
@@ -61,16 +68,18 @@ void Function::calculateStackVariables()
         if (cmd["type"] == "call") {
             FunctionSignature funcInf(cmd);
             for (auto &var : funcInf.input) {
-                insertVariable(var);
+                insertVariable(var.asString());
             }
             for (auto &var : funcInf.output) {
-                insertVariable(var);
+                insertVariable(var.asString());
             }
             continue;
         }
 
-        for (auto &var : cmd["args"]) {
-            insertVariable(var);
+        trm::ArgsRange range{filters, cmd};
+
+        for (auto &var : range) {
+            insertVariable(var->asString());
         }
     }
 }
@@ -83,10 +92,8 @@ void Function::insertArg(JSON &var)
     variables.emplace_back(Variable{nameVar, "p" + std::to_string(variables.size())});
 }
 
-void Function::insertVariable(JSON &var)
+void Function::insertVariable(std::string nameVar)
 {
-    auto nameVar = var.asString();
-
     /*ТРАНЛЯЦИЯ F1[t1]
      * имя комплекса ТОЧНО в списке локальных переменных
      * индекс может не быть в списке локальных переменных*/
@@ -122,7 +129,9 @@ JSON Function::getSubstitute(const JSON &nameVariable)
     }
 
     auto var = findVariable(nameVar);
-    LCC_ASSERT(var != variables.end());
+    if (var == variables.end()) {
+        return nameVar;
+    };
     return var->alias;
 }
 
