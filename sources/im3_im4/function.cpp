@@ -68,10 +68,10 @@ void Function::calculateStackVariables()
         if (cmd["type"] == "call") {
             FunctionSignature funcInf(cmd);
             for (auto &var : funcInf.input) {
-                insertVariable(var.asString());
+                insertVariable(var);
             }
             for (auto &var : funcInf.output) {
-                insertVariable(var.asString());
+                insertVariable(var);
             }
             continue;
         }
@@ -79,7 +79,7 @@ void Function::calculateStackVariables()
         trm::ArgsRange range{filters, cmd};
 
         for (auto &var : range) {
-            insertVariable(var->asString());
+            insertVariable(*var);
         }
     }
 }
@@ -92,8 +92,9 @@ void Function::insertArg(JSON &var)
     variables.emplace_back(Variable{nameVar, "p" + std::to_string(variables.size())});
 }
 
-void Function::insertVariable(std::string nameVar)
+void Function::insertVariable(JSON &var)
 {
+    auto nameVar = var.asString();
     /*ТРАНЛЯЦИЯ F1[t1]
      * имя комплекса ТОЧНО в списке локальных переменных
      * индекс может не быть в списке локальных переменных*/
