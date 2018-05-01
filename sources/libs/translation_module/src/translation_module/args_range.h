@@ -12,6 +12,9 @@ struct ArgsFilter {
     enum class Ignore {
         ALL,
         SOME,
+        NAME_FUNCTION,
+        SLASH,
+        NAME_FUNCTION_SLASH,
     };
 
     Ignore ignore;
