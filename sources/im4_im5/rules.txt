@@ -64,7 +64,7 @@ label <free_label=3>
 cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
-cmd/jump_neq <free_label=1>
+cmd/jump_lt <free_label=1>
 cmd/error "Capacity is too small for inserting"
 label <free_label=1>
 cmd/move "<free_var=1>", {int}
@@ -87,7 +87,7 @@ cmd/move "<complex_cell=<free_var=1>>", {readable_int}
 cmd/push_back_element_to_complex "<complex>", {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
-cmd/jump_neq <free_label=1>
+cmd/jump_lt <free_label=1>
 cmd/error "Capacity is too small for inserting"
 label <free_label=1>
 cmd/move "<free_var=1>", "<complex_cardinality>"

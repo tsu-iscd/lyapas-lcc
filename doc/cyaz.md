@@ -156,7 +156,7 @@ label 3
 insert_element_in_complex <complex>, <int>, <readable_int>
 =>
 compare <complex_cardinality>, <complex_capacity> 
-jump_neq 1 
+jump_lt 1 
 error "Capacity is too small for inserting" 
 label 1 
 move cyaz_t1, <int> 
@@ -183,7 +183,7 @@ move <complex_cell>(cyaz_t1), <readable_int>
 push_back_element_to_complex <complex>, <readable_int>
 =>
 compare <complex_cardinality>, <complex_capacity> 
-jump_neq 1 
+jump_lt 1 
 error "Capacity is too small for inserting" 
 label 1 
 move cyaz_t1, <complex_cardinality> 
