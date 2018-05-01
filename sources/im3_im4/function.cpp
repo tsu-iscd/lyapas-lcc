@@ -1,5 +1,6 @@
 #include "function.h"
 #include <algorithm>
+#include <iostream>
 #include <shared_utils/assertion.h>
 #include <translation_module/args_range.h>
 #include "array_index.h"
@@ -34,27 +35,23 @@ size_t Function::getVariablesCount()
 
 void Function::substituteCmdArgs(JSON &cmd)
 {
-    auto var = cmd["args"].begin();
+    trm::Filters filters{{"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+                         {"asm", {trm::ArgsFilter::Ignore::ALL}},
+                         {"error", {trm::ArgsFilter::Ignore::ALL}},
+                         {"call", {trm::ArgsFilter::Ignore::ALL}}};
 
-    /*на данном этапе, вызовы функций оттранслированы,
-     * поэтому пропускаем команды call, тк в их аргументах
-     * только названия функций*/
-    if (cmd["cmd"] == "call") {
-        return;
-    }
-
-    for (var; var != cmd["args"].end(); var++) {
+    trm::ArgsRange range{filters, cmd};
+    for (auto &var : range) {
         *var = getSubstitute(*var);
     }
 }
 
 void Function::calculateStackVariables()
 {
-    trm::Filters filters{
-        {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
-        {"asm", {trm::ArgsFilter::Ignore::ALL}},
-        {"error", {trm::ArgsFilter::Ignore::ALL}},
-    };
+    trm::Filters filters{{"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+                         {"asm", {trm::ArgsFilter::Ignore::ALL}},
+                         {"error", {trm::ArgsFilter::Ignore::ALL}},
+                         {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_SLASH}}};
 
     for (auto &var : signature.input) {
         insertArg(var);
@@ -65,17 +62,6 @@ void Function::calculateStackVariables()
     }
 
     for (auto &&cmd : body) {
-        if (cmd["type"] == "call") {
-            FunctionSignature funcInf(cmd);
-            for (auto &var : funcInf.input) {
-                insertVariable(var);
-            }
-            for (auto &var : funcInf.output) {
-                insertVariable(var);
-            }
-            continue;
-        }
-
         trm::ArgsRange range{filters, cmd};
 
         for (auto &var : range) {
@@ -130,9 +116,7 @@ JSON Function::getSubstitute(const JSON &nameVariable)
     }
 
     auto var = findVariable(nameVar);
-    if (var == variables.end()) {
-        return nameVar;
-    };
+    LCC_ASSERT(var != variables.end());
     return var->alias;
 }
 

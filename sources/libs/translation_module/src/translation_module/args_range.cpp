@@ -49,20 +49,22 @@ ArgsRange::ArgsRange(const Filters &filters, JSON &cmd)
         break;
     }
     case ArgsFilter::Ignore::NAME_FUNCTION: {
-        for(int i = 1; i < args.size(); ++i) {
+        for (int i = 1; i < args.size(); ++i) {
             filteredArgs.push_back(&args[i]);
         }
-        break; 
+        break;
     }
     case ArgsFilter::Ignore::SLASH: {
-        for(int i = 0; i < args.size(); ++i) {
-            if((args[i]).asString() != "/") filteredArgs.push_back(&args[i]);
+        for (int i = 0; i < args.size(); ++i) {
+            if ((args[i]).asString() != "/")
+                filteredArgs.push_back(&args[i]);
         }
         break;
     }
     case ArgsFilter::Ignore::NAME_FUNCTION_SLASH: {
-        for(int i = 1; i < args.size(); ++i) {
-            if((args[i]).asString() != "/") filteredArgs.push_back(&args[i]);
+        for (int i = 1; i < args.size(); ++i) {
+            if ((args[i]).asString() != "/")
+                filteredArgs.push_back(&args[i]);
         }
         break;
     }
