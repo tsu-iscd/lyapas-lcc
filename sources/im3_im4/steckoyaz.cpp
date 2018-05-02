@@ -15,12 +15,7 @@ JSON createCmd(std::string cmd, JSON args)
 std::vector<Function> parseFunctions(const JSON &cmds)
 {
     std::vector<Function> program;
-    auto isDefinition = [](const JSON &cmd) {
-        if (cmd["type"] == "cmd") {
-            return cmd["cmd"] == "definition";
-        }
-        return false;
-    };
+    auto isDefinition = [](const JSON &cmd) { return cmd["type"] == "cmd" && cmd["cmd"] == "definition"; };
 
     auto current = cmds.begin();
     auto end = cmds.end();
