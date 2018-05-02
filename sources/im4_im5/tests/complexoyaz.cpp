@@ -20,7 +20,8 @@ TEST_F(ComplexoyazFixture, postprocess)
     Json::Value program = tests::parse(R"(
 [
     {
-        "type": "definition",
+        "type": "cmd",
+        "cmd": "definition",
         "args": ["L1", "/", "L2"]
     },
     {
@@ -51,7 +52,8 @@ TEST_F(ComplexoyazFixture, postprocess)
     Json::Value expected = tests::parse(R"(
 [
     {
-        "type" : "definition",
+        "type": "cmd",
+        "cmd": "definition",
         "args" : ["L1_struct", "/", "L2_struct"]
     },
     {

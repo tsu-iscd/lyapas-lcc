@@ -172,6 +172,10 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
     for (JSON &cmd : cmds) {
         LCC_ASSERT(cmd.isMember("type"));
         std::string type = cmd["type"].asString();
+        if (type != "cmd") {
+            result.append(cmd);
+            continue;
+        }
 
         if (!cmd.isMember("args")) {
             result.append(cmd);
@@ -206,7 +210,9 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
             return arg;
         };
 
-        if (type == "definition" || type == "call") {
+        LCC_ASSERT(cmd.isMember("cmd"));
+        std::string cmdName = cmd["cmd"].asString();
+        if (cmdName == "definition" || cmdName == "call") {
             std::transform(std::begin(args), std::end(args), std::begin(args), processor);
         }
 
