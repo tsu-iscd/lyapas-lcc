@@ -39,7 +39,7 @@ ArgsRange::ArgsRange(const Filters &filters, JSON &cmd)
     switch (filter.ignore) {
     case ArgsFilter::Ignore::ALL:
         break;
-    case ArgsFilter::Ignore::SOME: {
+    case ArgsFilter::Ignore::SOME:
         for (int i = 0; i < args.size(); ++i) {
             auto found = filter.ignoreArgs.find(i);
             if (found == filter.ignoreArgs.end()) {
@@ -47,15 +47,13 @@ ArgsRange::ArgsRange(const Filters &filters, JSON &cmd)
             }
         }
         break;
-    }
-    case ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH: {
+    case ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH:
         for (int i = 1; i < args.size(); ++i) {
             if (args[i].asString() != "/") {
                 filteredArgs.push_back(&args[i]);
             }
         }
         break;
-    }
     default:
         throw std::logic_error{"Unexpected case"};
     }
