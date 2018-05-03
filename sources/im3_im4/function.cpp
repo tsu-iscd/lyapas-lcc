@@ -39,9 +39,9 @@ void Function::substituteCmdArgs(JSON &cmd)
                          {"error", {trm::ArgsFilter::Ignore::ALL}},
                          {"call", {trm::ArgsFilter::Ignore::ALL}}};
 
-    trm::ArgsRange range{filters, cmd};
-    for (auto &var : range) {
-        *var = getSubstitute(*var);
+    trm::ArgsRange args{filters, cmd};
+    for (auto &arg : args) {
+        *arg = getSubstitute(*arg);
     }
 }
 
@@ -52,19 +52,19 @@ void Function::calculateStackVariables()
                          {"error", {trm::ArgsFilter::Ignore::ALL}},
                          {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}}};
 
-    for (auto &var : signature.input) {
-        insertArg(var);
+    for (auto &arg : signature.input) {
+        insertArg(arg);
     }
 
-    for (auto &var : signature.output) {
-        insertArg(var);
+    for (auto &arg : signature.output) {
+        insertArg(arg);
     }
 
     for (auto &&cmd : body) {
-        trm::ArgsRange range{filters, cmd};
+        trm::ArgsRange args{filters, cmd};
 
-        for (auto &var : range) {
-            insertVariable(*var);
+        for (auto &arg : args) {
+            insertVariable(*arg);
         }
     }
 }
