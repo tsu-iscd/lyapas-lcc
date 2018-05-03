@@ -50,7 +50,7 @@ void Function::calculateStackVariables()
     trm::Filters filters{{"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
                          {"asm", {trm::ArgsFilter::Ignore::ALL}},
                          {"error", {trm::ArgsFilter::Ignore::ALL}},
-                         {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_SLASH}}};
+                         {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}}};
 
     for (auto &var : signature.input) {
         insertArg(var);
