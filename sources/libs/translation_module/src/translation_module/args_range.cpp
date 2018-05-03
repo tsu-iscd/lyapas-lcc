@@ -50,8 +50,9 @@ ArgsRange::ArgsRange(const Filters &filters, JSON &cmd)
     }
     case ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH: {
         for (int i = 1; i < args.size(); ++i) {
-            if ((args[i]).asString() != "/")
+            if (args[i].asString() != "/") {
                 filteredArgs.push_back(&args[i]);
+            }
         }
         break;
     }
