@@ -32,7 +32,8 @@ Json::Value ProcedureCmd::toJson()
 Json::Value ProcedureCmd::buildSignature()
 {
     Json::Value signature;
-    signature[fieldName::type] = getTypeName();
+    signature[fieldName::type] = "cmd";
+    signature[fieldName::cmd] = getTypeName();
 
     auto &signatureArgs = signature[fieldName::args];
     signatureArgs.append(_cmdJson[fieldName::name].asString());
