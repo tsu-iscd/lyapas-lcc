@@ -61,18 +61,36 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=2>
 label <free_label=3>
 
-# TODO: добавить push_back_element_to_complex
 cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
-cmd/jump_neq <free_label=1>
+cmd/jump_lt <free_label=1>
 cmd/error "Capacity is too small for inserting"
 label <free_label=1>
 cmd/move "<free_var=1>", {int}
 cmd/compare "<free_var=1>", "<complex_cardinality>"
 cmd/jump_leq <free_label=2>
-cmd/move "<free_var=1>", "<complex_cardinality>"
+cmd/error "Index out of range"
 label <free_label=2>
+cmd/inc "<complex_cardinality>"
+cmd/move "<free_var=2>", "<free_var=1>"
+cmd/inc "<free_var=2>"
+label <free_label=3>
+cmd/compare "<complex_cardinality>", "<free_var=2>"
+cmd/jump_geq <free_label=4>
+cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=2> - 1>"
+cmd/inc "<free_var=2>"
+cmd/jump <free_label=3>
+label <free_label=4>
+cmd/move "<complex_cell=<free_var=1>>", {readable_int}
+
+cmd/push_back_element_to_complex "<complex>", {readable_int}
+=>
+cmd/compare "<complex_cardinality>", "<complex_capacity>"
+cmd/jump_lt <free_label=1>
+cmd/error "Capacity is too small for inserting"
+label <free_label=1>
+cmd/move "<free_var=1>", "<complex_cardinality>"
 cmd/inc "<complex_cardinality>"
 cmd/move "<free_var=2>", "<free_var=1>"
 cmd/inc "<free_var=2>"
@@ -94,9 +112,26 @@ label <free_label=1>
 cmd/move "<free_var=1>", {int}
 cmd/compare "<free_var=1>", "<complex_cardinality>"
 cmd/jump_lt <free_label=2>
+cmd/error "Index out of range"
+label <free_label=2>
+cmd/move {writable_int}, "<complex_cell=<free_var=1>>"
+label <free_label=3>
+cmd/inc "<free_var=1>"
+cmd/compare "<complex_cardinality>", "<free_var=1>"
+cmd/jump_geq <free_label=4>
+cmd/move "<complex_cell=<free_var=1> - 1>", "<complex_cell=<free_var=1>>"
+cmd/jump <free_label=3>
+label <free_label=4>
+cmd/dec "<complex_cardinality>"
+
+cmd/pop_back_element_from_complex "<complex>", {writable_int}
+=>
+cmd/compare "<complex_cardinality>", 0
+cmd/jump_neq <free_label=1>
+cmd/error "Cardinality is too small for removing"
+label <free_label=1>
 cmd/move "<free_var=1>", "<complex_cardinality>"
 cmd/dec "<free_var=1>"
-label <free_label=2>
 cmd/move {writable_int}, "<complex_cell=<free_var=1>>"
 label <free_label=3>
 cmd/inc "<free_var=1>"
