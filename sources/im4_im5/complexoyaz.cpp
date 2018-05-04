@@ -40,6 +40,8 @@ trm::Filters filters{
     {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
     {"asm", {trm::ArgsFilter::Ignore::ALL}},
     {"error", {trm::ArgsFilter::Ignore::ALL}},
+    {"definition", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}},
+    {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}},
 };
 
 }  // namespace
@@ -56,8 +58,8 @@ void Complexoyaz::postprocess(JSON &cmds)
     cmds = processFunctions(cmds);
 
     for (JSON &cmd : cmds) {
-        trm::ArgsRange range{filters, cmd};
-        for (auto &arg : range) {
+        trm::ArgsRange args{filters, cmd};
+        for (auto &arg : args) {
             if (!arg->isString()) {
                 continue;
             }

@@ -22,7 +22,7 @@ TEST_F(ComplexoyazFixture, postprocess)
     {
         "type": "cmd",
         "cmd": "definition",
-        "args": ["L1", "/", "L2"]
+        "args": ["func1", "L1", "/", "L2"]
     },
     {
         "type": "cmd",
@@ -54,7 +54,7 @@ TEST_F(ComplexoyazFixture, postprocess)
     {
         "type": "cmd",
         "cmd": "definition",
-        "args" : ["L1_struct", "/", "L2_struct"]
+        "args" : ["func1", "L1_struct", "/", "L2_struct"]
     },
     {
         "type" : "cmd",
@@ -109,6 +109,16 @@ TEST_F(ComplexoyazFixture, postprocessIgnoreStrings)
         "type": "cmd",
         "cmd": "error",
         "args": ["L1[t1]"]
+    },
+    {
+        "type": "cmd",
+        "cmd": "definition",
+        "args": ["L1", "/"]
+    },
+    {
+        "type": "cmd",
+        "cmd": "call",
+        "args": ["t1", "/"]
     }
 ]
     )");
