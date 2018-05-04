@@ -36,6 +36,12 @@ std::string calculateElementSize(const std::string &complex)
     }
 }
 
+trm::Filters filters{
+    {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+    {"asm", {trm::ArgsFilter::Ignore::ALL}},
+    {"error", {trm::ArgsFilter::Ignore::ALL}},
+};
+
 }  // namespace
 
 bool Complexoyaz::valid(const JSON &cmds, std::string &error)
@@ -48,12 +54,6 @@ void Complexoyaz::preprocess(JSON &cmds) {}
 void Complexoyaz::postprocess(JSON &cmds)
 {
     cmds = processFunctions(cmds);
-
-    trm::Filters filters{
-        {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
-        {"asm", {trm::ArgsFilter::Ignore::ALL}},
-        {"error", {trm::ArgsFilter::Ignore::ALL}},
-    };
 
     for (JSON &cmd : cmds) {
         trm::ArgsRange range{filters, cmd};
@@ -181,14 +181,13 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
             result.append(cmd);
             continue;
         }
-        JSON &args = cmd["args"];
 
         std::vector<JSON> postCmds;
-        auto processor = [&postCmds](const JSON &arg) -> JSON {
-            if (!arg.isString()) {
-                return arg;
+        auto processor = [&postCmds](JSON *arg) {
+            if (!arg->isString()) {
+                return;
             }
-            const std::string &argStr = arg.asString();
+            const std::string &argStr = arg->asString();
 
             static const std::regex isComplex("[LF][0-9]+");
             std::smatch match;
@@ -204,16 +203,15 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
 
                 postCmds.push_back(std::move(moveCmd));
 
-                return argStr + "_struct";
+                *arg = argStr + "_struct";
             }
-
-            return arg;
         };
 
         LCC_ASSERT(cmd.isMember("cmd"));
         std::string cmdName = cmd["cmd"].asString();
         if (cmdName == "definition" || cmdName == "call") {
-            std::transform(std::begin(args), std::end(args), std::begin(args), processor);
+            trm::ArgsRange args{filters, cmd};
+            std::for_each(std::begin(args), std::end(args), processor);
         }
 
         result.append(cmd);
