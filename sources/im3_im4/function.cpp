@@ -1,6 +1,7 @@
 #include "function.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
+#include <translation_module/args_range.h>
 #include "array_index.h"
 #include "is_int.h"
 
@@ -34,44 +35,37 @@ size_t Function::getVariablesCount()
 
 void Function::substituteCmdArgs(JSON &cmd)
 {
-    auto var = cmd["args"].begin();
+    trm::Filters filters{{"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+                         {"asm", {trm::ArgsFilter::Ignore::ALL}},
+                         {"error", {trm::ArgsFilter::Ignore::ALL}},
+                         {"call", {trm::ArgsFilter::Ignore::ALL}}};
 
-    /*на данном этапе, вызовы функций оттранслированы,
-     * поэтому пропускаем команды call, тк в их аргументах
-     * только названия функций*/
-    if (cmd["cmd"] == "call") {
-        return;
-    }
-
-    for (var; var != cmd["args"].end(); var++) {
-        *var = getSubstitute(*var);
+    trm::ArgsRange args{filters, cmd};
+    for (auto &arg : args) {
+        *arg = getSubstitute(*arg);
     }
 }
 
 void Function::calculateStackVariables()
 {
-    for (auto &var : signature.input) {
-        insertArg(var);
+    trm::Filters filters{{"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+                         {"asm", {trm::ArgsFilter::Ignore::ALL}},
+                         {"error", {trm::ArgsFilter::Ignore::ALL}},
+                         {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}}};
+
+    for (auto &arg : signature.input) {
+        insertArg(arg);
     }
 
-    for (auto &var : signature.output) {
-        insertArg(var);
+    for (auto &arg : signature.output) {
+        insertArg(arg);
     }
 
     for (auto &&cmd : body) {
-        if (cmd["type"] == "call") {
-            FunctionSignature funcInf(cmd);
-            for (auto &var : funcInf.input) {
-                insertVariable(var);
-            }
-            for (auto &var : funcInf.output) {
-                insertVariable(var);
-            }
-            continue;
-        }
+        trm::ArgsRange args{filters, cmd};
 
-        for (auto &var : cmd["args"]) {
-            insertVariable(var);
+        for (auto &arg : args) {
+            insertVariable(*arg);
         }
     }
 }
@@ -87,7 +81,6 @@ void Function::insertArg(JSON &var)
 void Function::insertVariable(JSON &var)
 {
     auto nameVar = var.asString();
-
     /*ТРАНЛЯЦИЯ F1[t1]
      * имя комплекса ТОЧНО в списке локальных переменных
      * индекс может не быть в списке локальных переменных*/
