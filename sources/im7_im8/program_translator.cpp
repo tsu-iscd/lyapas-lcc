@@ -9,8 +9,12 @@ void ProgramTranslator::process(Program &program_)
     program = &program_;
     for (current = std::begin(program_); current != std::end(program_); ++current) {
         JSON &cmd = *current;
+        if (!cmd.isMember("type")) {
+            continue;
+        }
+        std::string cmdType = cmd["type"].asString();
 
-        if (cmd.isMember("type") && cmd["type"] == "label") {
+        if (cmdType == "label") {
             if (!cmd.isMember("name")) {
                 continue;
             }
@@ -19,17 +23,12 @@ void ProgramTranslator::process(Program &program_)
             if (labelName == "main") {
                 cmd = makeLabel("_start");
             }
-            continue;
-        }
-
-        if (!cmd.isMember("type") || cmd["type"] != "cmd") {
-            continue;
-        }
-
-        auto found = handlers.find(cmd["cmd"].asString());
-        if (found != std::end(handlers)) {
-            Handler handler = found->second;
-            (this->*handler)();
+        } else if (cmdType == "cmd") {
+            auto found = handlers.find(cmd["cmd"].asString());
+            if (found != std::end(handlers)) {
+                Handler handler = found->second;
+                (this->*handler)();
+            }
         }
     }
 
