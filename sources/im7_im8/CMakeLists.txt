@@ -17,6 +17,7 @@ set(SOURCE_FILES
     assembler.cpp
     make_cmd.cpp
     program.cpp
+    program_translator.cpp
 )
 add_library(${LIB_NAME}
     ${SOURCE_FILES}
