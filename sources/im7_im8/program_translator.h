@@ -18,6 +18,9 @@ private:
     void handleStackFree();
     void handleDefinitionString();
     void handleWriteString();
+    void handleAlloc();
+    void handleMove();
+    void handleMul();
 
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
@@ -38,6 +41,10 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"stack_free", &ProgramTranslator::handleStackFree},
         {"definition_string", &ProgramTranslator::handleDefinitionString},
         {"write_string", &ProgramTranslator::handleWriteString},
+        {"alloc", &ProgramTranslator::handleAlloc},
+        {"alloc_at_least", &ProgramTranslator::handleAlloc},
+        {"move", &ProgramTranslator::handleMove},
+        {"mul", &ProgramTranslator::handleMul},
     };
 }
 

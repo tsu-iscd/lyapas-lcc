@@ -1,6 +1,7 @@
 #pragma once
 
 #include <translation_module/translation_module.h>
+#include "program.h"
 
 namespace ayaz {
 
@@ -12,6 +13,9 @@ private:
 
     virtual trm::Replacers makeReplacers() override;
     virtual std::string getRules() override;
+
+    void processArgs(Program &program);
+    void processCmdsConstrains(Program &program);
 };
 
 }
