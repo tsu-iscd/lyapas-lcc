@@ -19,7 +19,7 @@ programm_dir="$(dirname $(readlink -e $1))"
 
 programm_lyapas="$(readlink -e $1)"
 programm_im8="${programm_dir}/${programm_name}.im8"
-programm_asm="${programm_name}.asm"
+programm_asm="${programm_dir}/${programm_name}.asm"
 
 tmp_dir=$(mktemp -d)
 pushd ${tmp_dir}
