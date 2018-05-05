@@ -2,49 +2,10 @@
 #include <shared_utils/assertion.h>
 #include <list>
 #include <regex>
+#include "make_cmd.h"
+#include "program.h"
 
 namespace ayaz {
-namespace {
-
-using Program = std::list<JSON>;
-
-Program transform(const JSON &cmds)
-{
-    return {cmds.begin(), cmds.end()};
-}
-
-JSON transform(const Program &program)
-{
-    JSON cmds{Json::arrayValue};
-
-    for (auto &cmd : program) {
-        cmds.append(cmd);
-    }
-
-    return cmds;
-}
-
-JSON makeCmd(const std::string &name, const std::initializer_list<JSON> &args = {})
-{
-    JSON res;
-    res["type"] = "cmd";
-    res["cmd"] = name;
-    res["args"] = JSON{Json::arrayValue};
-    for (const JSON &arg : args) {
-        res["args"].append(arg);
-    }
-    return res;
-}
-
-JSON makeLabel(const std::string &name)
-{
-    JSON res;
-    res["type"] = "label";
-    res["name"] = name;
-    return res;
-}
-
-}
 
 bool Assembler::valid(const JSON &cmds, std::string &error)
 {

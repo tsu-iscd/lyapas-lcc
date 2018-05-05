@@ -15,6 +15,8 @@ set(TEST_NAME "${PROJECT_NAME}_test")
 #
 set(SOURCE_FILES
     assembler.cpp
+    make_cmd.cpp
+    program.cpp
 )
 add_library(${LIB_NAME}
     ${SOURCE_FILES}
