@@ -15,7 +15,7 @@ JSON createCmd(std::string cmd, JSON args)
 std::vector<Function> parseFunctions(const JSON &cmds)
 {
     std::vector<Function> program;
-    auto isDefinition = [](const JSON &cmd) { return cmd["type"] == "definition"; };
+    auto isDefinition = [](const JSON &cmd) { return cmd["type"] == "cmd" && cmd["cmd"] == "definition"; };
 
     auto current = cmds.begin();
     auto end = cmds.end();
@@ -78,7 +78,7 @@ void Steckoyaz::translateCall(Function &func)
 {
     std::vector<JSON> resultCmds;
     for (auto &&cmd : func.getBody()) {
-        if (cmd["type"] == "call") {
+        if (cmd["cmd"] == "call") {
             FunctionSignature funcInf(cmd);
             JSON addedCmd;
             for (auto &var : funcInf.input) {

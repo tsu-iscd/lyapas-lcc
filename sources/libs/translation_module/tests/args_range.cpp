@@ -8,7 +8,28 @@ TEST(ArgsRange, usage)
 {
     Filters filters{{"concat", {ArgsFilter::Ignore::ALL}},
                     {"definition", {ArgsFilter::Ignore::SOME, {0}}},
-                    {"test_cmd", {ArgsFilter::Ignore::SOME, {0, 2}}}};
+                    {"test_cmd", {ArgsFilter::Ignore::SOME, {0, 2}}},
+                    {"call", {ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}}};
+
+    //
+    // в команде фильтруется название и /
+    //
+    {
+        Json::Value cmd = tests::parse(R"(
+            {
+            
+                "type": "cmd",
+                "cmd": "call",
+                "args": ["func", "a", "/", "b"]
+             }
+        )");
+        ArgsRange range{filters, cmd};
+        std::vector<JSON *> args{range.begin(), range.end()};
+
+        ASSERT_EQ(2, args.size());
+        ASSERT_EQ("a", args[0]->asString());
+        ASSERT_EQ("b", args[1]->asString());
+    }
 
     //
     // в команде фильтруется первый аргумент

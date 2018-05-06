@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <tests_utils/json_parse.h>
 #include "CompositeCmd/Composites/ProcedureCmd.h"
 #include "TreeParser/TreeParser.h"
 
@@ -52,40 +53,30 @@ TEST_F(ProcedureCmdFixture, definition)
 {
     auto procedure = createCmd("procedure", "f1", "a", "b");
 
-    Json::Value cmd = procedure->toJson();
-    ASSERT_TRUE(cmd.isArray());
-    ASSERT_EQ(1, cmd.size());
-
-    const Json::Value &content = cmd[0];
-    ASSERT_TRUE(content.isMember(fieldName::args));
-    ASSERT_TRUE(content.isMember(fieldName::type));
-
-    const Json::Value &args = content["args"];
-    ASSERT_EQ(4, args.size());
-    ASSERT_EQ("f1", args[0].asString());
-    ASSERT_EQ("a", args[1].asString());
-    ASSERT_EQ("/", args[2].asString());
-    ASSERT_EQ("b", args[3].asString());
-
-    const Json::Value &type = content["type"];
-    ASSERT_EQ("definition", type.asString());
+    Json::Value expected = tests::parse(R"(
+[
+    {
+        "type" : "cmd",
+        "cmd" : "definition",
+        "args" : ["f1", "a", "/", "b"]
+    }
+]
+    )");
+    const Json::Value &actual = procedure->toJson();
+    ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ProcedureCmdFixture, call)
 {
     auto procedure = createCmd("call", "f1", "a", "b");
 
-    const Json::Value &content = procedure->toJson();
-    ASSERT_TRUE(content.isMember(fieldName::args));
-    ASSERT_TRUE(content.isMember(fieldName::type));
-
-    const Json::Value &args = content["args"];
-    ASSERT_EQ(4, args.size());
-    ASSERT_EQ("f1", args[0].asString());
-    ASSERT_EQ("a", args[1].asString());
-    ASSERT_EQ("/", args[2].asString());
-    ASSERT_EQ("b", args[3].asString());
-
-    const Json::Value &type = content["type"];
-    ASSERT_EQ("call", type.asString());
+    Json::Value expected = tests::parse(R"(
+{
+    "type" : "cmd",
+    "cmd" : "call",
+    "args" : ["f1", "a", "/", "b"]
+}
+    )");
+    const Json::Value &actual = procedure->toJson();
+    ASSERT_EQ(expected, actual);
 }
