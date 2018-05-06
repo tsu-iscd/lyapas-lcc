@@ -1,9 +1,12 @@
 R"(
 
 # TODO: подумать о руссификации ошибок
-# TODO: bug: обновлять <complex_buffer_opt> после definition и call
-# TODO: bug: транслировать L1[*] => L1_buffer[*]
 # TODO: bug: <free_label> записывается как команда
+
+#
+# TODO: alloc_at_least должен возвращать
+# кол-во памяти, которое было выделено
+#
 
 # 24 == 3 * 8, где 3 -- кол-во элементов, а 8 -- размер элемента в байтах
 cmd/create_complex "<complex>", {int}
@@ -58,18 +61,36 @@ cmd/inc "<free_var=2>"
 cmd/jump <free_label=2>
 label <free_label=3>
 
-# TODO: добавить push_back_element_to_complex
 cmd/insert_element_in_complex "<complex>", {int}, {readable_int}
 =>
 cmd/compare "<complex_cardinality>", "<complex_capacity>"
-cmd/jump_neq <free_label=1>
+cmd/jump_lt <free_label=1>
 cmd/error "Capacity is too small for inserting"
 label <free_label=1>
 cmd/move "<free_var=1>", {int}
 cmd/compare "<free_var=1>", "<complex_cardinality>"
 cmd/jump_leq <free_label=2>
-cmd/move "<free_var=1>", "<complex_cardinality>"
+cmd/error "Index out of range"
 label <free_label=2>
+cmd/inc "<complex_cardinality>"
+cmd/move "<free_var=2>", "<free_var=1>"
+cmd/inc "<free_var=2>"
+label <free_label=3>
+cmd/compare "<complex_cardinality>", "<free_var=2>"
+cmd/jump_geq <free_label=4>
+cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=2> - 1>"
+cmd/inc "<free_var=2>"
+cmd/jump <free_label=3>
+label <free_label=4>
+cmd/move "<complex_cell=<free_var=1>>", {readable_int}
+
+cmd/push_back_element_to_complex "<complex>", {readable_int}
+=>
+cmd/compare "<complex_cardinality>", "<complex_capacity>"
+cmd/jump_lt <free_label=1>
+cmd/error "Capacity is too small for inserting"
+label <free_label=1>
+cmd/move "<free_var=1>", "<complex_cardinality>"
 cmd/inc "<complex_cardinality>"
 cmd/move "<free_var=2>", "<free_var=1>"
 cmd/inc "<free_var=2>"
@@ -91,9 +112,26 @@ label <free_label=1>
 cmd/move "<free_var=1>", {int}
 cmd/compare "<free_var=1>", "<complex_cardinality>"
 cmd/jump_lt <free_label=2>
+cmd/error "Index out of range"
+label <free_label=2>
+cmd/move {writable_int}, "<complex_cell=<free_var=1>>"
+label <free_label=3>
+cmd/inc "<free_var=1>"
+cmd/compare "<complex_cardinality>", "<free_var=1>"
+cmd/jump_geq <free_label=4>
+cmd/move "<complex_cell=<free_var=1> - 1>", "<complex_cell=<free_var=1>>"
+cmd/jump <free_label=3>
+label <free_label=4>
+cmd/dec "<complex_cardinality>"
+
+cmd/pop_back_element_from_complex "<complex>", {writable_int}
+=>
+cmd/compare "<complex_cardinality>", 0
+cmd/jump_neq <free_label=1>
+cmd/error "Cardinality is too small for removing"
+label <free_label=1>
 cmd/move "<free_var=1>", "<complex_cardinality>"
 cmd/dec "<free_var=1>"
-label <free_label=2>
 cmd/move {writable_int}, "<complex_cell=<free_var=1>>"
 label <free_label=3>
 cmd/inc "<free_var=1>"
@@ -145,26 +183,12 @@ label <free_label=6>
 # TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 cmd/write_complex "<complex>"
 =>
-cmd/move "<free_var=1>", 0
-label <free_label=1>
-cmd/compare "<free_var=1>", "<complex_cardinality>"
-cmd/jump_geq <free_label=2>
-cmd/write_char "<complex_cell=<free_var=1>>"
-cmd/inc "<free_var=1>"
-cmd/jump <free_label=1>
-label <free_label=2>
+cmd/write_string "<complex_buffer_opt>", "<complex_cardinality>"
 
 cmd/write_string "<string>"
 =>
-cmd/move "<free_var=1>", 0
-cmd/definition_string "<string>", "<free_var=2>"
-label <free_label=1>
-cmd/compare "<free_var=1>", <string_len>
-cmd/jump_geq <free_label=2>
-cmd/write_char "1byte <free_var=2>[<free_var=1>]"
-cmd/inc "<free_var=1>"
-cmd/jump <free_label=1>
-label <free_label=2>
+cmd/definition_string "<string>", "<free_var=1>"
+cmd/write_string "<free_var=1>", <string_len>
 
 # TODO: нужно добавить валидацию <complex> is <symbol_complex> (возможно, она будет не на этапе комплексояза)
 # 10 - код символа перевода строки

@@ -10,8 +10,12 @@ private:
     virtual void preprocess(JSON &cmds) override;
     virtual void postprocess(JSON &cmds) override;
 
-    virtual trm::Replacers &getReplacers(const JSON &cmds) override;
+    virtual trm::Replacers makeReplacers() override;
     virtual std::string getRules() override;
+
+    JSON processFunctions(JSON &cmds);
+
+    friend class ComplexoyazFixture;
 };
 
 }  // namespace cyaz

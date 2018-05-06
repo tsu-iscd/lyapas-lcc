@@ -22,11 +22,11 @@ read_char <writable_int>
 ```
 Считывает с консоли символ и записывает его в операнд.
 
-### Запись символа в консоль
+### Вывод строки на консоль
 ```
-write_char <readable_int>
+write_string <readable_int:1>, <readable_int:2>
 ```
-Выводит на экран символ, который находится в операнде.
+Выводит на консоль строку длины `<readable_int:2>`, лежащую по адресу `<readable_int:1>`.
 
 ## Операции обработки ошибок
 ### Аварийное завершение программы
@@ -153,17 +153,40 @@ label 3
 
 ### Вставка в комплекс
 ```
-insert_in_complex <complex>, <int>, <readable_int>
+insert_element_in_complex <complex>, <int>, <readable_int>
 =>
 compare <complex_cardinality>, <complex_capacity> 
-jump_neq 1 
+jump_lt 1 
 error "Capacity is too small for inserting" 
 label 1 
 move cyaz_t1, <int> 
 compare cyaz_t1, <complex_cardinality> 
 jump_leq 2 
-move cyaz_t1, <complex_cardinality> 
+error "Index out of range" 
 label 2 
+inc <complex_cardinality> 
+# копирование
+move cyaz_t2, cyaz_t1 
+inc cyaz_t2 
+label 3 
+compare <complex_cardinality>, cyaz_t2 
+jump_geq 4 
+move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t2-1) 
+inc cyaz_t2 
+jump 3 
+label 4 
+move <complex_cell>(cyaz_t1), <readable_int>
+```
+
+### Вставка в конец комплекса
+```
+push_back_element_to_complex <complex>, <readable_int>
+=>
+compare <complex_cardinality>, <complex_capacity> 
+jump_lt 1 
+error "Capacity is too small for inserting" 
+label 1 
+move cyaz_t1, <complex_cardinality> 
 inc <complex_cardinality> 
 # копирование
 move cyaz_t2, cyaz_t1 
@@ -180,7 +203,7 @@ move <complex_cell>(cyaz_t1), <readable_int>
 
 ### Удаление элемента из комплекса
 ```
-rmv_from_complex <complex>, <int>, <writable_int>
+remove_element_from_complex <complex>, <int>, <writable_int>
 =>
 compare <complex_cardinality>, 0 
 jump_neq 1 
@@ -189,9 +212,30 @@ label 1
 move cyaz_t1, <int> 
 compare cyaz_t1, <complex_cardinality> 
 jump_lt 2 
+error "Index out of range" 
+label 2 
+move <writable_int>, <complex_cell>(cyaz_t1) 
+%% копирование
+label 3 
+inc cyaz_t1 
+compare <complex_cardinality>, cyaz_t1 
+jump_geq 4 
+move <complex_cell>(cyaz_t1-1), <complex_cell>(cyaz_t1) 
+jump 3 
+label 4 
+dec <complex_cardinality>
+```
+
+### Удаление элемента из конца комплекса
+```
+pop_back_element_from_complex <complex>, <writable_int>
+=>
+compare <complex_cardinality>, 0 
+jump_neq 1 
+error "Cardinality is too small for removing" 
+label 1 
 move cyaz_t1, <complex_cardinality> 
 dec cyaz_t1 
-label 2 
 move <writable_int>, <complex_cell>(cyaz_t1) 
 %% копирование
 label 3 
@@ -263,29 +307,15 @@ label 6
 ```
 write_complex <symbol_complex>
 =>
-move cyaz_t1, 0 
-label 1 
-compare cyaz_t1, <complex_cardinality> 
-jump_geq 2 
-write_char <complex_cell>(cyaz_t1) 
-inc cyaz_t1 
-jump 1 
-label 2
+write_string <symbol_complex>, <complex_cardinality> 
 ```
 
 ### Вывод строки на консоль
 ```
 write_string <string>
 =>
-move cyaz_t1, 0 
-definition_string <string>, cyaz_t2 
-label 1 
-compare cyaz_t1, <string_len> 
-jump_geq 2 
-write_char 1byte cyaz_t2[cyaz_t1] 
-inc cyaz_t1 
-jump 1 
-label 2
+definition_string <string>, cyaz_t1 
+write_string cyaz_t1, <string_len>
 ```
 
 ### Ввод строки с консоли

@@ -2,14 +2,13 @@
 
 #include <string>
 #include <unordered_map>
-#include <translation_module/aliases.h>
+#include "aliases.h"
 #include "icounter.h"
 
-namespace cyaz {
+namespace trm {
 
 //
-// Класс используется для подсчёта меток
-// с именем "tN", где N число >= 0.
+// Класс используется для подсчёта меток.
 //
 // Метод 'getFree' позволяет взять номер
 // первой свободной метки.
@@ -20,7 +19,7 @@ namespace cyaz {
 // clear_first_and_second F1
 //
 // Для трансляции данного блока кода,
-// нам понадобятся две свободная метка.
+// нам понадобятся две свободные метки.
 // Т.к. метка 1 занята, то будет использоваться
 // следующая за ней свободная метка 2.
 //
@@ -43,7 +42,7 @@ public:
 private:
     std::unordered_map<std::string, size_t> counters;
     std::string currentProcedure;
-    trm::Optional<size_t> givenLabel;
+    Optional<size_t> givenLabel;
 };
 
-}  // namespace cyaz
+}  // namespace trm

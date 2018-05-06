@@ -21,8 +21,12 @@ private:
     virtual void process(JSON &cmds) final;
     virtual void postprocess(JSON &cmds) = 0;
 
-    virtual Replacers &getReplacers(const JSON &cmds) = 0;
+    Replacers &getReplacers(const JSON &cmds);
+    virtual Replacers makeReplacers() = 0;
+
     virtual std::string getRules() = 0;
+
+    Optional<Replacers> replacers;
 };
 
 }  // namespace trm

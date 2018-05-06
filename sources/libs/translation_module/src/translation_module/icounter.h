@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <json/json.h>
 
-namespace cyaz {
+namespace trm {
 
 class ICounter {
 public:
@@ -18,4 +18,4 @@ public:
     virtual size_t getFree(size_t index) = 0;
 };
 
-}  // namespace cyaz
+}  // namespace trm

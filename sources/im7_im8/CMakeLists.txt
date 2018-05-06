@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.8)
-project(im4_im5)
+project(im7_im8)
 
 set(LIB_NAME "${PROJECT_NAME}_lib")
 set(BIN_NAME "${PROJECT_NAME}")
@@ -8,14 +8,16 @@ set(TEST_NAME "${PROJECT_NAME}_test")
 #
 # тесты
 #
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
 #
 # библиотека
 #
 set(SOURCE_FILES
-    complexoyaz.cpp
-    functional_replacers.cpp
+    assembler.cpp
+    make_cmd.cpp
+    program.cpp
+    program_translator.cpp
 )
 add_library(${LIB_NAME}
     ${SOURCE_FILES}

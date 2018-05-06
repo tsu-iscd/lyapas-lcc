@@ -8,4 +8,5 @@ public:
     std::vector<JSON> output;
 
     FunctionSignature(const JSON &cmd);
+    int getNumberOfArgs();
 };

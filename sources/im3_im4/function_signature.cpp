@@ -15,3 +15,8 @@ FunctionSignature::FunctionSignature(const JSON &cmd)
     input = std::vector<JSON>{++args.begin(), slash};
     output = std::vector<JSON>{++slash, args.end()};
 }
+
+int FunctionSignature::getNumberOfArgs()
+{
+    return input.size() + output.size();
+}

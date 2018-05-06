@@ -1,8 +1,7 @@
 #include "labels_counter.h"
-#include <regex>
 #include <shared_utils/assertion.h>
 
-namespace cyaz {
+namespace trm {
 
 void LabelsCounter::process(const Json::Value &program)
 {
@@ -27,7 +26,7 @@ void LabelsCounter::updateState(const Json::Value &nextCmd)
     // обработки предыдущей команды, считаются занятыми
     if (givenLabel) {
         counters[currentProcedure] += *givenLabel;
-        givenLabel = trm::nullOpt;
+        givenLabel = nullOpt;
     }
 
     if (nextCmd["type"].asString() == "cmd" && nextCmd["cmd"].asString() == "definition") {
@@ -42,4 +41,4 @@ size_t LabelsCounter::getFree(size_t index)
     return counters[currentProcedure] + index;
 }
 
-}  // namespace cyaz
+}  // namespace trm

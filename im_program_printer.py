@@ -15,14 +15,22 @@ def process_args(datum):
             else:
                 raise TypeError('Unexpected type "' + type(arg).__name__ + '"')
         return processed_args
-    return [] 
+    return []
+
+def get_label_name(datum):
+    if "number" in datum:
+        return str(datum["number"])
+    elif "name" in datum:
+        return datum["name"]
+    elif "args" in datum and isinstance(datum["args"], (list,)) and len(datum["args"]) == 1:
+        return str(datum["args"][0])
 
 def convert(datum):
     datum_type = datum["type"]
     if datum_type == "cmd":
         return datum["cmd"] + " " + ", ".join(process_args(datum)) + "\n"
     elif datum_type == "label":
-        return "label" + " " + str(datum["number"]) + "\n"
+        return get_label_name(datum) + ":\n"
     elif datum_type in ["definition", "call"]:
         return datum_type + " " + ", ".join(process_args(datum)) + "\n"
     else:

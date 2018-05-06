@@ -2,9 +2,9 @@
 
 #include <translation_module/translation_module.h>
 
-namespace dyaz {
+namespace ayaz {
 
-class Dvyyaz : public trm::TranslationModule {
+class Assembler : public trm::TranslationModule {
 private:
     virtual bool valid(const JSON &cmds, std::string &error) override;
     virtual void preprocess(JSON &cmds) override;
@@ -14,4 +14,5 @@ private:
     virtual std::string getRules() override;
 };
 
-}  // namespace dyaz
+}
+

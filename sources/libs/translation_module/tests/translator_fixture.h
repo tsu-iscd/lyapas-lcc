@@ -4,7 +4,7 @@
 
 namespace trm {
 
-class TranslatorFixture : public trm::TranslationModule {
+class TranslatorFixture : public TranslationModule {
 public:
     void setRules(const std::string &newRules);
 
@@ -13,7 +13,7 @@ private:
     virtual void preprocess(JSON &cmds) override;
     virtual void postprocess(JSON &cmds) override;
 
-    virtual Replacers &getReplacers(const JSON &cmds) override;
+    virtual Replacers makeReplacers() override;
     virtual std::string getRules() override;
 
     std::string rules;
