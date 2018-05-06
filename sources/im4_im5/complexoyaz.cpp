@@ -36,6 +36,14 @@ std::string calculateElementSize(const std::string &complex)
     }
 }
 
+trm::Filters filters{
+    {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
+    {"asm", {trm::ArgsFilter::Ignore::ALL}},
+    {"error", {trm::ArgsFilter::Ignore::ALL}},
+    {"definition", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}},
+    {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}},
+};
+
 }  // namespace
 
 bool Complexoyaz::valid(const JSON &cmds, std::string &error)
@@ -49,15 +57,9 @@ void Complexoyaz::postprocess(JSON &cmds)
 {
     cmds = processFunctions(cmds);
 
-    trm::Filters filters{
-        {"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
-        {"asm", {trm::ArgsFilter::Ignore::ALL}},
-        {"error", {trm::ArgsFilter::Ignore::ALL}},
-    };
-
     for (JSON &cmd : cmds) {
-        trm::ArgsRange range{filters, cmd};
-        for (auto &arg : range) {
+        trm::ArgsRange args{filters, cmd};
+        for (auto &arg : args) {
             if (!arg->isString()) {
                 continue;
             }
@@ -172,19 +174,22 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
     for (JSON &cmd : cmds) {
         LCC_ASSERT(cmd.isMember("type"));
         std::string type = cmd["type"].asString();
+        if (type != "cmd") {
+            result.append(cmd);
+            continue;
+        }
 
         if (!cmd.isMember("args")) {
             result.append(cmd);
             continue;
         }
-        JSON &args = cmd["args"];
 
         std::vector<JSON> postCmds;
-        auto processor = [&postCmds](const JSON &arg) -> JSON {
-            if (!arg.isString()) {
-                return arg;
+        auto processor = [&postCmds](JSON *arg) {
+            if (!arg->isString()) {
+                return;
             }
-            const std::string &argStr = arg.asString();
+            const std::string &argStr = arg->asString();
 
             static const std::regex isComplex("[LF][0-9]+");
             std::smatch match;
@@ -200,14 +205,15 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
 
                 postCmds.push_back(std::move(moveCmd));
 
-                return argStr + "_struct";
+                *arg = argStr + "_struct";
             }
-
-            return arg;
         };
 
-        if (type == "definition" || type == "call") {
-            std::transform(std::begin(args), std::end(args), std::begin(args), processor);
+        LCC_ASSERT(cmd.isMember("cmd"));
+        std::string cmdName = cmd["cmd"].asString();
+        if (cmdName == "definition" || cmdName == "call") {
+            trm::ArgsRange args{filters, cmd};
+            std::for_each(std::begin(args), std::end(args), processor);
         }
 
         result.append(cmd);
