@@ -1,0 +1,63 @@
+[
+  {"type": "program"},
+  [
+    {"type": "procedure", "name": "main"},
+    [
+      {"type": "in_args"}
+    ],
+    [
+      {"type": "out_args"}
+    ],
+    [
+      {"type": "preface"},
+      [
+        {"type": "operation", "name": "create_complex"},
+        [
+          {"type": "symbol_complex", "number": 1}
+        ],
+        [
+          {"type": "const", "value": 100}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "create_complex"},
+        [
+          {"type": "symbol_complex", "number": 2}
+        ],
+        [
+          {"type": "const", "value": 100}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "const", "value": 10}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 1},
+          [
+            {"type": "const", "value": 0}
+          ]
+        ]
+      ],
+      [
+        {"type": "operation", "name": "load"},
+        [
+          {"type": "const", "value": 11}
+        ]
+      ],
+      [
+        {"type": "operation", "name": "store"},
+        [
+          {"type": "symbol_complex", "number": 2},
+          [
+            {"type": "const", "value": 10}
+          ]
+        ]
+      ]
+    ]
+  ]
+]
