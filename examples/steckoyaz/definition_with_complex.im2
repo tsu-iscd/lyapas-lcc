@@ -1,7 +1,8 @@
 [
    {
       "args" : [ "main", "/" ],
-      "type" : "definition"
+      "cmd" : "definition",
+      "type" : "cmd"
    },
    {
       "args" : [ "F1", 100 ],
