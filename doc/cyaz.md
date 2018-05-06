@@ -22,11 +22,11 @@ read_char <writable_int>
 ```
 Считывает с консоли символ и записывает его в операнд.
 
-### Запись символа в консоль
+### Вывод строки на консоль
 ```
-write_char <readable_int>
+write_string <readable_int:1>, <readable_int:2>
 ```
-Выводит на экран символ, который находится в операнде.
+Выводит на консоль строку длины `<readable_int:2>`, лежащую по адресу `<readable_int:1>`.
 
 ## Операции обработки ошибок
 ### Аварийное завершение программы
@@ -307,29 +307,15 @@ label 6
 ```
 write_complex <symbol_complex>
 =>
-move cyaz_t1, 0 
-label 1 
-compare cyaz_t1, <complex_cardinality> 
-jump_geq 2 
-write_char <complex_cell>(cyaz_t1) 
-inc cyaz_t1 
-jump 1 
-label 2
+write_string <symbol_complex>, <complex_cardinality> 
 ```
 
 ### Вывод строки на консоль
 ```
 write_string <string>
 =>
-move cyaz_t1, 0 
-definition_string <string>, cyaz_t2 
-label 1 
-compare cyaz_t1, <string_len> 
-jump_geq 2 
-write_char 1byte cyaz_t2[cyaz_t1] 
-inc cyaz_t1 
-jump 1 
-label 2
+definition_string <string>, cyaz_t1 
+write_string cyaz_t1, <string_len>
 ```
 
 ### Ввод строки с консоли
