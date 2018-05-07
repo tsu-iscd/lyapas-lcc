@@ -7,6 +7,18 @@
 #include "registers.h"
 
 namespace ayaz {
+namespace {
+
+// пример: l1
+const std::regex isIrLocalVariable("l([0-9]+)");
+
+// пример: 8byte ptr[index]
+const std::regex isIrPtr(R"(([18]byte) ([^\[]+)\[([^\]]+)\])");
+
+// пример: QWORD [ptr + offset]
+const std::regex isAsmPtr(R"(([^ ]+) \[([^\]]+)\])");
+
+}
 
 bool Assembler::valid(const JSON &cmds, std::string &error)
 {
@@ -47,8 +59,8 @@ void Assembler::postprocess(JSON &cmds)
 {
     Program program = transform(cmds);
 
-    processArgs(program);
     processCmdsConstrains(program);
+    processArgs(program);
 
     cmds = transform(program);
 }
@@ -85,16 +97,12 @@ void Assembler::processArgs(Program &program)
             }
             const std::string argStr = arg.asString();
 
-            // пример: l1
-            static const std::regex isLocalVariable("l([0-9]+)");
             std::smatch match;
-            if (std::regex_match(argStr, match, isLocalVariable) && match.size() == 2) {
+            if (std::regex_match(argStr, match, isIrLocalVariable)) {
                 arg = localVarToPtr(match[1].str());
             }
 
-            // пример: 8byte ptr[index]
-            static const std::regex isPtr(R"(([18]byte) ([^\[]+)\[([^\]]+)\])");
-            if (std::regex_match(argStr, match, isPtr)) {
+            if (std::regex_match(argStr, match, isIrPtr)) {
                 auto ptrType = match[1].str();
                 auto ptr = match[2].str();
                 auto index = match[3].str();
@@ -110,13 +118,13 @@ void Assembler::processArgs(Program &program)
                     LCC_FAIL("Unexpected case");
                 }
 
-                if (std::regex_match(ptr, match, isLocalVariable)) {
+                if (std::regex_match(ptr, match, isIrLocalVariable)) {
                     std::string var = localVarToPtr(match[1].str());
                     program.insert(current, makeCmd("mov", {regs::r15, var}));
                     ptr = regs::r15;
                 }
 
-                if (std::regex_match(index, match, isLocalVariable)) {
+                if (std::regex_match(index, match, isIrLocalVariable)) {
                     std::string var = localVarToPtr(match[1].str());
                     program.insert(current, makeCmd("mov", {regs::r14, var}));
                     index = regs::r14;
@@ -138,22 +146,21 @@ void Assembler::processCmdsConstrains(Program &program)
 
         size_t count = 0;
 
-        // пример: QWORD [ptr + offset]
-        auto isPtr = [&count](JSON &arg) {
-            static const std::regex isPtrRegex(R"(([^ ]+) \[([^\]]+)\])");
-            std::smatch match;
-
+        auto countPtrAccess = [&count](JSON &arg) {
             std::string argStr = arg.asString();
-            if (std::regex_match(argStr, match, isPtrRegex)) {
+            std::smatch match;
+            if (std::regex_match(argStr, match, isAsmPtr) ||
+                std::regex_match(argStr, match, isIrPtr) ||
+                std::regex_match(argStr, match, isIrLocalVariable)) {
                 ++count;
             }
         };
 
         JSON &arg1 = cmd["args"][0];
-        isPtr(arg1);
+        countPtrAccess(arg1);
 
         JSON &arg2 = cmd["args"][1];
-        isPtr(arg2);
+        countPtrAccess(arg2);
 
         if (count == 2) {
             program.insert(current, makeCmd("mov", {regs::rax, arg2}));
