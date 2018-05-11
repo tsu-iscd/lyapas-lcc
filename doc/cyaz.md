@@ -188,16 +188,6 @@ error "Capacity is too small for inserting"
 label 1 
 move cyaz_t1, <complex_cardinality> 
 inc <complex_cardinality> 
-# копирование
-move cyaz_t2, cyaz_t1 
-inc cyaz_t2 
-label 3 
-compare <complex_cardinality>, cyaz_t2 
-jump_geq 4 
-move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t2-1) 
-inc cyaz_t2 
-jump 3 
-label 4 
 move <complex_cell>(cyaz_t1), <readable_int>
 ```
 

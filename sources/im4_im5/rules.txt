@@ -92,15 +92,6 @@ cmd/error "Capacity is too small for inserting"
 label <free_label=1>
 cmd/move "<free_var=1>", "<complex_cardinality>"
 cmd/inc "<complex_cardinality>"
-cmd/move "<free_var=2>", "<free_var=1>"
-cmd/inc "<free_var=2>"
-label <free_label=3>
-cmd/compare "<complex_cardinality>", "<free_var=2>"
-cmd/jump_geq <free_label=4>
-cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=2> - 1>"
-cmd/inc "<free_var=2>"
-cmd/jump <free_label=3>
-label <free_label=4>
 cmd/move "<complex_cell=<free_var=1>>", {readable_int}
 
 cmd/remove_element_from_complex "<complex>", {int}, {writable_int}

@@ -1,6 +1,8 @@
 #include "program_translator.h"
+#include <unordered_map>
 #include <shared_utils/assertion.h>
 #include <sys/mman.h>
+#include "label_fix.h"
 #include "make_cmd.h"
 #include "registers.h"
 
@@ -17,6 +19,9 @@ void ProgramTranslator::process(Program &program_)
         std::string cmdType = cmd["type"].asString();
 
         if (cmdType == "label") {
+            // FIXME: временное решение
+            tofix::fixLabel(cmd);
+
             if (!cmd.isMember("name")) {
                 continue;
             }
@@ -126,6 +131,12 @@ void ProgramTranslator::handleMove()
     cmd["cmd"] = "mov";
 }
 
+void ProgramTranslator::handleAdd()
+{
+    JSON &cmd = *current;
+    cmd["cmd"] = "add";
+}
+
 void ProgramTranslator::handleMul()
 {
     JSON &cmd = *current;
@@ -136,6 +147,89 @@ void ProgramTranslator::handleMul()
     program->insert(current, makeCmd("mov", {regs::rax, arg2}));
     cmd = makeCmd("mul", {arg1});
     program->insert(std::next(current), makeCmd("mov", {arg1, regs::rax}));
+}
+
+void ProgramTranslator::handleMod()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 3);
+    JSON arg1 = cmd["args"][0];
+    JSON arg2 = cmd["args"][1];
+    JSON arg3 = cmd["args"][2];
+
+    Program inner{makeCmd("mov", {regs::rdx, 0}),
+                  makeCmd("mov", {regs::rax, arg1}),
+                  makeCmd("div", {arg2}),
+                  makeCmd("mov", {arg3, regs::rax}),
+                  makeCmd("mov", {arg1, regs::rdx})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
+void ProgramTranslator::handleDiv()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 3);
+    JSON arg1 = cmd["args"][0];
+    JSON arg2 = cmd["args"][1];
+    JSON arg3 = cmd["args"][2];
+
+    Program inner{makeCmd("mov", {regs::rdx, 0}),
+                  makeCmd("mov", {regs::rax, arg1}),
+                  makeCmd("div", {arg2}),
+                  makeCmd("mov", {arg1, regs::rax}),
+                  makeCmd("mov", {arg3, regs::rdx})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
+void ProgramTranslator::handleCompare()
+{
+    JSON &cmd = *current;
+    cmd["cmd"] = "cmp";
+}
+
+void ProgramTranslator::handleJump()
+{
+    JSON &cmd = *current;
+    std::string cmdName = cmd["cmd"].asString();
+
+    const thread_local std::unordered_map<std::string, std::string> map{
+        {"jump", "jmp"},
+        {"jump_lt", "jl"},
+        {"jump_leq", "jle"},
+        {"jump_gt", "jg"},
+        {"jump_geq", "jge"},
+        {"jump_eq", "je"},
+        {"jump_neq", "jne"},
+    };
+
+    auto found = map.find(cmdName);
+    LCC_ASSERT(found != std::end(map));
+    cmd["cmd"] = found->second;
+
+    // FIXME: временное решение
+    tofix::fixJump(cmd);
+}
+
+void ProgramTranslator::handleError()
+{
+    //
+    // TODO: выводить ошибку на экран
+    //
+    JSON &cmd = *current;
+
+    Program inner{makeCmd("mov", {regs::rax, 60}),
+                  makeCmd("mov", {regs::rdi, 1}),
+                  makeCmd("syscall")};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
 }
 
 }
