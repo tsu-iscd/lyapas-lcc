@@ -14,13 +14,13 @@ definition_string <string>, <writable_int>
 ```
 Размещает в памяти строку из первого операнда и записывает её адрес во второй операнд.
 
-## Операции чтения и записи символов
+## Операции чтения и записи
 
-### Чтение символа с консоли
+### Чтение строки с консоли
 ```
-read_char <writable_int>
+read_string <readable_int:1>, <readable_int:2>, <writable_int> 
 ```
-Считывает с консоли символ и записывает его в операнд.
+Символы, введенные с клавиатуры, записываются по адресу из `<readable_int:1>`. Чтение с клавиатуры завершается в том случае, если встретился `\n`, либо считано `<readable_int:2>` символов. Количество считанных символов записывается в `<writable_int>`.
 
 ### Вывод строки на консоль
 ```
@@ -72,11 +72,11 @@ dealloc <readable_int>
 
 `<complex_buffer>` ::= `8byte <complex>_struct[2]`
 
-`<complex_buffer_var>` ::= вспомогательная переменная, в которой лежит значение `<complex_buffer>`
+`<complex_buffer_opt>` ::= вспомогательная переменная, в которой лежит значение `<complex_buffer>`
 
 `<complex_element_size>` ::= `1byte` для символьных комплексов и `8byte` для логических.
 
-`<complex_cell>(i)` ::= `<complex_element_size> <complex_buffer_var>[i]`.
+`<complex_cell>(i)` ::= `<complex_element_size> <complex_buffer_opt>[i]`.
 
 `<string_len>` --- длина строки `<string>`.
 
@@ -93,7 +93,7 @@ move <complex_capacity>, <int>
 move cyaz_t1, <int>
 mul cyaz_t1, <complex_element_size>
 alloc_at_least cyaz_t1, <complex_buffer> 
-move <complex_buffer_var>, <complex_buffer>
+move <complex_buffer_opt>, <complex_buffer>
 ```
 
 ### Уничтожение комплекса
@@ -111,7 +111,7 @@ reduce_complex <complex>
 move cyaz_t1, <complex_cardinality>
 mul cyaz_t1, <complex_element_size>
 realloc cyaz_t1, <complex_buffer> 
-move <complex_buffer_var>, <complex_buffer>
+move <complex_buffer_opt>, <complex_buffer>
 move <complex_capacity>, <complex_cardinality>
 ```
 
@@ -297,7 +297,7 @@ label 6
 ```
 write_complex <symbol_complex>
 =>
-write_string <symbol_complex>, <complex_cardinality> 
+write_string <complex_buffer_opt>, <complex_cardinality> 
 ```
 
 ### Вывод строки на консоль
@@ -312,18 +312,17 @@ write_string cyaz_t1, <string_len>
 ```
 read_complex <symbol_complex>
 =>
-move cyaz_t1, <complex_cardinality> 
-label 1 
-compare cyaz_t1, <complex_capacity> 
-jump_geq 3 
-read_char <complex_cell>(cyaz_t1) 
-# символ переноса строки '\n' == 10
-compare <complex_cell>(cyaz_t1), 10 
-jump_eq 2 
-inc cyaz_t1 
-jump 1 
-label 2 
-inc cyaz_t1 
-label 3 
+move cyaz_t1, <complex_buffer_opt>
+add cyaz_t1, <complex_cardinality>
+move cyaz_t2, <complex_capacity>
+sub cyaz_t2, <complex_cardinality>
+read_string cyaz_t1, cyaz_t2, cyaz_t3
+add <complex_cardinality>, cyaz_t3
+move cyaz_t1, <complex_cardinality>
+dec cyaz_t1
+move cyaz_t2, <complex_cell>(cyaz_t1)
+compare cyaz_t2, 10
+jump_neq 1 
 move <complex_cardinality>, cyaz_t1
+label 1 
 ```

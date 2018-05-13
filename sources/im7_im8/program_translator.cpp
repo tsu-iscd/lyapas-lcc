@@ -84,6 +84,26 @@ void ProgramTranslator::handleDefinitionString()
     cmd = makeCmd("mov", {var, alias});
 }
 
+void ProgramTranslator::handleReadString()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 3);
+    std::string addr = cmd["args"][0].asString();
+    JSON len = cmd["args"][1];
+    JSON readLen = cmd["args"][2];
+
+    Program inner{makeCmd("mov", {regs::rax, 0}),
+                  makeCmd("mov", {regs::rdi, 1}),
+                  makeCmd("mov", {regs::rsi, addr}),
+                  makeCmd("mov", {regs::rdx, len}),
+                  makeCmd("syscall"),
+                  makeCmd("mov", {readLen, regs::rax})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
 void ProgramTranslator::handleWriteString()
 {
     JSON &cmd = *current;

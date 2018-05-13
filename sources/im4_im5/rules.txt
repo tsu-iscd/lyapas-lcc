@@ -185,18 +185,18 @@ cmd/write_string "<free_var=1>", <string_len>
 # 10 - код символа перевода строки
 cmd/read_complex "<complex>"
 =>
+cmd/move "<free_var=1>", "<complex_buffer_opt>",
+cmd/add "<free_var=1>", "<complex_cardinality>"
+cmd/move "<free_var=2>", "<complex_capacity>",
+cmd/sub "<free_var=2>", "<complex_cardinality>"
+cmd/read_string "<free_var=1>", "<free_var=2>", "<free_var=3>"
+cmd/add "<complex_cardinality>", "<free_var=3>"
 cmd/move "<free_var=1>", "<complex_cardinality>"
-label <free_label=1>
-cmd/compare "<free_var=1>", "<complex_capacity>"
-cmd/jump_geq <free_label=3>
-cmd/read_char "<complex_cell=<free_var=1>>"
-cmd/compare "<complex_cell=<free_var=1>>", 10
-cmd/jump_eq <free_label=2>
-cmd/inc "<free_var=1>"
-cmd/jump <free_label=1>
-label <free_label=2>
-cmd/inc "<free_var=1>"
-label <free_label=3>
+cmd/dec "<free_var=1>"
+cmd/move "<free_var=2>", "<complex_cell=<free_var=1>>"
+cmd/compare "<free_var=2>", 10
+cmd/jump_neq <free_label=1>
 cmd/move "<complex_cardinality>", "<free_var=1>"
+label <free_label=1>
 
 )"
