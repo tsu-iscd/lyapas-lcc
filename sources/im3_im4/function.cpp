@@ -28,9 +28,9 @@ void Function::setBody(std::vector<JSON> &newBody)
     body = newBody;
 }
 
-size_t Function::getVariablesCount()
+size_t Function::getLocalVariablesCount()
 {
-    return variables.size();
+    return variables.size() - signature.getNumberOfArgs();
 }
 
 void Function::substituteCmdArgs(JSON &cmd)
@@ -38,7 +38,7 @@ void Function::substituteCmdArgs(JSON &cmd)
     trm::Filters filters{{"definition_string", {trm::ArgsFilter::Ignore::SOME, {0}}},
                          {"asm", {trm::ArgsFilter::Ignore::ALL}},
                          {"error", {trm::ArgsFilter::Ignore::ALL}},
-                         {"call", {trm::ArgsFilter::Ignore::ALL}}};
+                         {"call", {trm::ArgsFilter::Ignore::NAME_FUNCTION_AND_SLASH}}};
 
     trm::ArgsRange args{filters, cmd};
     for (auto &arg : args) {
@@ -66,6 +66,34 @@ void Function::calculateStackVariables()
 
         for (auto &arg : args) {
             insertVariable(*arg);
+        }
+    }
+
+    //
+    // сдвиг переменных p<N>
+    //
+    // пример, содержание variables до:
+    // l0, l1, l2, p0, p1, p2
+    //
+    // поле:
+    // l0, l1, l2, p4, p5, p6
+    //
+    // таким образом переменные легко кладутся на стек:
+    //  __________
+    // |____p6____|
+    // |____p5____|
+    // |____p4____|
+    // |_ret.addr.|
+    // |____l2____|
+    // |____l1____|
+    // |____l0____|
+    // |          |
+    //
+    for (auto &var : variables) {
+        if (var.alias[0] == 'p') {
+            std::string numStr = var.alias.substr(1);
+            auto num = variables.size() - std::stoull(numStr);
+            var.alias = 'p' + std::to_string(num);
         }
     }
 }

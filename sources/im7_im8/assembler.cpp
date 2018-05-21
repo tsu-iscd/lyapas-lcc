@@ -13,6 +13,12 @@ namespace {
 // пример: l1
 const std::regex isIrLocalVariable("l([0-9]+)");
 
+// пример: p1
+const std::regex isIrParamVariable("p([0-9]+)");
+
+// пример: arg1
+const std::regex isIrArgVariable("arg([0-9]+)");
+
 // пример: 8byte ptr[index]
 const std::regex isIrPtr(R"(([18]byte) ([^\[]+)\[([^\]]+)\])");
 
@@ -79,9 +85,20 @@ std::string Assembler::getRules()
 
 void Assembler::processArgs(Program &program)
 {
-    auto localVarToPtr = [](const std::string &var) -> std::string {
+    std::smatch match;
+    auto isLocalOrParamVar = [&match](const std::string &var) {
+        return std::regex_match(var, match, isIrLocalVariable) ||
+               std::regex_match(var, match, isIrParamVariable);
+    };
+
+    auto localOrParamVarToPtr = [](const std::string &var) -> std::string {
         auto number = std::stoull(var);
-        return "QWORD [" + regs::rsp + " - " + std::to_string(8 * number) + "]";
+        return "QWORD [" + regs::rsp + " + " + std::to_string(8 * number) + "]";
+    };
+
+    auto argVarToPtr = [](const std::string &var) -> std::string {
+        auto number = std::stoull(var);
+        return "QWORD [" + regs::rsp + " - " + std::to_string(8 * (1 + number)) + "]";
     };
 
     for (auto current = std::begin(program); current != std::end(program); ++current) {
@@ -99,9 +116,12 @@ void Assembler::processArgs(Program &program)
             }
             const std::string argStr = arg.asString();
 
-            std::smatch match;
-            if (std::regex_match(argStr, match, isIrLocalVariable)) {
-                arg = localVarToPtr(match[1].str());
+            if (isLocalOrParamVar(argStr)) {
+                arg = localOrParamVarToPtr(match[1].str());
+            }
+
+            if (std::regex_match(argStr, match, isIrArgVariable)) {
+                arg = argVarToPtr(match[1].str());
             }
 
             if (std::regex_match(argStr, match, isIrPtr)) {
@@ -120,14 +140,14 @@ void Assembler::processArgs(Program &program)
                     LCC_FAIL("Unexpected case");
                 }
 
-                if (std::regex_match(ptr, match, isIrLocalVariable)) {
-                    std::string var = localVarToPtr(match[1].str());
+                if (isLocalOrParamVar(ptr)) {
+                    std::string var = localOrParamVarToPtr(match[1].str());
                     program.insert(current, makeCmd("mov", {regs::r15, var}));
                     ptr = regs::r15;
                 }
 
-                if (std::regex_match(index, match, isIrLocalVariable)) {
-                    std::string var = localVarToPtr(match[1].str());
+                if (isLocalOrParamVar(index)) {
+                    std::string var = localOrParamVarToPtr(match[1].str());
                     program.insert(current, makeCmd("mov", {regs::r14, var}));
                     index = regs::r14;
                 }
@@ -170,7 +190,9 @@ void Assembler::processCmdsConstrains(Program &program)
             std::smatch match;
             if (std::regex_match(argStr, match, isAsmPtr) ||
                 std::regex_match(argStr, match, isIrPtr) ||
-                std::regex_match(argStr, match, isIrLocalVariable)) {
+                std::regex_match(argStr, match, isIrLocalVariable) ||
+                std::regex_match(argStr, match, isIrParamVariable) ||
+                std::regex_match(argStr, match, isIrArgVariable)) {
                 ++count;
             }
         };
