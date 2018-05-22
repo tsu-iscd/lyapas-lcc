@@ -1,0 +1,47 @@
+print(a/)
+    10⇒q 0⇒j @+F1(100)
+    §1 a;q⇒b a/q⇒a 48+b@>F1 1+j⇒j ↑(a≠0)1 
+    §2 0⇒i j-1⇒j ↑(j=0)4 
+    §3 F1i⇒t F1j⇒F1i t⇒F1j i+1⇒i j-1⇒j ↑(i<j)3
+    §4 10@>F1 /F1>C
+**
+
+println(/)
+    *print(777/)
+**
+
+test_set_min_and_set_max(/)
+    /'-----------------------'>C *println(/)
+    /'set_min '>C                *println(/)
+    /'-----------------------'>C *println(/)
+
+    @+F1(1)
+
+    0⇒a
+    /'0 == '>C *print(a/)
+
+    Oa
+    /'0 == '>C *print(a/)
+
+    OF1.0
+    F1.0⇒a
+    /'0 == '>C *print(a/)
+
+    /'-----------------------'>C *println(/)
+    /'set_max'>C                 *println(/)
+    /'-----------------------'>C *println(/)
+    18446744073709551615⇒a
+    /'18446744073709551615 == '>C *print(a/)
+
+    ⁻a
+    /'18446744073709551615 == '>C *print(a/)
+
+    ⁻F1.0
+    F1.0⇒a
+    /'255 == '>C *print(a/)
+**
+
+main(/)
+    *test_set_min_and_set_max(/)
+**
+

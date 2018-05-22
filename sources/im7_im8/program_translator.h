@@ -28,6 +28,8 @@ private:
     void handleCompare();
     void handleJump();
     void handleError();
+    void handleSetMin();
+    void handleSetMax();
 
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
@@ -67,6 +69,9 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"jump_neq", &ProgramTranslator::handleJump},
 
         {"error", &ProgramTranslator::handleError},
+
+        {"set_min", &ProgramTranslator::handleSetMin},
+        {"set_max", &ProgramTranslator::handleSetMax},
     };
 }
 
