@@ -41,7 +41,22 @@ test_set_min_and_set_max(/)
     /'255 == '>C *print(a/)
 **
 
+test_random(/)
+    /'-----------------------'>C *println(/)
+    /'random  '>C                *println(/)
+    /'-----------------------'>C *println(/)
+    
+    T⇒s
+    /'seconds '>C *print(s/)
+
+    s⇒X
+    X⇒r /'random number '>C *print(r/)
+    X⇒r /'random number '>C *print(r/)
+    X⇒r /'random number '>C *print(r/)
+**
+
 main(/)
     *test_set_min_and_set_max(/)
+    *test_random(/)
 **
 

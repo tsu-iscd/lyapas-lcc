@@ -2,6 +2,7 @@
 #include <regex>
 #include <shared_utils/assertion.h>
 #include <set>
+#include "bss.h"
 #include "make_cmd.h"
 #include "program_translator.h"
 #include "program.h"
@@ -58,6 +59,15 @@ void Assembler::preprocess(JSON &cmds)
         const std::string &content = str.first;
         program.push_back(makeCmd(name, {"db '" + content + "'"}));
     }
+
+    //
+    // добавляем bss секцию до программы
+    //
+    Program bssSection{
+        makeCmd("section", {".bss"}),
+        makeCmd(bss::seed + " resq 1"),
+    };
+    program.insert(std::begin(program), std::begin(bssSection), std::end(bssSection));
 
     cmds = transform(program);
 }

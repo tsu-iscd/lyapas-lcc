@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <shared_utils/assertion.h>
 #include <sys/mman.h>
+#include "bss.h"
 #include "label_fix.h"
 #include "make_cmd.h"
 #include "registers.h"
@@ -266,6 +267,62 @@ void ProgramTranslator::handleSetMax()
     LCC_ASSERT(cmd["args"].size() == 1);
     cmd["cmd"] = "mov";
     cmd["args"].append(0xffff'ffff'ffff'ffffull);
+}
+
+void ProgramTranslator::handleGetTime()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON arg1 = cmd["args"][0];
+
+    Program inner{makeCmd("mov", {regs::rax, 201}),
+                  makeCmd("mov", {regs::rdi, 0}),
+                  makeCmd("syscall"),
+                  makeCmd("mov", {arg1, regs::rax})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
+void ProgramTranslator::handleSetRandom()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON arg1 = cmd["args"][0];
+
+    Program inner{makeCmd("mov", {regs::rax, arg1}),
+                  makeCmd("mov", {"[" + bss::seed + "]", regs::rax})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
+void ProgramTranslator::handleGetRandom()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON arg1 = cmd["args"][0];
+
+    Program inner{makeCmd("mov", {regs::rcx, "[" + bss::seed + "]"}),
+                  makeCmd("mov", {regs::rdx, regs::rcx}),
+                  makeCmd("shr", {regs::rdx, 12}),
+                  makeCmd("xor", {regs::rcx, regs::rdx}),
+                  makeCmd("mov", {regs::rdx, regs::rcx}),
+                  makeCmd("shl", {regs::rdx, 25}),
+                  makeCmd("xor", {regs::rcx, regs::rdx}),
+                  makeCmd("mov", {regs::rdx, regs::rcx}),
+                  makeCmd("shr", {regs::rdx, 27}),
+                  makeCmd("xor", {regs::rcx, regs::rdx}),
+                  makeCmd("mov", {regs::rax, 2685821657736338717ull}),
+                  makeCmd("mul", {regs::rcx}),
+                  makeCmd("mov", {"[" + bss::seed + "]", regs::rcx}),
+                  makeCmd("mov", {arg1, regs::rax})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
 }
 
 }
