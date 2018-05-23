@@ -35,6 +35,8 @@ private:
     void handleSetRandom();
     void handleGetRandom();
 
+    void handleGetNumberLeastOne();
+
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
 
@@ -80,6 +82,8 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"get_time", &ProgramTranslator::handleGetTime},
         {"set_random", &ProgramTranslator::handleSetRandom},
         {"get_random", &ProgramTranslator::handleGetRandom},
+
+        {"get_number_least_1", &ProgramTranslator::handleGetNumberLeastOne},
     };
 }
 

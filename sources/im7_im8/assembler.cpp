@@ -3,6 +3,7 @@
 #include <shared_utils/assertion.h>
 #include <set>
 #include "bss.h"
+#include "builtin_functions.h"
 #include "make_cmd.h"
 #include "program_translator.h"
 #include "program.h"
@@ -68,6 +69,11 @@ void Assembler::preprocess(JSON &cmds)
         makeCmd(bss::seed + " resq 1"),
     };
     program.insert(std::begin(program), std::begin(bssSection), std::end(bssSection));
+
+    //
+    // добавляем builtin функции
+    //
+    appendBuiltinFunctions(program);
 
     cmds = transform(program);
 }
