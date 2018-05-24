@@ -47,11 +47,63 @@ __tzcnt__table:
 )"));
 
 }
+
+void appendWeight(Program &program)
+{
+        //
+        // источник: http://www.hackersdelight.org/hdcodetxt/pop.c.txt
+        // см. реализацию pop0
+        //
+        program.push_front(makeCmd(R"(
+__weight:
+;;
+;; in: rdi
+;; out: rax
+;;
+  mov rax, 0x5555555555555555
+  mov rdx, rdi
+  shr rdi, 1
+  and rdx, rax
+  and rdi, rax
+  mov rcx, 0x0F0F0F0F0F0F0F0F
+  lea rax, [rdx+rdi]
+  mov rdi, 0x3333333333333333
+  mov rdx, rax
+  shr rax, 2
+  and rdx, rdi
+  and rax, rdi
+  add rax, rdx
+  mov rdx, rax
+  shr rax, 4
+  and rdx, rcx
+  and rax, rcx
+  mov rcx, 0x00FF00FF00FF00FF
+  add rax, rdx
+  mov rdx, rax
+  shr rax, 8
+  and rdx, rcx
+  and rax, rcx
+  mov rcx, 0x0000FFFF0000FFFF
+  add rax, rdx
+  mov rdx, rax
+  shr rax, 16
+  and rdx, rcx
+  and rax, rcx
+  add rax, rdx
+  mov edx, eax
+  shr rax, 32
+  add rax, rdx
+  ret
+)"));
+
+}
 }
 
 void appendBuiltinFunctions(Program &program)
 {
     appendTrailingZerosCount(program);
+    appendWeight(program);
+    program.push_front(makeCmd("section .text"));
 }
 
 }

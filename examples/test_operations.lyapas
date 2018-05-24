@@ -93,9 +93,48 @@ test_get_number_least_1(/)
     /'rightest one: '>C *print(a/)
 **
 
+test_weight(/)
+    /'-----------------------'>C *println(/)
+    0⇒a
+    *print(a/)
+    a%⇒a
+    /'weight: '>C *print(a/)
+
+    /'-----------------------'>C *println(/)
+    1⇒a
+    *print(a/)
+    a%⇒a
+    /'weight: '>C *print(a/)
+
+    /'-----------------------'>C *println(/)
+    255⇒a
+    *print(a/)
+    a%⇒a
+    /'weight: '>C *print(a/)
+
+    /'-----------------------'>C *println(/)
+    2048⇒a
+    *print(a/)
+    a%⇒a
+    /'weight: '>C *print(a/)
+
+    /'-----------------------'>C *println(/)
+    2147483648⇒a
+    *print(a/)
+    a%⇒a
+    /'weight: '>C *print(a/)
+
+    /'-----------------------'>C *println(/)
+    4294967296⇒a
+    *print(a/)
+    a%⇒a
+    /'weight: '>C *print(a/)
+**
+
 main(/)
     *test_set_min_and_set_max(/)
     *test_random(/)
     *test_get_number_least_1(/)
+    *test_weight(/)
 **
 

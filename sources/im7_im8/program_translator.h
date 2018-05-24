@@ -36,6 +36,7 @@ private:
     void handleGetRandom();
 
     void handleGetNumberLeastOne();
+    void handleWeight();
 
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
@@ -84,6 +85,7 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"get_random", &ProgramTranslator::handleGetRandom},
 
         {"get_number_least_1", &ProgramTranslator::handleGetNumberLeastOne},
+        {"weight", &ProgramTranslator::handleWeight},
     };
 }
 
