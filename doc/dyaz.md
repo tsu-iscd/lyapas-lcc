@@ -230,7 +230,19 @@ ddiv <writable_int>, <readable_int>, <writable_int>
 Делит двойное число на второй операнд, в первый операнд записывается частное, а остаток --- в третий. Двойное число состоит из первого операнда в младшей части и третьего операнда в старшей части.
 
 ## Операции перехода
-[comment]: # (операции jump <const>, jump_z <const>, jump_nz <const>, jump_eq <const>, jump_neq <const>, jump_gt <const>, jump_geq <const>, jump_lt <const>, jump_leq <const>, enumeration_1 <const> <readable_int:1> <readable_int:2> из однояза остаются без изменений)
+[comment]: # (операции jump <const>, jump_z <const>, jump_nz <const>, jump_eq <const>, jump_neq <const>, jump_gt <const>, jump_geq <const>, jump_lt <const>, jump_leq <const>, из однояза остаются без изменений)
+### Перечисление единиц
+```
+enumeration_1 <const>, <writable_int:1>, <writable_int:2>
+=>
+compare <writable_int:1>, 0
+jump_eq <const>
+enumeration_1 <writable_int:1>, <writable_int:2>
+```
+```
+enumeration_1 <writable_int:1>, <writable_int:2>
+```
+Если `<writable_int:1>` равен 0, то неопределённое поведение, в противном случае правая 1 в `<writable_int:1>` заменяется на 0, а её номер записывается в `<writable_int:2>`.
 
 ### Сравнивание
 ```

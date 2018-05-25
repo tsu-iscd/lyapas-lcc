@@ -37,6 +37,7 @@ private:
 
     void handleGetNumberLeastOne();
     void handleWeight();
+    void handleEnumeration();
 
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
@@ -86,6 +87,7 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
 
         {"get_number_least_1", &ProgramTranslator::handleGetNumberLeastOne},
         {"weight", &ProgramTranslator::handleWeight},
+        {"enumeration_1", &ProgramTranslator::handleEnumeration},
     };
 }
 

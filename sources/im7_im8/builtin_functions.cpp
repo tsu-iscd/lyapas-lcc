@@ -55,11 +55,11 @@ void appendWeight(Program &program)
         // см. реализацию pop0
         //
         program.push_front(makeCmd(R"(
-__weight:
 ;;
 ;; in: rdi
 ;; out: rax
 ;;
+__weight:
   mov rax, 0x5555555555555555
   mov rdx, rdi
   shr rdi, 1
@@ -97,12 +97,31 @@ __weight:
 )"));
 
 }
+
+void appendEnumeration(Program &program)
+{
+        program.push_front(makeCmd(R"(
+;;
+;; in: rdi
+;; out: rax - index of right 1
+;;      rbx - input without right 1
+;;
+__enumeration:
+  mov rax, rdi ; rax - input
+  dec rdi
+  and rdi, rax ; rdi - input without right 1
+  mov rbx, rdi
+  xor rdi, rax ; rdi - input's right 1
+  jmp __tzcnt  ; rax - index of right 1
+)"));
+}
 }
 
 void appendBuiltinFunctions(Program &program)
 {
     appendTrailingZerosCount(program);
     appendWeight(program);
+    appendEnumeration(program);
     program.push_front(makeCmd("section .text"));
 }
 

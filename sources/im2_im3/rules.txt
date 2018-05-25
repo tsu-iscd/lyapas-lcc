@@ -98,6 +98,12 @@ cmd/ddiv {readable_int}
 =>
 cmd/ddiv "acc", {readable_int}, "Z"
 
+cmd/enumeration_1 {const}, {int:1}, {int:2}
+=>
+cmd/compare {int:1}, 0
+cmd/jump_eq {const}
+cmd/enumeration_1 {int:1}, {int:2}
+
 cmd/compare {readable_int}
 =>
 cmd/compare "acc", {readable_int}

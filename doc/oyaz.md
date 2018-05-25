@@ -225,9 +225,9 @@ jump_leq <const>
 
 ### Перечисление единиц
 ```
-enumeration_1 <const>, <readable_int:1>, <readable_int:2>
+enumeration_1 <const>, <writable_int:1>, <writable_int:2>
 ```
-Если `<readable_int:1>` равен 0, то в `<readable_int:2>` записывается 0 и осуществляется переход на метку `<const>`, в противном случае правая 1 в `<readable_int:1>` заменяется на 0, а её номер записывается в `<readable_int:2>`.
+Если `<writable_int:1>` равен 0, то в `<writable_int:2>` записывается 0 и осуществляется переход на метку `<const>`, в противном случае правая 1 в `<writable_int:1>` заменяется на 0, а её номер записывается в `<writable_int:2>`.
 
 ## Операции над комплексами
 
