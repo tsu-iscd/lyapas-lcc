@@ -21,10 +21,10 @@ private:
     void handleWriteString();
     void handleAlloc();
     void handleMove();
-    void handleAdd();
     void handleMul();
     void handleMod();
     void handleDiv();
+    void handleDdiv();
     void handleCompare();
     void handleJump();
     void handleError();
@@ -40,6 +40,11 @@ private:
     void handleEnumeration();
 
     void handleAsm();
+
+    void handleUnaryOp();
+    void handleBinaryOp();
+
+    void handleShift();
 
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
@@ -64,10 +69,12 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"alloc", &ProgramTranslator::handleAlloc},
         {"alloc_at_least", &ProgramTranslator::handleAlloc},
         {"move", &ProgramTranslator::handleMove},
-        {"add", &ProgramTranslator::handleAdd},
+        {"add", &ProgramTranslator::handleBinaryOp},
+        {"sub", &ProgramTranslator::handleBinaryOp},
         {"mul", &ProgramTranslator::handleMul},
         {"mod", &ProgramTranslator::handleMod},
         {"div", &ProgramTranslator::handleDiv},
+        {"ddiv", &ProgramTranslator::handleDdiv},
         {"compare", &ProgramTranslator::handleCompare},
 
         {"jump", &ProgramTranslator::handleJump},
@@ -92,6 +99,17 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"enumeration_1", &ProgramTranslator::handleEnumeration},
 
         {"asm", &ProgramTranslator::handleAsm},
+
+        {"not", &ProgramTranslator::handleUnaryOp},
+        {"inc", &ProgramTranslator::handleUnaryOp},
+        {"dec", &ProgramTranslator::handleUnaryOp},
+
+        {"or", &ProgramTranslator::handleBinaryOp},
+        {"and", &ProgramTranslator::handleBinaryOp},
+        {"xor", &ProgramTranslator::handleBinaryOp},
+
+        {"left_shift", &ProgramTranslator::handleShift},
+        {"right_shift", &ProgramTranslator::handleShift},
     };
 }
 

@@ -43,7 +43,7 @@ inline std::string makeFailMessage(const char *file, int line, const char *msg)
 
 [[noreturn]] inline void fail(const char *file, int line, const char *msg)
 {
-    std::cout << makeFailMessage(file, line, msg) << std::endl;
+    std::cerr << makeFailMessage(file, line, msg) << std::endl;
     abort();
 }
 

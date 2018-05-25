@@ -154,6 +154,72 @@ test_enumeration(/)
     *helper_enumeration(1024/)
 **
 
+test_jumps(/)
+    /'-----------------------'>C *println(/)
+    /'test jumps '>C             *println(/)
+    /'-----------------------'>C *println(/)
+    →21
+    /'error'>C
+    §21
+
+    777⇒a
+    ↦22
+    /'error'>C
+    §22
+
+    0⇒a
+    ↪23
+    /'error'>C
+    §23
+
+    /'all right'>C *println(/)
+**
+
+test_operations(/)
+    /'-----------------------'>C *println(/)
+    /'test operations '>C        *println(/)
+    /'-----------------------'>C *println(/)
+
+    42⇒a
+    /'a = '>C *print(a/)
+
+    12⇒b
+    /'b = '>C *print(b/)
+
+    a+b⇒c
+    /'a + b = '>C *print(c/)
+
+    a-b⇒c
+    /'a - b = '>C *print(c/)
+
+    a-b⇒c
+    /'a - b = '>C *print(c/)
+
+    a¬⇒c
+    /'not a = '>C *print(c/)
+
+    ∆a
+    /'inc a = '>C *print(a/)
+
+    ∇a
+    /'dec a = '>C *print(a/)
+
+    a∨b⇒c
+    /'a | b = '>C *print(c/)
+
+    a&b⇒c
+    /'a & b = '>C *print(c/)
+
+    a⊕b⇒c
+    /'a ^ b = '>C *print(c/)
+
+    a<1⇒c
+    /'a < 1 = '>C *print(c/)
+
+    a>2⇒c
+    /'a > 2 = '>C *print(c/)
+**
+
 main(/)
     *test_set_min_and_set_max(/)
     *test_random(/)
@@ -161,5 +227,7 @@ main(/)
     *test_weight(/)
     *test_enumeration(/)
     *test_asm(/)
+    *test_jumps(/)
+    *test_operations(/)
 **
 

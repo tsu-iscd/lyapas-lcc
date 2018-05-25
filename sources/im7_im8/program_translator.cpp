@@ -32,10 +32,16 @@ void ProgramTranslator::process(Program &program_)
                 cmd = makeLabel("_start");
             }
         } else if (cmdType == "cmd") {
-            auto found = handlers.find(cmd["cmd"].asString());
+            std::string cmdName = cmd["cmd"].asString();
+            auto found = handlers.find(cmdName);
             if (found != std::end(handlers)) {
                 Handler handler = found->second;
                 (this->*handler)();
+            } else {
+                // FIXME: раскомментировать позже
+                //std::string error = "invalid cmd: " + cmdName;
+                //LCC_FAIL(error.c_str());
+                //
             }
         }
     }
@@ -152,12 +158,6 @@ void ProgramTranslator::handleMove()
     cmd["cmd"] = "mov";
 }
 
-void ProgramTranslator::handleAdd()
-{
-    JSON &cmd = *current;
-    cmd["cmd"] = "add";
-}
-
 void ProgramTranslator::handleMul()
 {
     JSON &cmd = *current;
@@ -202,6 +202,29 @@ void ProgramTranslator::handleDiv()
                   makeCmd("div", {arg2}),
                   makeCmd("mov", {arg1, regs::rax}),
                   makeCmd("mov", {arg3, regs::rdx})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
+void ProgramTranslator::handleDdiv()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 3);
+    JSON lo = cmd["args"][0];
+    JSON denominator = cmd["args"][1];
+    JSON hi = cmd["args"][2];
+
+    JSON quotient = cmd["args"][0];
+    JSON remainder = cmd["args"][2];
+
+    Program inner{makeCmd("mov", {regs::rdi, lo}),
+                  makeCmd("mov", {regs::rsi, hi}),
+                  makeCmd("mov", {regs::rdx, denominator}),
+                  makeCmd("call", {"__div_128_64"}),
+                  makeCmd("mov", {quotient, regs::rdi}),
+                  makeCmd("mov", {remainder, regs::rsi})};
 
     current = program->erase(current);
     program->insert(current, std::begin(inner), std::end(inner));
@@ -379,6 +402,42 @@ void ProgramTranslator::handleAsm()
     JSON asmInstruction = cmd["args"][0];
 
     cmd = makeCmd(asmInstruction.asString());
+}
+
+void ProgramTranslator::handleUnaryOp()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+}
+
+void ProgramTranslator::handleBinaryOp()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 2);
+}
+
+void ProgramTranslator::handleShift()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 2);
+    JSON value = cmd["args"][0];
+    JSON shift = cmd["args"][1];
+
+    const thread_local std::unordered_map<std::string, std::string> map{
+        {"left_shift", "shl"},
+        {"right_shift", "shr"},
+    };
+    std::string cmdName = cmd["cmd"].asString();
+    auto found = map.find(cmdName);
+    LCC_ASSERT(found != std::end(map));
+    cmdName = found->second;
+
+    Program inner{makeCmd("mov", {regs::rcx, shift}),
+                  makeCmd(cmdName, {value, regs::cl})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
 }
 
 }
