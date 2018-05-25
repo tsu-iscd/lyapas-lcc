@@ -221,10 +221,10 @@ void ProgramTranslator::handleJump()
 
     const thread_local std::unordered_map<std::string, std::string> map{
         {"jump", "jmp"},
-        {"jump_lt", "jl"},
-        {"jump_leq", "jle"},
-        {"jump_gt", "jg"},
-        {"jump_geq", "jge"},
+        {"jump_lt", "jb"},
+        {"jump_leq", "jbe"},
+        {"jump_gt", "ja"},
+        {"jump_geq", "jae"},
         {"jump_eq", "je"},
         {"jump_neq", "jne"},
     };

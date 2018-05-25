@@ -47,10 +47,10 @@ inline void fixJump(JSON &cmd)
 {
     std::set<std::string> jumps{
         "jmp",
-        "jl",
-        "jle",
-        "jg",
-        "jge",
+        "jb",
+        "jbe",
+        "ja",
+        "jae",
         "je",
         "jne",
     };

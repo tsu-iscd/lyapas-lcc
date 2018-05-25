@@ -108,6 +108,16 @@ cmd/compare {readable_int}
 =>
 cmd/compare "acc", {readable_int}
 
+cmd/jump_z {const}
+=>
+cmd/compare "acc", 0
+cmd/jump_eq {const}
+
+cmd/jump_nz {const}
+=>
+cmd/compare "acc", 0
+cmd/jump_neq {const}
+
 cmd/insert_element_in_complex {complex}, {int}
 =>
 cmd/insert_element_in_complex {complex}, {int}, "acc"
