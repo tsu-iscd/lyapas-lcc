@@ -8,7 +8,7 @@ def process_args(datum):
         args = datum["args"]
         processed_args = []
         for arg in args:
-            if isinstance(arg, int):
+            if isinstance(arg, int) or isinstance(arg, long):
                 processed_args.append(str(arg))
             elif isinstance(arg, basestring):
                 processed_args.append(arg)

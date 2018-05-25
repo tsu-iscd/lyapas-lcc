@@ -139,6 +139,14 @@ helper_enumeration(a/)
     §12
 **
 
+test_asm(/)
+    777⇒a
+    {mov QWORD [rsp], 0}
+    {mov QWORD [rsp + 8], 0}
+    /'number must be zero: '>C *println(/)
+    *print(a/)
+**
+
 test_enumeration(/)
     *helper_enumeration(0/)
     *helper_enumeration(17/)
@@ -152,5 +160,6 @@ main(/)
     *test_get_number_least_1(/)
     *test_weight(/)
     *test_enumeration(/)
+    *test_asm(/)
 **
 
