@@ -20,6 +20,8 @@ private:
     void handleReadString();
     void handleWriteString();
     void handleAlloc();
+    void handleRealloc();
+    void handleDealloc();
     void handleMove();
     void handleMul();
     void handleMod();
@@ -68,6 +70,8 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"write_string", &ProgramTranslator::handleWriteString},
         {"alloc", &ProgramTranslator::handleAlloc},
         {"alloc_at_least", &ProgramTranslator::handleAlloc},
+        {"realloc", &ProgramTranslator::handleRealloc},
+        {"dealloc", &ProgramTranslator::handleDealloc},
         {"move", &ProgramTranslator::handleMove},
         {"add", &ProgramTranslator::handleBinaryOp},
         {"sub", &ProgramTranslator::handleBinaryOp},

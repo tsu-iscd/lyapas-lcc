@@ -136,16 +136,70 @@ void ProgramTranslator::handleAlloc()
     JSON size = cmd["args"][0];
     JSON dstPtr = cmd["args"][1];
 
+    //
     // используем mmap
+    //
+    // выделяется на 8 байт больше для сохранения размера выделенной памяти
+    //
     Program inner{makeCmd("mov", {regs::rax, 9}),
                   makeCmd("mov", {regs::rdi, 0}),
                   makeCmd("mov", {regs::rsi, size}),
+                  makeCmd("add", {regs::rsi, 8}),
                   makeCmd("mov", {regs::rdx, PROT_READ | PROT_WRITE}),
                   makeCmd("mov", {regs::r10, MAP_PRIVATE | MAP_ANONYMOUS}),
                   makeCmd("mov", {regs::r8, -1}),
                   makeCmd("mov", {regs::r9, 0}),
                   makeCmd("syscall"),
-                  makeCmd("mov", {dstPtr, regs::rax})};
+                  makeCmd("mov", {regs::rdi, regs::rax}),
+                  makeCmd("mov", {"QWORD [" + regs::rdi + "]", size}),
+                  makeCmd("add", {"QWORD [" + regs::rdi + "]", 8}),
+                  makeCmd("add", {regs::rdi, 8}),
+                  makeCmd("mov", {dstPtr, regs::rdi})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
+void ProgramTranslator::handleRealloc()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 2);
+    JSON len = cmd["args"][0];
+    JSON addr = cmd["args"][1];
+
+    Program inner{// rsi -- dst
+                  makeCmd("alloc", {len, regs::rsi}),
+                  // rdi -- src
+                  makeCmd("mov", {regs::rdi, addr}),
+                  // rdx -- srcLen
+                  makeCmd("mov", {regs::rdx, regs::rdi}),
+                  makeCmd("sub", {regs::rdx, 8}),
+                  makeCmd("mov", {regs::rdx, "QWORD [" + regs::rdx + "]"}),
+                  // выбираем минимум из len и srcLen
+                  makeCmd("cmp", {regs::rdx, len}),
+                  makeCmd("cmova", {regs::rdx, len}),
+                  makeCmd("call", {"__copy"}),
+                  makeCmd("dealloc", {addr})};
+
+    current = program->erase(current);
+    program->insert(current--, std::begin(inner), std::end(inner));
+}
+
+void ProgramTranslator::handleDealloc()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON addr = cmd["args"][0];
+
+    //
+    // используем munmap
+    //
+    Program inner{makeCmd("mov", {regs::rax, 11}),
+                  makeCmd("mov", {regs::rdi, addr}),
+                  makeCmd("sub", {regs::rdi, 8}),
+                  makeCmd("mov", {regs::rsi, "QWORD [" + regs::rdi + "]"}),
+                  makeCmd("syscall")};
 
     current = program->erase(current);
     program->insert(current, std::begin(inner), std::end(inner));
