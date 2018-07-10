@@ -16,6 +16,7 @@ private:
 
     void processArgs(Program &program);
     void processCmdsConstrains(Program &program);
+    void processMovWithDifferentArgsSizes(Program &program);
 };
 
 }

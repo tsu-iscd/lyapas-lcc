@@ -1,6 +1,7 @@
 #include "assembler.h"
 #include <regex>
 #include <shared_utils/assertion.h>
+#include <set>
 #include "make_cmd.h"
 #include "program_translator.h"
 #include "program.h"
@@ -61,6 +62,7 @@ void Assembler::postprocess(JSON &cmds)
 
     processCmdsConstrains(program);
     processArgs(program);
+    processMovWithDifferentArgsSizes(program);
 
     cmds = transform(program);
 }
@@ -138,11 +140,27 @@ void Assembler::processArgs(Program &program)
 
 void Assembler::processCmdsConstrains(Program &program)
 {
+    //
+    // трансляция инструкций, которые имеют
+    // два обращения в память
+    //
     for (auto current = std::begin(program); current != std::end(program); ++current) {
         JSON &cmd = *current;
-        if (cmd["type"] != "cmd" || cmd["cmd"] != "mov") {
+        if (cmd["type"] != "cmd") {
             continue;
         }
+
+        std::string cmdName = cmd["cmd"].asString();
+        const thread_local std::set<std::string> cmds{
+            "mov",
+            "cmp",
+            "add",
+        };
+        if (cmds.find(cmdName) == std::end(cmds)) {
+            continue;
+        }
+        LCC_ASSERT(cmd["args"].size() == 2);
+
 
         size_t count = 0;
 
@@ -164,7 +182,35 @@ void Assembler::processCmdsConstrains(Program &program)
 
         if (count == 2) {
             program.insert(current, makeCmd("mov", {regs::rax, arg2}));
-            cmd = makeCmd("mov", {arg1, regs::rax});
+            cmd = makeCmd(cmdName, {arg1, regs::rax});
+        }
+    }
+}
+
+void Assembler::processMovWithDifferentArgsSizes(Program &program)
+{
+    for (auto current = std::begin(program); current != std::end(program); ++current) {
+        JSON &cmd = *current;
+        if (cmd["type"] != "cmd" || cmd["cmd"] != "mov") {
+            continue;
+        }
+
+        JSON &args = cmd["args"];
+        LCC_ASSERT(args.size() == 2);
+
+        auto isByteAccessAndRax = [](const JSON &arg1, const JSON &arg2) -> bool {
+            std::string arg1Str = arg1.asString();
+            std::smatch match;
+            bool isByteAccess = std::regex_match(arg1Str, match, isAsmPtr) && match[1].str() == "BYTE";
+            bool isRax = arg2 == regs::rax;
+            return isByteAccess && isRax;
+        };
+
+        if (isByteAccessAndRax(args[0], args[1])) {
+            JSON &rax = args[1];
+            rax = "al";
+        } else if (isByteAccessAndRax(args[1], args[0])) {
+            cmd["cmd"] = "movsx";
         }
     }
 }

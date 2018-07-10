@@ -119,8 +119,13 @@ CmdTranslators getCmdTranslators(const std::string &rules, const Replacers &repl
 
 void trm::TranslationModule::process(JSON &cmds)
 {
+    std::string rules = getRules();
+    if (rules.empty()) {
+        return;
+    }
     Replacers &replacers = getReplacers(cmds);
-    static CmdTranslators cmdTranslators = getCmdTranslators(getRules(), replacers);
+
+    static CmdTranslators cmdTranslators = getCmdTranslators(rules, replacers);
 
     if (!cmds.isArray()) {
         throw std::runtime_error("JSON with commands is not array");

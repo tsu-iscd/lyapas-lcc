@@ -20,7 +20,13 @@ private:
     void handleWriteString();
     void handleAlloc();
     void handleMove();
+    void handleAdd();
     void handleMul();
+    void handleMod();
+    void handleDiv();
+    void handleCompare();
+    void handleJump();
+    void handleError();
 
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
@@ -44,7 +50,21 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"alloc", &ProgramTranslator::handleAlloc},
         {"alloc_at_least", &ProgramTranslator::handleAlloc},
         {"move", &ProgramTranslator::handleMove},
+        {"add", &ProgramTranslator::handleAdd},
         {"mul", &ProgramTranslator::handleMul},
+        {"mod", &ProgramTranslator::handleMod},
+        {"div", &ProgramTranslator::handleDiv},
+        {"compare", &ProgramTranslator::handleCompare},
+
+        {"jump", &ProgramTranslator::handleJump},
+        {"jump_lt", &ProgramTranslator::handleJump},
+        {"jump_leq", &ProgramTranslator::handleJump},
+        {"jump_gt", &ProgramTranslator::handleJump},
+        {"jump_geq", &ProgramTranslator::handleJump},
+        {"jump_eq", &ProgramTranslator::handleJump},
+        {"jump_neq", &ProgramTranslator::handleJump},
+
+        {"error", &ProgramTranslator::handleError},
     };
 }
 
