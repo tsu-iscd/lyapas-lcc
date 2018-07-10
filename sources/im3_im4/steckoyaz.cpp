@@ -2,14 +2,20 @@
 #include <algorithm>
 #include <shared_utils/assertion.h>
 
-JSON createCmd(std::string cmd, JSON args)
-{
-    JSON command;
-    command["type"] = "cmd";
-    command["args"].append(args);
-    command["cmd"] = cmd;
+namespace {
 
-    return command;
+JSON makeCmd(const std::string &name, const std::initializer_list<JSON> &args = {})
+{
+    JSON res;
+    res["type"] = "cmd";
+    res["cmd"] = name;
+    res["args"] = JSON{Json::arrayValue};
+    for (const JSON &arg : args) {
+        res["args"].append(arg);
+    }
+    return res;
+}
+
 }
 
 std::vector<Function> parseFunctions(const JSON &cmds)
@@ -43,14 +49,14 @@ void Steckoyaz::preprocess(JSON &cmds)
     //разбиваем все на функции
     auto program = parseFunctions(cmds);
 
-    //транслируем calls в теле каждой функции
-    for (auto &function : program) {
-        translateCall(function);
-    }
-
     //транслируем definitions
     for (auto &function : program) {
         translateDefinition(function);
+    }
+
+    //транслируем calls в теле каждой функции
+    for (auto &function : program) {
+        translateCall(function);
     }
 
     //записываем результат трансляции
@@ -77,26 +83,37 @@ std::string Steckoyaz::getRules()
 void Steckoyaz::translateCall(Function &func)
 {
     std::vector<JSON> resultCmds;
+
+    unsigned counter = 0;
+    auto save = [&counter, &resultCmds](const JSON &var) {
+        std::string storeName = "arg" + std::to_string(counter++);
+        resultCmds.push_back(makeCmd("move", {storeName, var}));
+    };
+    auto load = [&counter, &resultCmds](const JSON &var) {
+        std::string loadName = "arg" + std::to_string(--counter);
+        resultCmds.push_back(makeCmd("move", {var, loadName}));
+    };
+
     for (auto &&cmd : func.getBody()) {
         if (cmd["cmd"] == "call") {
             FunctionSignature funcInf(cmd);
             JSON addedCmd;
             for (auto &var : funcInf.input) {
-                resultCmds.push_back(createCmd("push", var));
+                save(var);
             }
 
             for (auto &var : funcInf.output) {
-                resultCmds.push_back(createCmd("push", var));
+                save(var);
             }
 
-            resultCmds.push_back(createCmd("call", funcInf.name));
+            resultCmds.push_back(makeCmd("stack_alloc", {counter}));
+            resultCmds.push_back(makeCmd("call", {funcInf.name}));
+            resultCmds.push_back(makeCmd("stack_free", {counter}));
 
             for (auto it = funcInf.output.rbegin(); it != funcInf.output.rend(); it++) {
-                resultCmds.push_back(createCmd("pop", (*it)));
+                load(*it);
             };
 
-            //освобождаем стек
-            resultCmds.push_back(createCmd("stack_free", JSON{static_cast<int>(funcInf.input.size())}));
             continue;
         }
         resultCmds.push_back(cmd);
@@ -114,7 +131,7 @@ void Steckoyaz::translateDefinition(Function &func)
     resultCmds.push_back(addedCmd);
 
     //алоцируем стек
-    resultCmds.push_back(createCmd("stack_alloc", JSON{static_cast<int>(func.getVariablesCount())}));
+    resultCmds.push_back(makeCmd("stack_alloc", {static_cast<int>(func.getLocalVariablesCount())}));
 
     for (auto &&cmd : func.getBody()) {
         func.substituteCmdArgs(cmd);
@@ -122,7 +139,10 @@ void Steckoyaz::translateDefinition(Function &func)
     }
 
     //освобождаем стек
-    resultCmds.push_back(createCmd("stack_free", JSON{static_cast<int>(func.getVariablesCount())}));
+    resultCmds.push_back(makeCmd("stack_free", {static_cast<int>(func.getLocalVariablesCount())}));
+    if (func.getSignature().name != "main") {
+        resultCmds.push_back(makeCmd("ret"));
+    }
     func.setBody(resultCmds);
 }
 

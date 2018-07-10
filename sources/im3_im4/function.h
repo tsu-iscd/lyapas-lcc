@@ -11,7 +11,7 @@ public:
     const FunctionSignature getSignature();
     std::vector<JSON> &getBody();
     void setBody(std::vector<JSON> &newBody);
-    size_t getVariablesCount();
+    size_t getLocalVariablesCount();
     void substituteCmdArgs(JSON &cmd);
 
 private:

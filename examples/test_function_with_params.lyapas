@@ -1,0 +1,31 @@
+print(a/)
+    10⇒q 0⇒j @+F1(10)
+    §1 a;q⇒b a/q⇒a 48+b@>F1 1+j⇒j ↑(a≠0)1 
+    §2 0⇒i j-1⇒j ↑(j=0)4 
+    §3 F1i⇒t F1j⇒F1i t⇒F1j i+1⇒i j-1⇒j ↑(i<j)3
+    §4 10@>F1 /F1>C
+**
+
+sumdiff(a, b/c, d)
+    4⇒n 
+    2⇒m 
+    n-m+ a+b -m⇒c
+    n-m+ a-b -m⇒d
+**
+
+foo(a/b)
+    2⇒a 
+    4⇒b 
+**
+
+main(/)
+    *print(12345/)
+
+    *sumdiff(40, 2/a, b)
+    *print(a/)
+    *print(b/)
+
+    *foo(42/c)
+    *print(c/)
+**
+
