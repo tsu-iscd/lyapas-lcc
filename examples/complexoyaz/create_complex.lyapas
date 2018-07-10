@@ -1,4 +1,4 @@
-func_create_complex(a/b)
-    @+L1(a)
-    L1.0⇒b
+main(/)
+    @+L1(10)
+    424242⇒L1.7
 **

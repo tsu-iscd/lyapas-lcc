@@ -1,8 +1,10 @@
 #include "assembler.h"
 #include <regex>
-#include "program_translator.h"
+#include <shared_utils/assertion.h>
 #include "make_cmd.h"
+#include "program_translator.h"
 #include "program.h"
+#include "registers.h"
 
 namespace ayaz {
 
@@ -43,7 +45,33 @@ void Assembler::preprocess(JSON &cmds)
 
 void Assembler::postprocess(JSON &cmds)
 {
-    for (auto &cmd : cmds) {
+    Program program = transform(cmds);
+
+    processArgs(program);
+    processCmdsConstrains(program);
+
+    cmds = transform(program);
+}
+
+trm::Replacers Assembler::makeReplacers()
+{
+    return {};
+}
+
+std::string Assembler::getRules()
+{
+    return std::string("");
+}
+
+void Assembler::processArgs(Program &program)
+{
+    auto localVarToPtr = [](const std::string &var) -> std::string {
+        auto number = std::stoull(var);
+        return "QWORD [" + regs::rsp + " - " + std::to_string(8 * number) + "]";
+    };
+
+    for (auto current = std::begin(program); current != std::end(program); ++current) {
+        JSON &cmd = *current;
         if (!cmd.isMember("args")) {
             continue;
         }
@@ -57,24 +85,81 @@ void Assembler::postprocess(JSON &cmds)
             }
             const std::string argStr = arg.asString();
 
+            // пример: l1
             static const std::regex isLocalVariable("l([0-9]+)");
             std::smatch match;
             if (std::regex_match(argStr, match, isLocalVariable) && match.size() == 2) {
-                auto number = std::stoull(match[1].str());
-                arg = "QWORD [rsp - " + std::to_string(8 * number) + "]";
+                arg = localVarToPtr(match[1].str());
+            }
+
+            // пример: 8byte ptr[index]
+            static const std::regex isPtr(R"(([18]byte) ([^\[]+)\[([^\]]+)\])");
+            if (std::regex_match(argStr, match, isPtr)) {
+                auto ptrType = match[1].str();
+                auto ptr = match[2].str();
+                auto index = match[3].str();
+
+                std::string itemSize;
+                if (ptrType == "1byte") {
+                    ptrType = "BYTE";
+                    itemSize = "1";
+                } else if (ptrType == "8byte") {
+                    ptrType = "QWORD";
+                    itemSize = "8";
+                } else {
+                    LCC_FAIL("Unexpected case");
+                }
+
+                if (std::regex_match(ptr, match, isLocalVariable)) {
+                    std::string var = localVarToPtr(match[1].str());
+                    program.insert(current, makeCmd("mov", {regs::r15, var}));
+                    ptr = regs::r15;
+                }
+
+                if (std::regex_match(index, match, isLocalVariable)) {
+                    std::string var = localVarToPtr(match[1].str());
+                    program.insert(current, makeCmd("mov", {regs::r14, var}));
+                    index = regs::r14;
+                }
+
+                arg = ptrType + " [" + ptr + " + " + index + " * " + itemSize + "]";
             }
         }
     }
 }
 
-trm::Replacers Assembler::makeReplacers()
+void Assembler::processCmdsConstrains(Program &program)
 {
-    return {};
-}
+    for (auto current = std::begin(program); current != std::end(program); ++current) {
+        JSON &cmd = *current;
+        if (cmd["type"] != "cmd" || cmd["cmd"] != "mov") {
+            continue;
+        }
 
-std::string Assembler::getRules()
-{
-    return std::string("");
+        size_t count = 0;
+
+        // пример: QWORD [ptr + offset]
+        auto isPtr = [&count](JSON &arg) {
+            static const std::regex isPtrRegex(R"(([^ ]+) \[([^\]]+)\])");
+            std::smatch match;
+
+            std::string argStr = arg.asString();
+            if (std::regex_match(argStr, match, isPtrRegex)) {
+                ++count;
+            }
+        };
+
+        JSON &arg1 = cmd["args"][0];
+        isPtr(arg1);
+
+        JSON &arg2 = cmd["args"][1];
+        isPtr(arg2);
+
+        if (count == 2) {
+            program.insert(current, makeCmd("mov", {regs::rax, arg2}));
+            cmd = makeCmd("mov", {arg1, regs::rax});
+        }
+    }
 }
 
 }
