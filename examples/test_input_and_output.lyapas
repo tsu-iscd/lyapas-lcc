@@ -1,0 +1,6 @@
+main(/)
+    @+F1(5)
+    /'Who are you? -new line-'>C
+    /F1<C
+    /'Hello, '>C /F1>C /'-new line-'>C
+**

@@ -17,6 +17,7 @@ private:
     void handleStackAlloc();
     void handleStackFree();
     void handleDefinitionString();
+    void handleReadString();
     void handleWriteString();
     void handleAlloc();
     void handleMove();
@@ -46,6 +47,7 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
         {"stack_alloc", &ProgramTranslator::handleStackAlloc},
         {"stack_free", &ProgramTranslator::handleStackFree},
         {"definition_string", &ProgramTranslator::handleDefinitionString},
+        {"read_string", &ProgramTranslator::handleReadString},
         {"write_string", &ProgramTranslator::handleWriteString},
         {"alloc", &ProgramTranslator::handleAlloc},
         {"alloc_at_least", &ProgramTranslator::handleAlloc},

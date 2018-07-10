@@ -155,6 +155,7 @@ void Assembler::processCmdsConstrains(Program &program)
             "mov",
             "cmp",
             "add",
+            "sub",
         };
         if (cmds.find(cmdName) == std::end(cmds)) {
             continue;
