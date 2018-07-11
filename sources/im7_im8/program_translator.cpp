@@ -355,4 +355,21 @@ void ProgramTranslator::handleWeight()
     --current;
 }
 
+void ProgramTranslator::handleEnumeration()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 2);
+    JSON value = cmd["args"][0];
+    JSON indexOfRightOne = cmd["args"][1];
+
+    Program inner{makeCmd("mov", {regs::rdi, value}),
+                  makeCmd("call", {"__enumeration"}),
+                  makeCmd("mov", {indexOfRightOne, regs::rax}),
+                  makeCmd("mov", {value, regs::rbx})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
 }

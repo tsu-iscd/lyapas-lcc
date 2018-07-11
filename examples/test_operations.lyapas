@@ -131,10 +131,26 @@ test_weight(/)
     /'weight: '>C *print(a/)
 **
 
+helper_enumeration(a/)
+    /'number: '>C *println(/)
+    *print(a/)
+    /'indexes: '>C *println(/)
+    §11 ↑X12ai *print(i/) →11
+    §12
+**
+
+test_enumeration(/)
+    *helper_enumeration(0/)
+    *helper_enumeration(17/)
+    *helper_enumeration(255/)
+    *helper_enumeration(1024/)
+**
+
 main(/)
     *test_set_min_and_set_max(/)
     *test_random(/)
     *test_get_number_least_1(/)
     *test_weight(/)
+    *test_enumeration(/)
 **
 
