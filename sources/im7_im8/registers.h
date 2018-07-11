@@ -8,6 +8,7 @@ namespace regs {
 const std::string rax = "rax";
 const std::string rbx = "rbx";
 const std::string rcx = "rcx";
+const std::string cl = "cl";
 const std::string rdx = "rdx";
 const std::string rsi = "rsi";
 const std::string rdi = "rdi";

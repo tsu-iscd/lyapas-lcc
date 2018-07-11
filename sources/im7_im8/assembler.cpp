@@ -189,9 +189,12 @@ void Assembler::processCmdsConstrains(Program &program)
         std::string cmdName = cmd["cmd"].asString();
         const thread_local std::set<std::string> cmds{
             "mov",
-            "cmp",
             "add",
             "sub",
+            "cmp",
+            "or",
+            "and",
+            "xor",
         };
         if (cmds.find(cmdName) == std::end(cmds)) {
             continue;

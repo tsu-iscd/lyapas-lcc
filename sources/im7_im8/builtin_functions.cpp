@@ -115,6 +115,49 @@ __enumeration:
   jmp __tzcnt  ; rax - index of right 1
 )"));
 }
+
+void appendDiv128To64(Program &program)
+{
+    //
+    // источник: https://codereview.stackexchange.com/questions/67962/mostly-portable-128-by-64-bit-division
+    //
+    program.push_front(makeCmd(R"(
+;;
+;; in: rdi - lo
+;;     rsi - hi
+;;     rdx - denominator
+;;
+;; out: rdi - quotient
+;;      rsi - remainder
+;;
+__div_128_64:
+  lea rax, [rdi+rdi]
+  sub rsp, 8
+  shr rdi, 63
+  mov ecx, 64
+__div_128_64__1:
+  mov r8, rsi
+  add rsi, rsi
+  or rsi, rdi
+  mov rdi, rax
+  shr r8, 63
+  shr rdi, 63
+  add rax, rax
+  cmp rdx, rsi
+  jbe __div_128_64__5
+  test r8, r8
+  je __div_128_64__2
+__div_128_64__5:
+  sub rsi, rdx
+  or rax, 1
+__div_128_64__2:
+  sub ecx, 1
+  jne __div_128_64__1
+  mov rdi, rax
+  add rsp, 8
+  ret
+)"));
+}
 }
 
 void appendBuiltinFunctions(Program &program)
@@ -122,6 +165,7 @@ void appendBuiltinFunctions(Program &program)
     appendTrailingZerosCount(program);
     appendWeight(program);
     appendEnumeration(program);
+    appendDiv128To64(program);
     program.push_front(makeCmd("section .text"));
 }
 
