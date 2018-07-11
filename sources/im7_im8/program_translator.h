@@ -31,6 +31,10 @@ private:
     void handleSetMin();
     void handleSetMax();
 
+    void handleGetTime();
+    void handleSetRandom();
+    void handleGetRandom();
+
     using Handler = void (ProgramTranslator::*)();
     using Handlers = std::map<std::string, Handler>;
 
@@ -72,6 +76,10 @@ inline auto ProgramTranslator::makeHandlers() -> Handlers
 
         {"set_min", &ProgramTranslator::handleSetMin},
         {"set_max", &ProgramTranslator::handleSetMax},
+
+        {"get_time", &ProgramTranslator::handleGetTime},
+        {"set_random", &ProgramTranslator::handleSetRandom},
+        {"get_random", &ProgramTranslator::handleGetRandom},
     };
 }
 
