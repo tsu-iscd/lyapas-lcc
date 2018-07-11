@@ -253,6 +253,22 @@ compare <readable_int>, <readable_int>
 ```
 Вычитает второй операнд из первого. Устанавливает флаг нуля, если результат равен нулю. Устанавливает флаг заема, если для вычитания требуется заем.
 
+### Переход по нулю
+```
+jump_z <const>
+=>
+compare acc, 0
+jump_eq <const>
+```
+
+### Переход по ненулю
+```
+jump_nz <const>
+=>
+compare acc, 0
+jump_neq <const>
+```
+
 ## Операции над комплексами
 [comment]: # (операции create_complex <complex> <int>, rmv_complex <complex>, reduce_complex <complex>, clear_complex <complex>, insert_string_in_complex, copy_complex из однояза остаются без изменений)
 
