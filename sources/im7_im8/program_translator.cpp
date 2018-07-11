@@ -340,4 +340,19 @@ void ProgramTranslator::handleGetNumberLeastOne()
     --current;
 }
 
+void ProgramTranslator::handleWeight()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON arg = cmd["args"][0];
+
+    Program inner{makeCmd("mov", {regs::rdi, arg}),
+                  makeCmd("call", {"__weight"}),
+                  makeCmd("mov", {arg, regs::rax})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
 }
