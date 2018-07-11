@@ -372,4 +372,13 @@ void ProgramTranslator::handleEnumeration()
     --current;
 }
 
+void ProgramTranslator::handleAsm()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON asmInstruction = cmd["args"][0];
+
+    cmd = makeCmd(asmInstruction.asString());
+}
+
 }
