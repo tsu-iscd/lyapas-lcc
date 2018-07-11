@@ -233,7 +233,7 @@ void Assembler::processMovWithDifferentArgsSizes(Program &program)
             JSON &rax = args[1];
             rax = "al";
         } else if (isByteAccessAndRax(args[1], args[0])) {
-            cmd["cmd"] = "movsx";
+            cmd["cmd"] = "movzx";
         }
     }
 }

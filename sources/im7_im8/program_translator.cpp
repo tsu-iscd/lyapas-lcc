@@ -252,4 +252,20 @@ void ProgramTranslator::handleError()
     --current;
 }
 
+void ProgramTranslator::handleSetMin()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    cmd["cmd"] = "mov";
+    cmd["args"].append(0);
+}
+
+void ProgramTranslator::handleSetMax()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    cmd["cmd"] = "mov";
+    cmd["args"].append(0xffff'ffff'ffff'ffffull);
+}
+
 }
