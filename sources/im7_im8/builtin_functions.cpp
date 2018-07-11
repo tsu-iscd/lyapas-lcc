@@ -158,6 +158,29 @@ __div_128_64__2:
   ret
 )"));
 }
+
+void appendCopy(Program &program)
+{
+    program.push_front(makeCmd(R"(
+;;
+;; in: rdi - src
+;;     rsi - dst
+;;     rdx - len
+;;
+__copy:
+  test rdx, rdx
+  je __copy_1
+  xor rax, rax
+__copy_2:
+  movzx ecx, BYTE [rdi+rax]
+  mov BYTE [rsi+rax], cl
+  add rax, 1
+  cmp rdx, rax
+  jne __copy_2
+__copy_1:
+  rep ret
+)"));
+}
 }
 
 void appendBuiltinFunctions(Program &program)
@@ -166,6 +189,7 @@ void appendBuiltinFunctions(Program &program)
     appendWeight(program);
     appendEnumeration(program);
     appendDiv128To64(program);
+    appendCopy(program);
     program.push_front(makeCmd("section .text"));
 }
 
