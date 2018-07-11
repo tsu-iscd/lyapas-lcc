@@ -325,4 +325,19 @@ void ProgramTranslator::handleGetRandom()
     --current;
 }
 
+void ProgramTranslator::handleGetNumberLeastOne()
+{
+    JSON &cmd = *current;
+    LCC_ASSERT(cmd["args"].size() == 1);
+    JSON arg = cmd["args"][0];
+
+    Program inner{makeCmd("mov", {regs::rdi, arg}),
+                  makeCmd("call", {"__tzcnt"}),
+                  makeCmd("mov", {arg, regs::rax})};
+
+    current = program->erase(current);
+    program->insert(current, std::begin(inner), std::end(inner));
+    --current;
+}
+
 }

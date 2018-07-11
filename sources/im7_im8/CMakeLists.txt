@@ -15,6 +15,7 @@ set(TEST_NAME "${PROJECT_NAME}_test")
 #
 set(SOURCE_FILES
     assembler.cpp
+    builtin_functions.cpp
     make_cmd.cpp
     program.cpp
     program_translator.cpp
