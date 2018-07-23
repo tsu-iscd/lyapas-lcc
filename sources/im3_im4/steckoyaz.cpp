@@ -15,8 +15,15 @@ JSON makeCmd(const std::string &name, const std::initializer_list<JSON> &args = 
     }
     return res;
 }
+JSON createLabel(std::string labelName)
+{
+    JSON command;
+    command["type"] = "label";
+    command["name"] = labelName;
 
+    return command;
 }
+}  // namespace
 
 std::vector<Function> parseFunctions(const JSON &cmds)
 {
@@ -125,15 +132,16 @@ void Steckoyaz::translateDefinition(Function &func)
 {
     std::vector<JSON> resultCmds;
 
-    JSON addedCmd;
-    addedCmd["type"] = "label";
-    addedCmd["name"] = func.getSignature().name;
-    resultCmds.push_back(addedCmd);
+    resultCmds.push_back(createLabel(func.getSignature().name));
 
     //алоцируем стек
     resultCmds.push_back(makeCmd("stack_alloc", {static_cast<int>(func.getLocalVariablesCount())}));
 
     for (auto &&cmd : func.getBody()) {
+        if (cmd["type"] == "label") {
+            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + cmd["number"].asString()));
+            continue;
+        }
         func.substituteCmdArgs(cmd);
         resultCmds.push_back(cmd);
     }
