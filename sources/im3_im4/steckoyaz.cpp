@@ -1,5 +1,6 @@
 #include "steckoyaz.h"
 #include <algorithm>
+#include <set>
 #include <shared_utils/assertion.h>
 
 namespace {
@@ -23,6 +24,24 @@ JSON createLabel(std::string labelName)
 
     return command;
 }
+bool isJump(JSON &cmd)
+{
+    if (cmd["type"] != "cmd") {
+        return false;
+    }
+
+    return (cmd["cmd"].asString().find("jump") != std::string::npos);
+}
+bool isLabelWithNumber(JSON &cmd)
+{
+    return (cmd["type"] == "label") && cmd.isMember("number");
+}
+
+bool isLabelWithArgs(JSON &cmd)
+{
+    return (cmd["type"] == "label") && cmd.isMember("args");
+}
+
 }  // namespace
 
 std::vector<Function> parseFunctions(const JSON &cmds)
@@ -64,6 +83,10 @@ void Steckoyaz::preprocess(JSON &cmds)
     //транслируем calls в теле каждой функции
     for (auto &function : program) {
         translateCall(function);
+    }
+
+    for (auto &function : program) {
+        translateLabels(function);
     }
 
     //записываем результат трансляции
@@ -138,10 +161,6 @@ void Steckoyaz::translateDefinition(Function &func)
     resultCmds.push_back(makeCmd("stack_alloc", {static_cast<int>(func.getLocalVariablesCount())}));
 
     for (auto &&cmd : func.getBody()) {
-        if (cmd["type"] == "label") {
-            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + cmd["number"].asString()));
-            continue;
-        }
         func.substituteCmdArgs(cmd);
         resultCmds.push_back(cmd);
     }
@@ -154,4 +173,30 @@ void Steckoyaz::translateDefinition(Function &func)
     func.setBody(resultCmds);
 }
 
+void Steckoyaz::translateLabels(Function &func)
+{
+    std::vector<JSON> resultCmds;
+
+    for (auto &&cmd : func.getBody()) {
+        if (isLabelWithNumber(cmd)) {
+            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + cmd["number"].asString()));
+            continue;
+        }
+
+        if (isLabelWithArgs(cmd)) {
+            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + cmd["args"][0].asString()));
+            continue;
+        }
+
+        if (isJump(cmd)) {
+            LCC_ASSERT(cmd.isMember("args"));
+            LCC_ASSERT(cmd["args"].size() == 1);
+            resultCmds.push_back(
+                makeCmd(cmd["cmd"].asString(), {"_" + func.getSignature().name + "_" + cmd["args"][0].asString()}));
+            continue;
+        }
+        resultCmds.push_back(cmd);
+    }
+    func.setBody(resultCmds);
+}
 }  // namespace syaz

@@ -15,6 +15,7 @@ private:
 
     void translateCall(Function &func);
     void translateDefinition(Function &func);
+    void translateLabels(Function &func);
 };
 
 }  // namespace syaz

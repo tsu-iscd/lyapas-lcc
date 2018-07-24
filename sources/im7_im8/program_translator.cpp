@@ -21,7 +21,6 @@ void ProgramTranslator::process(Program &program_)
 
         if (cmdType == "label") {
             // FIXME: временное решение
-            tofix::fixLabel(cmd);
 
             if (!cmd.isMember("name")) {
                 continue;
@@ -311,7 +310,6 @@ void ProgramTranslator::handleJump()
     cmd["cmd"] = found->second;
 
     // FIXME: временное решение
-    tofix::fixJump(cmd);
 }
 
 void ProgramTranslator::handleError()
