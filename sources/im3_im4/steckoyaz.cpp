@@ -1,6 +1,5 @@
 #include "steckoyaz.h"
 #include <algorithm>
-#include <set>
 #include <shared_utils/assertion.h>
 
 namespace {
@@ -32,16 +31,22 @@ bool isJump(JSON &cmd)
 
     return (cmd["cmd"].asString().find("jump") != std::string::npos);
 }
-bool isLabelWithNumber(JSON &cmd)
+
+bool isLabel(JSON &cmd)
 {
-    return (cmd["type"] == "label") && cmd.isMember("number");
+    return (cmd["type"] == "label");
 }
 
-bool isLabelWithArgs(JSON &cmd)
+std::string getLabelNumber(JSON &cmd)
 {
-    return (cmd["type"] == "label") && cmd.isMember("args");
+    LCC_ASSERT(cmd.isMember("number") || cmd.isMember("args"));
+    if (cmd.isMember("number")) {
+        return cmd["number"].asString();
+    }
+    if (cmd.isMember("args")) {
+        return cmd["args"].asString();
+    }
 }
-
 }  // namespace
 
 std::vector<Function> parseFunctions(const JSON &cmds)
@@ -178,16 +183,11 @@ void Steckoyaz::translateLabels(Function &func)
     std::vector<JSON> resultCmds;
 
     for (auto &&cmd : func.getBody()) {
-        if (isLabelWithNumber(cmd)) {
-            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + cmd["number"].asString()));
+        if (isLabel(cmd)) {
+            std::string number = getLabelNumber(cmd);
+            resultCmds.push_back("_" + func.getSignature().name + "_" + number);
             continue;
         }
-
-        if (isLabelWithArgs(cmd)) {
-            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + cmd["args"][0].asString()));
-            continue;
-        }
-
         if (isJump(cmd)) {
             LCC_ASSERT(cmd.isMember("args"));
             LCC_ASSERT(cmd["args"].size() == 1);
