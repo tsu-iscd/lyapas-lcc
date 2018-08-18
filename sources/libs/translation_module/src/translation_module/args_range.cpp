@@ -27,7 +27,7 @@ ArgsRange::ArgsRange(const Filters &filters, JSON &cmd)
         //
         // пропускаем фильтрацию
         //
-        std::transform(std::begin(args), std::end(args), std::back_inserter(filteredArgs), std::addressof<JSON>);
+        std::transform(std::begin(args), std::end(args), std::back_inserter(filteredArgs), [](JSON &json) { return &json; });
         return;
     }
     const ArgsFilter &filter = found->second;
