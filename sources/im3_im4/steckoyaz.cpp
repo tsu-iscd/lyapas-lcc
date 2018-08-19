@@ -1,6 +1,7 @@
 #include "steckoyaz.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
+#include <iostream>
 
 namespace {
 
@@ -39,12 +40,16 @@ bool isLabel(JSON &cmd)
 
 std::string getLabelNumber(JSON &cmd)
 {
-    LCC_ASSERT(cmd.isMember("number") || cmd.isMember("args"));
+    LCC_ASSERT(cmd.isMember("number") || cmd.isMember("name") || (cmd.isMember("args") && cmd["args"].size() != 0));
     if (cmd.isMember("number")) {
         return cmd["number"].asString();
     }
-    if (cmd.isMember("args")) {
-        return cmd["args"].asString();
+    if (cmd.isMember("args") && cmd["args"].size() != 0) {
+        return cmd["args"][0].asString();
+    }
+
+    if (cmd.isMember("name")) {
+        return cmd["name"].asString();
     }
 }
 }  // namespace
@@ -185,7 +190,12 @@ void Steckoyaz::translateLabels(Function &func)
     for (auto &&cmd : func.getBody()) {
         if (isLabel(cmd)) {
             std::string number = getLabelNumber(cmd);
-            resultCmds.push_back("_" + func.getSignature().name + "_" + number);
+            //названия функций не изменяем
+            if (number == func.getSignature().name) {
+                resultCmds.push_back(cmd);
+                continue;
+            }
+            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + number));
             continue;
         }
         if (isJump(cmd)) {
