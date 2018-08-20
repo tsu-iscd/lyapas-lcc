@@ -1,7 +1,6 @@
 #include "steckoyaz.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
-#include <iostream>
 
 namespace {
 
@@ -30,12 +29,12 @@ bool isJump(JSON &cmd)
         return false;
     }
 
-    return (cmd["cmd"].asString().find("jump") != std::string::npos);
+    return cmd["cmd"].asString().find("jump") != std::string::npos;
 }
 
 bool isLabel(JSON &cmd)
 {
-    return (cmd["type"] == "label");
+    return cmd["type"] == "label";
 }
 
 std::string getLabelNumber(JSON &cmd)
@@ -193,19 +192,17 @@ void Steckoyaz::translateLabels(Function &func)
             //названия функций не изменяем
             if (number == func.getSignature().name) {
                 resultCmds.push_back(cmd);
-                continue;
+            } else {
+                resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + number));
             }
-            resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + number));
-            continue;
-        }
-        if (isJump(cmd)) {
+        } else if (isJump(cmd)) {
             LCC_ASSERT(cmd.isMember("args"));
             LCC_ASSERT(cmd["args"].size() == 1);
             resultCmds.push_back(
                 makeCmd(cmd["cmd"].asString(), {"_" + func.getSignature().name + "_" + cmd["args"][0].asString()}));
-            continue;
+        } else {
+            resultCmds.push_back(cmd);
         }
-        resultCmds.push_back(cmd);
     }
     func.setBody(resultCmds);
 }
