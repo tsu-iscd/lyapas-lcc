@@ -15,8 +15,43 @@ JSON makeCmd(const std::string &name, const std::initializer_list<JSON> &args = 
     }
     return res;
 }
+JSON createLabel(std::string labelName)
+{
+    JSON command;
+    command["type"] = "label";
+    command["name"] = labelName;
 
+    return command;
 }
+bool isJump(JSON &cmd)
+{
+    if (cmd["type"] != "cmd") {
+        return false;
+    }
+
+    return cmd["cmd"].asString().find("jump") != std::string::npos;
+}
+
+bool isLabel(JSON &cmd)
+{
+    return cmd["type"] == "label";
+}
+
+std::string getLabelNumber(JSON &cmd)
+{
+    LCC_ASSERT(cmd.isMember("number") || cmd.isMember("name") || (cmd.isMember("args") && cmd["args"].size() != 0));
+    if (cmd.isMember("number")) {
+        return cmd["number"].asString();
+    }
+    if (cmd.isMember("args") && cmd["args"].size() != 0) {
+        return cmd["args"][0].asString();
+    }
+
+    if (cmd.isMember("name")) {
+        return cmd["name"].asString();
+    }
+}
+}  // namespace
 
 std::vector<Function> parseFunctions(const JSON &cmds)
 {
@@ -57,6 +92,10 @@ void Steckoyaz::preprocess(JSON &cmds)
     //транслируем calls в теле каждой функции
     for (auto &function : program) {
         translateCall(function);
+    }
+
+    for (auto &function : program) {
+        translateLabels(function);
     }
 
     //записываем результат трансляции
@@ -125,10 +164,7 @@ void Steckoyaz::translateDefinition(Function &func)
 {
     std::vector<JSON> resultCmds;
 
-    JSON addedCmd;
-    addedCmd["type"] = "label";
-    addedCmd["name"] = func.getSignature().name;
-    resultCmds.push_back(addedCmd);
+    resultCmds.push_back(createLabel(func.getSignature().name));
 
     //алоцируем стек
     resultCmds.push_back(makeCmd("stack_alloc", {static_cast<int>(func.getLocalVariablesCount())}));
@@ -146,4 +182,28 @@ void Steckoyaz::translateDefinition(Function &func)
     func.setBody(resultCmds);
 }
 
+void Steckoyaz::translateLabels(Function &func)
+{
+    std::vector<JSON> resultCmds;
+
+    for (auto &&cmd : func.getBody()) {
+        if (isLabel(cmd)) {
+            std::string number = getLabelNumber(cmd);
+            //названия функций не изменяем
+            if (number == func.getSignature().name) {
+                resultCmds.push_back(cmd);
+            } else {
+                resultCmds.push_back(createLabel("_" + func.getSignature().name + "_" + number));
+            }
+        } else if (isJump(cmd)) {
+            LCC_ASSERT(cmd.isMember("args"));
+            LCC_ASSERT(cmd["args"].size() == 1);
+            resultCmds.push_back(
+                makeCmd(cmd["cmd"].asString(), {"_" + func.getSignature().name + "_" + cmd["args"][0].asString()}));
+        } else {
+            resultCmds.push_back(cmd);
+        }
+    }
+    func.setBody(resultCmds);
+}
 }  // namespace syaz

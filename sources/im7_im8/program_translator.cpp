@@ -20,9 +20,6 @@ void ProgramTranslator::process(Program &program_)
         std::string cmdType = cmd["type"].asString();
 
         if (cmdType == "label") {
-            // FIXME: временное решение
-            tofix::fixLabel(cmd);
-
             if (!cmd.isMember("name")) {
                 continue;
             }
@@ -309,9 +306,6 @@ void ProgramTranslator::handleJump()
     auto found = map.find(cmdName);
     LCC_ASSERT(found != std::end(map));
     cmd["cmd"] = found->second;
-
-    // FIXME: временное решение
-    tofix::fixJump(cmd);
 }
 
 void ProgramTranslator::handleError()
