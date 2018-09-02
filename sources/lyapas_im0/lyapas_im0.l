@@ -147,6 +147,25 @@ uint64 HexToInt(const char *hex)
     return answ;
 }
 
+void processSingleQuote(char *str)
+{
+    if (!str) {
+        return;
+    }
+
+    char *p = str;
+    while (*p != '\0') {
+        if (*p == '\\' && *(p + 1) == '\'') {
+            *str = '\'';
+            ++p;
+        }
+
+        ++p;
+        ++str;
+        *str = *p;
+    }
+}
+
 void PrintJsonWithValueNull(const char * typeName, const char *yytext)
 {   
     PutComma();
@@ -210,7 +229,7 @@ BDIGIT  [01]
 BCONST  [BDIGIT]+[b]
 SYM_COMPLEX [F][0-9]+
 LOG_COMPLEX [L][0-9]+
-SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+' 
+SCONST '(\\.^\\|[\\']|[^'\n]|''|\\\\)+'
 
 %%
     /*переменная*/
@@ -239,6 +258,8 @@ SCONST '(\\.^\\|[^\\'\n]|''|\\\\)+'
                     PrintJsonWithValueNull("quote", str);
                     int str_len = strlen(yytext) - 2;
                     str = strndup(yytext + 1, str_len);
+                    processSingleQuote(str);
+                    str_len = strlen(str);
                     PrintJsonWithValueString("sconst", str, str_len);
                     PrintJsonWithValueNull("quote", yytext + str_len);
                 }
@@ -370,7 +391,7 @@ int main(int argc, char *argv[])
     if(!program)
     {
         fprintf(stderr,"Incorrect JSON\n");
-        return 0;
+        return 1;
     }
     
     json_t *source_value = json_object_get(program, "source");

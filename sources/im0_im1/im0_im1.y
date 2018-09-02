@@ -1533,18 +1533,21 @@ int main(int argc, char *argv[]) {
     json_error_t json_err;
     program = json_loadf(stdin, 0, &json_err);
     if (!program) {
-        fprintf(stderr, "Ircorrect JSON\n");
-        return 0;
+        fprintf(stderr, "Invalid JSON\n");
+        return 1;
     }
     if (json_typeof(program) != JSON_ARRAY) {
-        fprintf(stderr, "Ircorrect JSON\n");
-        return 0;
+        fprintf(stderr, "JSON must be array\n");
+        return 1;
     }
     program_size = json_array_size(program);
     result = json_array();
     int retcode;
     retcode = yyparse();
-    print_json(result);
-    
+
+    size_t flags = JSON_INDENT(4);
+    char * resultJson = json_dumps(result, flags);
+    printf("%s", resultJson);
+    free(resultJson);
     return retcode;
 }
