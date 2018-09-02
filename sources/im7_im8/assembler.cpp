@@ -27,6 +27,22 @@ const std::regex isIrPtr(R"(([18]byte) ([^\[]+)\[([^\]]+)\])");
 // пример: QWORD [ptr + offset]
 const std::regex isAsmPtr(R"(([^ ]+) \[([^\]]+)\])");
 
+std::string escape(const std::string &in)
+{
+    std::string out;
+    out.reserve(in.size());
+    for (char c : in) {
+        if (c == '\'' || c == '\\' || c == '\n' || c == '\t') {
+            out += "',";
+            out += std::to_string((unsigned)c);
+            out += ",'";
+        } else {
+            out.push_back(c);
+        }
+    }
+    return out;
+}
+
 }
 
 bool Assembler::valid(const JSON &cmds, std::string &error)
@@ -58,7 +74,7 @@ void Assembler::preprocess(JSON &cmds)
     for (auto &str : strings) {
         const std::string &name = str.second;
         const std::string &content = str.first;
-        program.push_back(makeCmd(name, {"db '" + content + "'"}));
+        program.push_back(makeCmd(name, {"db '" + escape(content) + "'"}));
     }
 
     //
