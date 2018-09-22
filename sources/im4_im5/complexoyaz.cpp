@@ -57,7 +57,18 @@ void Complexoyaz::postprocess(JSON &cmds)
 {
     cmds = processFunctions(cmds);
 
+    //
+    // Для каждой цифры запоминаем соотвествующую букву, {"1": "L", "2": "F"}
+    // Пердполагаем, что в программе нет повторяющихся номеров комплексов.
+    //
+    std::map<std::string, std::string> complexes;
+
     for (JSON &cmd : cmds) {
+        if (cmd["cmd"] == "alloc") {
+            complexes.insert(std::pair<std::string, std::string>(std::string{cmd["args"][1].asString()[1]},
+                                                                 std::string{cmd["args"][1].asString()[0]}));
+        }
+
         trm::ArgsRange args{filters, cmd};
         for (auto &arg : args) {
             if (!arg->isString()) {
@@ -80,29 +91,25 @@ void Complexoyaz::postprocess(JSON &cmds)
             if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
                 std::string prefix = calculateElementSize(argStr) + "byte";
                 *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
+
                 continue;
             }
 
             //
-            // FIXME: Q<N> и S<N> транслируются
-            // с ошибкой для комплексов F<N>
-            //
-
-            //
-            // замена Q1 => 8byte L1_struct[0]
+            // замена Q1 => 8byte {L,F}1_struct[0]
             //
             static const std::regex isCardinality("Q([0-9]+)");
             if (std::regex_match(argStr, match, isCardinality) && match.size() == 2) {
-                *arg = "8byte L" + match[1].str() + "_struct[0]";
+                *arg = "8byte " + complexes[match[1].str()] + match[1].str() + "_struct[0]";
                 continue;
             }
 
             //
-            // замена S1 => 8byte L1_struct[1]
+            // замена S1 => 8byte {L,F}1_struct[1]
             //
             static const std::regex isCapacity("S([0-9]+)");
             if (std::regex_match(argStr, match, isCapacity) && match.size() == 2) {
-                *arg = "8byte L" + match[1].str() + "_struct[1]";
+                *arg = "8byte " + complexes[match[1].str()] + match[1].str() + "_struct[1]";
                 continue;
             }
         }
