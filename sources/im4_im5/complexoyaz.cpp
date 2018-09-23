@@ -57,18 +57,7 @@ void Complexoyaz::postprocess(JSON &cmds)
 {
     cmds = processFunctions(cmds);
 
-    //
-    // Для каждой цифры запоминаем соотвествующую букву, {"1": "L", "2": "F"}
-    // Пердполагаем, что в программе нет повторяющихся номеров комплексов.
-    //
-    std::map<std::string, std::string> complexes;
-
     for (JSON &cmd : cmds) {
-        if (cmd["cmd"] == "alloc") {
-            complexes.insert(std::pair<std::string, std::string>(std::string{cmd["args"][1].asString()[1]},
-                                                                 std::string{cmd["args"][1].asString()[0]}));
-        }
-
         trm::ArgsRange args{filters, cmd};
         for (auto &arg : args) {
             if (!arg->isString()) {
@@ -88,28 +77,31 @@ void Complexoyaz::postprocess(JSON &cmds)
             //        F1[i] => F1_buffer[i]
             //
             static const std::regex isComplexWithIndex(R"(([LF][0-9]+)(\[[^\]]*\]))");
+            static const std::regex getNum("[0-9]+");
             if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
+                std::string index = match[2].str();
                 std::string prefix = calculateElementSize(argStr) + "byte";
-                *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
 
+                std::regex_search(argStr, match, getNum);
+                *arg = prefix + " " + match[0].str() + "_buffer" + index;
                 continue;
             }
 
             //
-            // замена Q1 => 8byte {L,F}1_struct[0]
+            // замена Q1 => 8byte L1_struct[0]
             //
             static const std::regex isCardinality("Q([0-9]+)");
             if (std::regex_match(argStr, match, isCardinality) && match.size() == 2) {
-                *arg = "8byte " + complexes[match[1].str()] + match[1].str() + "_struct[0]";
+                *arg = "8byte comp" + match[1].str() + "_struct[0]";
                 continue;
             }
 
             //
-            // замена S1 => 8byte {L,F}1_struct[1]
+            // замена S1 => 8byte L1_struct[1]
             //
             static const std::regex isCapacity("S([0-9]+)");
             if (std::regex_match(argStr, match, isCapacity) && match.size() == 2) {
-                *arg = "8byte " + complexes[match[1].str()] + match[1].str() + "_struct[1]";
+                *arg = "8byte comp" + match[1].str() + "_struct[1]";
                 continue;
             }
         }
@@ -199,11 +191,13 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
             const std::string &argStr = arg->asString();
 
             static const std::regex isComplex("[LF][0-9]+");
+            static const std::regex getNum("[0-9]+");
             std::smatch match;
             if (std::regex_match(argStr, match, isComplex) && match.size() == 1) {
+                std::regex_search(argStr, match, getNum);
                 JSON args;
-                args.append(argStr + "_buffer");
-                args.append("8byte " + argStr + "_struct[2]");
+                args.append("comp" + match[0].str() + "_buffer");
+                args.append("8byte comp" + match[0].str() + "_struct[2]");
 
                 JSON moveCmd;
                 moveCmd["type"] = "cmd";
@@ -212,7 +206,7 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
 
                 postCmds.push_back(std::move(moveCmd));
 
-                *arg = argStr + "_struct";
+                *arg = "comp" + match[0].str() + "_struct";
             }
         };
 
