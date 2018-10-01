@@ -73,36 +73,33 @@ void Complexoyaz::postprocess(JSON &cmds)
             LCC_ASSERT(!std::regex_match(argStr, match, isComplex));
 
             //
-            // замена L1[i] => L1_buffer[i]
-            //        F1[i] => F1_buffer[i]
+            // замена L1[i] => comp1_buffer[i]
+            //        F1[i] => comp1_buffer[i]
             //
-            static const std::regex isComplexWithIndex(R"(([LF][0-9]+)(\[[^\]]*\]))");
-            if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 3) {
+            static const std::regex isComplexWithIndex(R"(([LF])([0-9]+)(\[[^\]]*\]))");
+            if (std::regex_match(argStr, match, isComplexWithIndex) && match.size() == 4) {
                 std::string prefix = calculateElementSize(argStr) + "byte";
-                *arg = prefix + " " + match[1].str() + "_buffer" + match[2].str();
+                std::string index = match[3].str();
+                std::string complexNumber = match[2].str();
+                *arg = prefix + " comp" + complexNumber + "_buffer" + index;
                 continue;
             }
 
             //
-            // FIXME: Q<N> и S<N> транслируются
-            // с ошибкой для комплексов F<N>
-            //
-
-            //
-            // замена Q1 => 8byte L1_struct[0]
+            // замена Q1 => 8byte comp1_struct[0]
             //
             static const std::regex isCardinality("Q([0-9]+)");
             if (std::regex_match(argStr, match, isCardinality) && match.size() == 2) {
-                *arg = "8byte L" + match[1].str() + "_struct[0]";
+                *arg = "8byte comp" + match[1].str() + "_struct[0]";
                 continue;
             }
 
             //
-            // замена S1 => 8byte L1_struct[1]
+            // замена S1 => 8byte comp1_struct[1]
             //
             static const std::regex isCapacity("S([0-9]+)");
             if (std::regex_match(argStr, match, isCapacity) && match.size() == 2) {
-                *arg = "8byte L" + match[1].str() + "_struct[1]";
+                *arg = "8byte comp" + match[1].str() + "_struct[1]";
                 continue;
             }
         }
@@ -118,15 +115,15 @@ trm::Replacers Complexoyaz::makeReplacers()
         return calculateElementSize(complexName);
     });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_struct",
-                               { return "<complex" + patternStringInfo.getGroupAsString() + ">_struct"; });
+                               { return "<complex_id" + patternStringInfo.getGroupAsString() + ">_struct"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_cardinality",
-                               { return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[0]"; });
+                               { return "8byte <complex_id" + patternStringInfo.getGroupAsString() + ">_struct[0]"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_capacity",
-                               { return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[1]"; });
+                               { return "8byte <complex_id" + patternStringInfo.getGroupAsString() + ">_struct[1]"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_buffer",
-                               { return "8byte <complex" + patternStringInfo.getGroupAsString() + ">_struct[2]"; });
+                               { return "8byte <complex_id" + patternStringInfo.getGroupAsString() + ">_struct[2]"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_buffer_opt",
-                               { return "<complex" + patternStringInfo.getGroupAsString() + ">_buffer"; });
+                               { return "<complex_id" + patternStringInfo.getGroupAsString() + ">_buffer"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_cell", {
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
         std::string prefix = calculateElementSize(complexName) + "byte";
@@ -138,11 +135,26 @@ trm::Replacers Complexoyaz::makeReplacers()
             throw std::runtime_error("Не указан параметр");
         }
 
-        return prefix + " <complex" + group + ">_buffer[" + *param + "]";
+        return prefix + " <complex_id" + group + ">_buffer[" + *param + "]";
     });
     INSERT_FUNCTIONAL_REPLACER(replacers, "string_len", {
         const std::string &content = tryExtract(patternStringInfo, "string");
         return std::to_string(content.size());
+    });
+
+    //
+    // complex_id комплекса F1 - comp1
+    // complex_id комплекса L1 - comp1
+    //
+    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_id", {
+        const std::string &complex = tryExtract(patternStringInfo, "complex");
+        static const std::regex isComplex("([LF])([0-9]+)");
+        std::smatch match;
+        if (std::regex_match(complex, match, isComplex) && match.size() == 3) {
+            std::string complexNumber = match[2].str();
+            return "comp" + complexNumber;
+        }
+        LCC_FAIL("Matched string is not a complex");
     });
 
     return replacers;
@@ -159,15 +171,15 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
 {
     // definition func(a,L1/c,F2)
     // =>
-    // definition func(a,L1_struct/c,F2_struct)
-    // move L1_buffer, L1_struct[2]
-    // move F2_buffer, F2_struct[2]
+    // definition func(a,comp1_struct/c,comp2_struct)
+    // move comp1_buffer, comp1_struct[2]
+    // move comp2_buffer, comp2_struct[2]
 
     // call func(a,L1/c,F2)
     // =>
-    // call func(a,L1_struct/c,F2_struct)
-    // move L1_buffer, L1_struct[2]
-    // move F2_buffer, F2_struct[2]
+    // call func(a,comp1_struct/c,comp2_struct)
+    // move comp1_buffer, comp1_struct[2]
+    // move comp2_buffer, comp2_struct[2]
 
     JSON result;
 
@@ -190,13 +202,13 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
                 return;
             }
             const std::string &argStr = arg->asString();
-
-            static const std::regex isComplex("[LF][0-9]+");
+            static const std::regex isComplex("([LF])([0-9]+)");
             std::smatch match;
-            if (std::regex_match(argStr, match, isComplex) && match.size() == 1) {
+            if (std::regex_match(argStr, match, isComplex) && match.size() == 3) {
                 JSON args;
-                args.append(argStr + "_buffer");
-                args.append("8byte " + argStr + "_struct[2]");
+                std::string complexNumber = match[2].str();
+                args.append("comp" + complexNumber + "_buffer");
+                args.append("8byte comp" + complexNumber + "_struct[2]");
 
                 JSON moveCmd;
                 moveCmd["type"] = "cmd";
@@ -205,7 +217,7 @@ JSON Complexoyaz::processFunctions(JSON &cmds)
 
                 postCmds.push_back(std::move(moveCmd));
 
-                *arg = argStr + "_struct";
+                *arg = "comp" + complexNumber + "_struct";
             }
         };
 
