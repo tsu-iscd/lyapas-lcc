@@ -115,18 +115,15 @@ trm::Replacers Complexoyaz::makeReplacers()
         return calculateElementSize(complexName);
     });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_struct",
-                               { return "<complex_number" + patternStringInfo.getGroupAsString() + ">_struct"; });
-    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_cardinality", {
-        return "8byte <complex_number" + patternStringInfo.getGroupAsString() + ">_struct[0]";
-    });
-    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_capacity", {
-        return "8byte <complex_number" + patternStringInfo.getGroupAsString() + ">_struct[1]";
-    });
-    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_buffer", {
-        return "8byte <complex_number" + patternStringInfo.getGroupAsString() + ">_struct[2]";
-    });
+                               { return "<complex_id" + patternStringInfo.getGroupAsString() + ">_struct"; });
+    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_cardinality",
+                               { return "8byte <complex_id" + patternStringInfo.getGroupAsString() + ">_struct[0]"; });
+    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_capacity",
+                               { return "8byte <complex_id" + patternStringInfo.getGroupAsString() + ">_struct[1]"; });
+    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_buffer",
+                               { return "8byte <complex_id" + patternStringInfo.getGroupAsString() + ">_struct[2]"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_buffer_opt",
-                               { return "<complex_number" + patternStringInfo.getGroupAsString() + ">_buffer"; });
+                               { return "<complex_id" + patternStringInfo.getGroupAsString() + ">_buffer"; });
     INSERT_FUNCTIONAL_REPLACER(replacers, "complex_cell", {
         const std::string &complexName = tryExtract(patternStringInfo, "complex");
         std::string prefix = calculateElementSize(complexName) + "byte";
@@ -138,13 +135,18 @@ trm::Replacers Complexoyaz::makeReplacers()
             throw std::runtime_error("Не указан параметр");
         }
 
-        return prefix + " <complex_number" + group + ">_buffer[" + *param + "]";
+        return prefix + " <complex_id" + group + ">_buffer[" + *param + "]";
     });
     INSERT_FUNCTIONAL_REPLACER(replacers, "string_len", {
         const std::string &content = tryExtract(patternStringInfo, "string");
         return std::to_string(content.size());
     });
-    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_number", {
+
+    //
+    // complex_id комплекса F1 - comp1
+    // complex_id комплекса L1 - comp1
+    //
+    INSERT_FUNCTIONAL_REPLACER(replacers, "complex_id", {
         const std::string &complex = tryExtract(patternStringInfo, "complex");
         static const std::regex isComplex("([LF])([0-9]+)");
         std::smatch match;
