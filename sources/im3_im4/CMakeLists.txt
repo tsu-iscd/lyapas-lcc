@@ -3,7 +3,7 @@ project(im3_im4)
 
 set(SOURCE_FILES
     main.cpp
-    steckoyaz.cpp
+    stackoyaz.cpp
     function.cpp
     function_signature.cpp
     array_index.cpp

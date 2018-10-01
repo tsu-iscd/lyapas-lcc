@@ -4,7 +4,7 @@
 #include "function.h"
 
 namespace syaz {
-class Steckoyaz : public trm::TranslationModule {
+class Stackoyaz : public trm::TranslationModule {
 private:
     virtual bool valid(const JSON &cmds, std::string &error) override;
     virtual void preprocess(JSON &cmds) override;
