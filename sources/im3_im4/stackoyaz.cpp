@@ -1,4 +1,4 @@
-#include "steckoyaz.h"
+#include "stackoyaz.h"
 #include <algorithm>
 #include <shared_utils/assertion.h>
 
@@ -74,12 +74,12 @@ std::vector<Function> parseFunctions(const JSON &cmds)
 }
 
 namespace syaz {
-bool Steckoyaz::valid(const JSON &cmds, std::string &error)
+bool Stackoyaz::valid(const JSON &cmds, std::string &error)
 {
     return true;
 }
 
-void Steckoyaz::preprocess(JSON &cmds)
+void Stackoyaz::preprocess(JSON &cmds)
 {
     //разбиваем все на функции
     auto program = parseFunctions(cmds);
@@ -107,19 +107,19 @@ void Steckoyaz::preprocess(JSON &cmds)
     }
 }
 
-void Steckoyaz::postprocess(JSON &cmds) {}
+void Stackoyaz::postprocess(JSON &cmds) {}
 
-trm::Replacers Steckoyaz::makeReplacers()
+trm::Replacers Stackoyaz::makeReplacers()
 {
     return {};
 }
 
-std::string Steckoyaz::getRules()
+std::string Stackoyaz::getRules()
 {
     return std::string("");
 }
 
-void Steckoyaz::translateCall(Function &func)
+void Stackoyaz::translateCall(Function &func)
 {
     std::vector<JSON> resultCmds;
 
@@ -160,7 +160,7 @@ void Steckoyaz::translateCall(Function &func)
     func.setBody(resultCmds);
 }
 
-void Steckoyaz::translateDefinition(Function &func)
+void Stackoyaz::translateDefinition(Function &func)
 {
     std::vector<JSON> resultCmds;
 
@@ -182,7 +182,7 @@ void Steckoyaz::translateDefinition(Function &func)
     func.setBody(resultCmds);
 }
 
-void Steckoyaz::translateLabels(Function &func)
+void Stackoyaz::translateLabels(Function &func)
 {
     std::vector<JSON> resultCmds;
 

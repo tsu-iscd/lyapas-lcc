@@ -1,8 +1,8 @@
 #include <shared_utils/translation_helper.h>
-#include "steckoyaz.h"
+#include "stackoyaz.h"
 
 int main(int argc, char *argv[])
 {
-    sutils::translateSimple<syaz::Steckoyaz>(argc, argv);
+    sutils::translateSimple<syaz::Stackoyaz>(argc, argv);
     return 0;
 }
