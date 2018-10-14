@@ -116,7 +116,7 @@ void Function::insertVariable(JSON &var)
     if (ArrayIndex::isArrayIndex(nameVar)) {
         ArrayIndex arrayIndex(nameVar);
         LCC_ASSERT(findVariable(arrayIndex.name) != variables.end());
-        nameVar = arrayIndex.index;
+        nameVar = arrayIndex.indexVariable;
     }
 
     //константы не лежат на стеке
@@ -154,12 +154,18 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
     auto var = findVariable(arrayIndex.name);
     LCC_ASSERT(var != variables.end());
 
-    auto index = findVariable(arrayIndex.index);
-    if (index == variables.end()) {
-        LCC_ASSERT(isInt(arrayIndex.index));
-        return arrayIndex.prefix + var->alias + "[" + arrayIndex.index + "]";
-    };
-    return arrayIndex.prefix + var->alias + "[" + index->alias + "]";
+
+    std::string result = arrayIndex.prefix + var->alias + "[";
+    for (auto iter = arrayIndex.indexExpression.begin(); iter < arrayIndex.indexExpression.end(); iter++) {
+        auto indexPart = findVariable(*iter);
+        if (indexPart == variables.end()) {
+            result += (*iter) + " ";
+            continue;
+        };
+        result += indexPart->alias + " ";
+    }
+    result = result.substr(0, result.size()-1) + "]";
+    return result;
 }
 
 Function::Variables::iterator Function::findVariable(std::string nameVariable)
