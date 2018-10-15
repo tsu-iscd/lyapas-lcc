@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <shared_utils/assertion.h>
 #include <translation_module/args_range.h>
-#include "array_index.h"
-#include "is_int.h"
+#include <shared_utils/array_index.h>
+#include <shared_utils/is_int.h>
 
 Function::Function(const JSON &cmd)
     : signature{cmd[0]}

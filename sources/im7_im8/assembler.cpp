@@ -1,6 +1,7 @@
 #include "assembler.h"
 #include <regex>
 #include <shared_utils/assertion.h>
+#include <shared_utils/array_index.h>
 #include <set>
 #include "bss.h"
 #include "builtin_functions.h"
@@ -178,13 +179,22 @@ void Assembler::processArgs(Program &program)
                     ptr = regs::r15;
                 }
 
-                if (isLocalOrParamVar(index)) {
-                    std::string var = localOrParamVarToPtr(match[1].str());
-                    program.insert(current, makeCmd("mov", {regs::r14, var}));
-                    index = regs::r14;
-                }
+                auto words = ArrayIndex::SplitArrayIndex(index);
 
-                arg = ptrType + " [" + ptr + " + " + index + " * " + itemSize + "]";
+                std::string resultIndex;
+                for(auto &word : words) {
+                    if (isLocalOrParamVar(word)) {
+                        std::string var = localOrParamVarToPtr(match[1].str());
+                        program.insert(current, makeCmd("mov", {regs::r14, var}));
+                        index = regs::r14;
+                        resultIndex += regs::r14 + " ";
+                    } else {
+                        resultIndex += word + " ";
+                    }
+                }
+                resultIndex = resultIndex.substr(0, resultIndex.size()-1);
+
+                arg = ptrType + " [" + ptr + " + (" + resultIndex + ") * " + itemSize + "]";
             }
         }
     }

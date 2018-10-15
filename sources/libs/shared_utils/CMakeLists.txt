@@ -7,6 +7,8 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/shared_utils)
 set(SHARED_UTILS_SRCS
     ${PROJECT_SOURCE_DIR}/json_helper.cpp
+    ${PROJECT_SOURCE_DIR}/array_index.cpp
+    ${PROJECT_SOURCE_DIR}/is_int.cpp
 )
 
 add_library(shared_utils STATIC ${SHARED_UTILS_SRCS})
