@@ -159,9 +159,9 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
         auto indexPart = findVariable(*iter);
         if (indexPart == variables.end()) {
             result += (*iter) + " ";
-            continue;
-        };
-        result += indexPart->alias + " ";
+        } else {
+            result += indexPart->alias + " ";
+        }
     }
     result = result.substr(0, result.size() - 1) + "]";
     return result;
