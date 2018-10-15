@@ -1,25 +1,28 @@
 #include "array_index.h"
-#include "is_int.h"
 #include <algorithm>
 #include <assertion.h>
+#include "is_int.h"
 
-inline bool space(char c){
+inline bool space(char c)
+{
     return std::isspace(c);
 }
 
-inline bool notspace(char c){
+inline bool notspace(char c)
+{
     return !std::isspace(c);
 }
 
-std::vector<std::string> ArrayIndex::SplitArrayIndex(std::string index) {
+std::vector<std::string> ArrayIndex::SplitArrayIndex(std::string index)
+{
     std::vector<std::string> ret;
     auto i = index.begin();
-    while(i!=index.end()){
-        i = std::find_if(i, index.end(), notspace); // find the beginning of a word
-        auto j= std::find_if(i, index.end(), space); // find the end of the same word
-        if(i!=index.end()){
-            ret.push_back(std::string(i, j)); //insert the word into vector
-            i = j; // repeat 1,2,3 on the rest of the line.
+    while (i != index.end()) {
+        i = std::find_if(i, index.end(), notspace);    // find the beginning of a word
+        auto j = std::find_if(i, index.end(), space);  // find the end of the same word
+        if (i != index.end()) {
+            ret.push_back(std::string(i, j));  // insert the word into vector
+            i = j;                             // repeat 1,2,3 on the rest of the line.
         }
     }
     return ret;
@@ -36,7 +39,7 @@ ArrayIndex::ArrayIndex(const std::string &var)
 
     indexExpression = SplitArrayIndex(expression);
 
-    for(auto iter = indexExpression.begin(); iter < indexExpression.end(); iter++) {
+    for (auto iter = indexExpression.begin(); iter < indexExpression.end(); iter++) {
         if (isInt(*iter)) {
             continue;
         }
@@ -48,11 +51,10 @@ ArrayIndex::ArrayIndex(const std::string &var)
         }
         if (*iter == "*") {
             continue;
-        }
-        else indexVariable = *iter;
+        } else
+            indexVariable = *iter;
         break;
     }
-
 
     auto content = var.substr(0, leftBracket);
     auto space = content.find(' ');

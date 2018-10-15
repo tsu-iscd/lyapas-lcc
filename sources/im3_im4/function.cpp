@@ -1,9 +1,9 @@
 #include "function.h"
 #include <algorithm>
-#include <shared_utils/assertion.h>
-#include <translation_module/args_range.h>
 #include <shared_utils/array_index.h>
+#include <shared_utils/assertion.h>
 #include <shared_utils/is_int.h>
+#include <translation_module/args_range.h>
 
 Function::Function(const JSON &cmd)
     : signature{cmd[0]}
@@ -154,7 +154,6 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
     auto var = findVariable(arrayIndex.name);
     LCC_ASSERT(var != variables.end());
 
-
     std::string result = arrayIndex.prefix + var->alias + "[";
     for (auto iter = arrayIndex.indexExpression.begin(); iter < arrayIndex.indexExpression.end(); iter++) {
         auto indexPart = findVariable(*iter);
@@ -164,7 +163,7 @@ JSON Function::getSubstituteArrayIndex(const std::string &nameVariable)
         };
         result += indexPart->alias + " ";
     }
-    result = result.substr(0, result.size()-1) + "]";
+    result = result.substr(0, result.size() - 1) + "]";
     return result;
 }
 
