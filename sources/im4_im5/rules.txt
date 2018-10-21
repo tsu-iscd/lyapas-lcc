@@ -78,7 +78,9 @@ cmd/inc "<free_var=2>"
 label <free_label=3>
 cmd/compare "<complex_cardinality>", "<free_var=2>"
 cmd/jump_geq <free_label=4>
-cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=2> - 1>"
+cmd/move "<free_var=3>", "<free_var=2>"
+cmd/dec "<free_var=3>"
+cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=3>>"
 cmd/inc "<free_var=2>"
 cmd/jump <free_label=3>
 label <free_label=4>
@@ -110,7 +112,9 @@ label <free_label=3>
 cmd/inc "<free_var=1>"
 cmd/compare "<complex_cardinality>", "<free_var=1>"
 cmd/jump_geq <free_label=4>
-cmd/move "<complex_cell=<free_var=1> - 1>", "<complex_cell=<free_var=1>>"
+cmd/move "<free_var=2>","<free_var=1>"
+cmd/dec <free_var=2>
+cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=1>>"
 cmd/jump <free_label=3>
 label <free_label=4>
 cmd/dec "<complex_cardinality>"
@@ -128,7 +132,9 @@ label <free_label=3>
 cmd/inc "<free_var=1>"
 cmd/compare "<complex_cardinality>", "<free_var=1>"
 cmd/jump_geq <free_label=4>
-cmd/move "<complex_cell=<free_var=1> - 1>", "<complex_cell=<free_var=1>>"
+cmd/move "<free_var=2>", "<free_var=1>"
+cmd/dec "<free_var2>"
+cmd/move "<complex_cell=<free_var=2>>", "<complex_cell=<free_var=1>>"
 cmd/jump <free_label=3>
 label <free_label=4>
 cmd/dec "<complex_cardinality>"
