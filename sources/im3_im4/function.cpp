@@ -132,7 +132,7 @@ void Function::insertVariable(JSON &var)
 JSON Function::getSubstitute(const JSON &nameVariable)
 {
     //константы не заменяются
-    if (nameVariable.isInt()) {
+    if (isInt(nameVariable.asString())) {
         return nameVariable;
     }
 
