@@ -166,13 +166,14 @@ error "Index out of range"
 label 2 
 inc <complex_cardinality> 
 # копирование
-move cyaz_t2, cyaz_t1 
-inc cyaz_t2 
+move cyaz_t2, <complex_cardinality> 
 label 3 
-compare <complex_cardinality>, cyaz_t2 
-jump_geq 4 
-move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t2-1) 
-inc cyaz_t2 
+compare cyaz_t2, cyaz_t1
+jump_leq 4 
+mov cyaz_t3, cyaz_t2
+dec cyaz_t3
+move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t3) 
+dec cyaz_t2 
 jump 3 
 label 4 
 move <complex_cell>(cyaz_t1), <readable_int>
@@ -210,7 +211,9 @@ label 3
 inc cyaz_t1 
 compare <complex_cardinality>, cyaz_t1 
 jump_geq 4 
-move <complex_cell>(cyaz_t1-1), <complex_cell>(cyaz_t1) 
+move cyaz_t2, cyaz_t1
+dec cyaz_t2
+move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t1) 
 jump 3 
 label 4 
 dec <complex_cardinality>
@@ -232,7 +235,9 @@ label 3
 inc cyaz_t1 
 compare <complex_cardinality>, cyaz_t1 
 jump_geq 4 
-move <complex_cell>(cyaz_t1-1), <complex_cell>(cyaz_t1) 
+move cyaz_t2, cyaz_t1
+dec cyaz_t2
+move <complex_cell>(cyaz_t2), <complex_cell>(cyaz_t1) 
 jump 3 
 label 4 
 dec <complex_cardinality>
