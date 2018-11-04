@@ -2,6 +2,7 @@
 #include <regex>
 #include <shared_utils/assertion.h>
 #include <set>
+#include <string>
 #include "bss.h"
 #include "builtin_functions.h"
 #include "make_cmd.h"
@@ -26,6 +27,9 @@ const std::regex isIrPtr(R"(([18]byte) ([^\[]+)\[([^\]]+)\])");
 
 // пример: QWORD [ptr + offset]
 const std::regex isAsmPtr(R"(([^ ]+) \[([^\]]+)\])");
+
+// пример: 12345
+const std::regex isNum("[0-9]+");
 
 std::string escape(const std::string &in)
 {
@@ -194,7 +198,7 @@ void Assembler::processCmdsConstrains(Program &program)
 {
     //
     // трансляция инструкций, которые имеют
-    // два обращения в память
+    // два обращения в память или большое число в аргументах.
     //
     for (auto current = std::begin(program); current != std::end(program); ++current) {
         JSON &cmd = *current;
@@ -223,6 +227,16 @@ void Assembler::processCmdsConstrains(Program &program)
         auto countPtrAccess = [&count](JSON &arg) {
             std::string argStr = arg.asString();
             std::smatch match;
+
+            //
+            // проверка, что число >= 2^32
+            //
+            if(std::regex_match(argStr, match, isNum)) {
+                auto num = std::stoull(argStr, 0, 0);
+                if (num >> 32) {
+                    ++count;
+                }
+            }
             if (std::regex_match(argStr, match, isAsmPtr) ||
                 std::regex_match(argStr, match, isIrPtr) ||
                 std::regex_match(argStr, match, isIrLocalVariable) ||
