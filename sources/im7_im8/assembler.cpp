@@ -237,6 +237,7 @@ void Assembler::processCmdsConstrains(Program &program)
                     ++count;
                 }
             }
+
             if (std::regex_match(argStr, match, isAsmPtr) ||
                 std::regex_match(argStr, match, isIrPtr) ||
                 std::regex_match(argStr, match, isIrLocalVariable) ||
