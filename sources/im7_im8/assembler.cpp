@@ -224,7 +224,11 @@ void Assembler::processCmdsConstrains(Program &program)
 
         size_t count = 0;
 
-        auto countPtrAccess = [&count](JSON &arg) {
+        //
+        // счетчик "сложных" операций
+        // "сложная" операция {двойное обращение в память, присваивание числа > 2^32}
+        //
+        auto countComplexOperation= [&count](JSON &arg) {
             std::string argStr = arg.asString();
             std::smatch match;
 
@@ -248,10 +252,10 @@ void Assembler::processCmdsConstrains(Program &program)
         };
 
         JSON &arg1 = cmd["args"][0];
-        countPtrAccess(arg1);
+        countComplexOperation(arg1);
 
         JSON &arg2 = cmd["args"][1];
-        countPtrAccess(arg2);
+        countComplexOperation(arg2);
 
         if (count == 2) {
             program.insert(current, makeCmd("mov", {regs::rax, arg2}));
