@@ -181,7 +181,7 @@ void PrintJsonWithValueString(const char *typeName, const char* value, int num_c
 void PrintJsonWithValueInt(const char *typeName, const char *yytext)
 {
     PutComma();
-    printf("\n  {\"type\": \"%s\", \"value\": %d}", typeName, atoi(yytext));
+    printf("\n  {\"type\": \"%s\", \"value\": %llu}", typeName, strtoull(yytext, 0, 0));
     err_column_ptr += strlen(yytext);
 }
 void PrintJsonWithValueHex(const char *typeName, const char* yytext)
