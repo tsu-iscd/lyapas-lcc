@@ -1,0 +1,106 @@
+[
+   {
+      "name" : "main",
+      "type" : "label"
+   },
+   {
+      "args" : [ 6 ],
+      "cmd" : "stack_alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 24, "l0" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte l0[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte l0[1]", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", 1 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", "8byte l0[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l2", "8byte l0[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 24, "l3" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte l3[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte l3[1]", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", 1 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l1", "8byte l3[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l4", "8byte l3[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l5", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte l2[0]", "l5" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "l5", 11 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte l4[10]", "l5" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 6 ],
+      "cmd" : "stack_free",
+      "type" : "cmd"
+   }
+]

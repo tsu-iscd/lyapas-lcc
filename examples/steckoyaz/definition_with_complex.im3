@@ -1,0 +1,37 @@
+[
+   {
+      "args" : [ "main", "/" ],
+      "cmd" : "definition",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F1", 100 ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2", 100 ],
+      "cmd" : "create_complex",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F1[0]", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", 11 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2[10]", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   }
+]

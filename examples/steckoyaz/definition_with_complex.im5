@@ -1,0 +1,97 @@
+[
+   {
+      "args" : [ "main", "/" ],
+      "cmd" : "definition",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 24, "F1_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F1_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F1_struct[1]", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 1 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", "8byte F1_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F1_buffer", "8byte F1_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ 24, "F2_struct" ],
+      "cmd" : "alloc",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[0]", 0 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "8byte F2_struct[1]", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 100 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", 1 ],
+      "cmd" : "mul",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "t1", "8byte F2_struct[2]" ],
+      "cmd" : "alloc_at_least",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "F2_buffer", "8byte F2_struct[2]" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", 10 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte F1_buffer[0]", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "acc", 11 ],
+      "cmd" : "move",
+      "type" : "cmd"
+   },
+   {
+      "args" : [ "1byte F2_buffer[10]", "acc" ],
+      "cmd" : "move",
+      "type" : "cmd"
+   }
+]
